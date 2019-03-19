@@ -1,0 +1,7 @@
+#Taxonomy of the samples to be processed, in this case Bacteria
+taxonomy: "Bacteria"
+#Adapter sequence used
+adapter: ""
+samples: "ribo_benchmark/samples.tsv"
+genomeindexpath: ""
+alternativestartcodons: "GTG,TTG"
