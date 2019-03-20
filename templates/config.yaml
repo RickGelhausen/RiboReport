@@ -5,3 +5,5 @@ adapter: ""
 samples: "ribo_benchmark/samples.tsv"
 genomeindexpath: ""
 alternativestartcodons: "GTG,TTG"
+#TISHMODE: RIBOONLY for only riboseq (Chloramphenicol treatment), TISONLY for only tis(retapalmuline, tetracycline), ALL for both
+tishmode: "RIBOONLY"

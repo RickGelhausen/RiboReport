@@ -1,0 +1,6 @@
+channels:
+ - conda-forge
+ - bioconda
+dependencies:
+ - r-base =3.5.1
+ - reparation_blast =v1.0.7

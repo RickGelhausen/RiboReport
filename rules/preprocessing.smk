@@ -15,16 +15,3 @@ rule retrieveAnnotation:
     threads: 1
     shell:
         "mkdir -p annotation; mv annotation.gtf annotation/"
-
-# rule validateAnnotation:
-#     input:
-#         annotation="annotation.gtf"
-#         genome="genome.fa"
-#     output:
-#         validAnnotation="annotation/annotation.gtf"
-#         validGenome="genomes/genome.fa"
-#     threads: 1
-#     envs:
-#         "../ribo_benchmark/envs/mergetools.yaml"
-#     shell:
-#         "mkdir -p annotation; mkdir -p genomes; ribo_benchmark/scripts/validateAnnotation -a {input.annotation} -g {input.genome} --annotationOutput {input.validAnnotation} --validGenome {input.validGenome}"

@@ -18,12 +18,11 @@ samples = pd.read_csv(config["samples"], dtype=str, sep="\t").set_index(["method
 samples.index = samples.index.set_levels([i.astype(str) for i in samples.index.levels])
 validate(samples, schema="schemas/samples.schema.yaml")
 
+
 rule all:
   input:
     expand("bam/{method}-{condition}-{replicate}.bam", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
-    expand("maplink/{method}-{condition}-{replicate}.bam.bai", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
-    expand("reparation/{condition}-{replicate}/Predicted_ORFs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"])
+    expand("maplink/{method}-{condition}-{replicate}.bam.bai", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"])
 
 onsuccess:
     print("Done, no error")
@@ -37,15 +36,4 @@ include: "rules/rrnafiltering.smk"
 #mapping
 include: "rules/mapping.smk"
 #maplink
-include: "rules/maplink.smk"
-include: "rules/maplinktis.smk"
-#indexing
 include: "rules/indexing.smk"
-if TISHMODE == "RIBOONLY":
-   #ribotish
-   include: "rules/ribotish.smk"
-else:
-   #ribotish
-   include: "rules/ribotishall.smk"
-#reparation
-include: "rules/reparation.smk"

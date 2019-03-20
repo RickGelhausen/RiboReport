@@ -56,8 +56,6 @@ rule samuniq:
             exit 0
         fi
         """
-        #"mkdir -p sam; samtools view  -H <(cat {input.sammulti}) | grep '@HD' > {output.sam}; samtools view -H <(cat {input.sammulti}) | grep '@SQ' | sort -t$'\t' -k1,1 -k2,2V >> {output.sam}; samtools view -H <(cat {input.sammulti}) | grep '@RG' >> {output.sam}; samtools view -H <(cat {input.sammulti}) | grep '@PG' >> {output.sam}; cat {input.sammulti} |grep -v '^@' | grep -w 'NH:i:1' >> {output.sam}"
-
 
 rule samtobam:
     input:
