@@ -6,6 +6,71 @@ __default__:
   joinlogs : 'y'
   memory: "h_vmem=8G"
 
+genomeSamToolsIndex:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=30G"
+
+genomeSize:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+bamindex:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=3G"
+
+maplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+ribomaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+ribobamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnamaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnabamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+tismaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+tisbamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnatismaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnatisbamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+
+genomeSegemehlIndex:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=3G"
+
+map:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=3G"
+
+samuniq:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=3G"
+
+samtobam:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=3G"
+
 retrieveGenome:
   parallelenvironment : 'smp 1'
   memory: "h_vmem=1G"
@@ -14,17 +79,21 @@ retrieveAnnotation:
   parallelenvironment : 'smp 1'
   memory: "h_vmem=1G"
 
+uniprotDBRetrieve:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+reparation:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=2G"
+
 ribotish:
   parallelenvironment : 'smp 10'
   memory: "h_vmem=3G"
 
-genomeSamToolsIndex:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=30G"
-
-psiteOffset:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=30G"
+ribotishQuality:
+  parallelenvironment : 'smp 10'
+  memory: "h_vmem=3G"
 
 rrnaretrieve:
   parallelenvironment : 'smp 1'
@@ -41,55 +110,3 @@ rrnafilter:
 trim:
   parallelenvironment : 'smp 1'
   memory: "h_vmem=30G"
-
-fastqcraw:
-  parallelenvironment : 'smp 8'
-  memory: "h_vmem=3G"
-
-fastqctrimmed:
-  parallelenvironment : 'smp 8'
-  memory: "h_vmem=3G"
-
-fastqcrrnafilter:
-  parallelenvironment : 'smp 8'
-  memory: "h_vmem=3G"
-
-fastqcmap:
-  parallelenvironment: 'smp 8'
-  memory: "h_vmem=3G"
-
-genomeIndex:
-  parallelenvironment : 'smp 20'
-  memory: "h_vmem=3G"
-
-map:
-  parallelenvironment : 'smp 20'
-  memory: "h_vmem=3G"
-
-maplink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-ribomaplink:
-    parallelenvironment : 'smp 1'
-    memory: "h_vmem=1G"
-
-rnamaplink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-normalizedCounts:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=30G"
-
-genomeSize:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-bamindex:
-  parallelenvironment : 'smp 20'
-  memory: "h_vmem=3G"
-
-samtobam:
-  parallelenvironment : 'smp 20'
-  memory: "h_vmem=3G"

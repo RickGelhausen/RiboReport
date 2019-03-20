@@ -34,26 +34,26 @@ rule ribobamindexlink:
     shell:
         "mkdir -p maplink/RIBO/; ln -s {params.inlink} {params.outlink}"
 
-rule rnaribomaplink:
+rule rnamaplink:
     input:
         "bam/{method}-{condition}-{replicate}.bam"
     output:
-        "maplink/{method, RNARIBO}/{condition, [a-zA-Z]+}-{replicate,\d+}.bam"
+        "maplink/{method, RNA}/{condition, [a-zA-Z]+}-{replicate,\d+}.bam"
     params:
         inlink=lambda wildcards, input:(os.getcwd() + "/" + str(input)),
         outlink=lambda wildcards, output:(os.getcwd() + "/" + str(output))
     threads: 1
     shell:
-        "mkdir -p maplink/RNARIBO/; ln -s {params.inlink} {params.outlink}"
+        "mkdir -p maplink/RNA/; ln -s {params.inlink} {params.outlink}"
 
-rule rnaribobamindexlink:
+rule rnabamindexlink:
     input:
         "bam/{method}-{condition}-{replicate}.bam.bai"
     output:
-        "maplink/{method, RNARIBO}/{condition, [a-zA-Z]+}-{replicate,\d+}.bam.bai"
+        "maplink/{method, RNA}/{condition, [a-zA-Z]+}-{replicate,\d+}.bam.bai"
     params:
         inlink=lambda wildcards, input:(os.getcwd() + "/" + str(input)),
         outlink=lambda wildcards, output:(os.getcwd() + "/" + str(output))
     threads: 1
     shell:
-        "mkdir -p maplink/RNARIBO/; ln -s {params.inlink} {params.outlink}"
+        "mkdir -p maplink/RNA/; ln -s {params.inlink} {params.outlink}"
