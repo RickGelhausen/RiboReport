@@ -22,7 +22,7 @@ rule all:
   input:
     expand("bam/{method}-{condition}-{replicate}.bam", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     expand("maplink/{method}-{condition}-{replicate}.bam.bai", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
-    expand("offsets/{condition}-{replicate}-{replicate}_p_offsets.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
+    expand("offsets/{method}-{condition}-{replicate}_p_offsets.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     expand("reparation/{condition}-{replicate}/Predicted_ORFs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"])
 
@@ -40,6 +40,8 @@ include: "rules/mapping.smk"
 #maplink
 include: "rules/maplink.smk"
 include: "rules/maplinktis.smk"
+#auxillary
+include: "rules/auxillary.smk"
 #indexing
 include: "rules/indexing.smk"
 if TISHMODE == "RIBOONLY":
