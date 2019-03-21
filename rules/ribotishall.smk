@@ -35,7 +35,7 @@ rule ribotish:
         filtered="ribotish/{condition, [a-zA-Z]+}-newORFs.tsv"
     params:
         fplist= lambda wildcards, input: ','.join(list(set(input.fp))),
-	tislist= lambda wildcards, input: ','.join(list(set(input.tis))),
+        tislist= lambda wildcards, input: ','.join(list(set(input.tis))),
         codons= lambda wildcards: ("" if not CODONS else (" --alt --altcodons " + CODONS)),
     conda:
         "../envs/ribotish.yaml"
