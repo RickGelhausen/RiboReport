@@ -7,7 +7,7 @@ rule processAnnotation:
         "../envs/pytools.yaml"
     threads: 1
     shell:
-        "mkdir -p annotation; python3 scripts/processAnnotation.py -a {input.annotation} -o {output}"
+        "mkdir -p annotation; python3 ribo_benchmark/scripts/processAnnotation.py -a {input.annotation} -o {output}"
 
 rule generateMetageneRoi:
     input:

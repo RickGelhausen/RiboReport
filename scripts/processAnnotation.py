@@ -6,11 +6,16 @@ def process_annotation(args):
     # read input annotation
     annDF = pd.read_csv(args.annotation, sep="\t", comment="#", header=None)
 
-    # only accept rows that contain gene_id transcript_id combination
-    annDF = annDF[annDF[8].str.contains("gene_id") and annDF[8].str.contains("transcript_id")]
+    # check if gff2/gtf or gff3 format
+    if annDF[8].str.contains("ID="):
+        # gff3
+        annDF.to_csv(args.output, sep="\t", header=False, index=False, quoting=csv.QUOTE_NONE)
+    else:
+        # only accept rows that contain gene_id transcript_id combination
+        annDF = annDF[annDF[8].str.contains("gene_id") & annDF[8].str.contains("transcript_id")]
 
-    # write processed annotation to output
-    annDF.to_csv(args.output, sep="\t", header=False, index=False, quoting=csv.QUOTE_NONE)
+        # write processed annotation to output
+        annDF.to_csv(args.output, sep="\t", header=False, index=False, quoting=csv.QUOTE_NONE)
 
 
 def main():
