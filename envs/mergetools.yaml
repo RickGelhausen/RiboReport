@@ -1,7 +1,0 @@
-channels:
- - conda-forge
- - bioconda
-dependencies:
- - pandas =0.23.4
- - samtools =1.9
- - bedtools =2.27.1
