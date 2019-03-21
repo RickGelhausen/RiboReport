@@ -13,7 +13,7 @@ rule generateMetageneRoi:
     input:
         annotation=rules.processAnnotation.output
     output:
-        "plastid/metagene_rois.txt"
+        "offsets/metagene_rois.txt"
     conda:
         "../envs/auxillary.yaml"
     threads: 1
