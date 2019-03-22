@@ -23,13 +23,14 @@ rule generateMetageneRoi:
 rule psiteOffsets:
     input:
         rois=rules.generateMetageneRoi.output,
-        bam="bam/{method}-{condition}-{replicate}.bam"
+        bam="maplink/{method}-{condition}-{replicate}.bam",
+        bamindex="maplink/{method}-{condition}-{replicate}.bam.bai"
     output:
         psite="offsets/{method}-{condition}-{replicate}_p_offsets.txt"
     conda:
         "../envs/auxillary.yaml"
     threads: 1
     params:
-        prefix=lambda wildcards, output: (os.path.splitext(os.path.basename(output[0]))[0])
+        prefix=lambda wildcards: "{wildcards.method}-{wildcards.condition}-{wildcards.replicate}"
     shell:
         "mkdir -p offsets; psite {input.rois} offsets/{params.prefix} --min_length 22 --max_length 40 --require_upstream --count_files {input.bam}"
