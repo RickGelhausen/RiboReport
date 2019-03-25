@@ -30,7 +30,5 @@ rule psiteOffsets:
     conda:
         "../envs/auxillary.yaml"
     threads: 1
-    params:
-        prefix=lambda wildcards: "{wildcards.method}-{wildcards.condition}-{wildcards.replicate}"
     shell:
-        "mkdir -p offsets; psite {input.rois} offsets/{params.prefix} --min_length 22 --max_length 40 --require_upstream --count_files {input.bam}"
+        "mkdir -p offsets; psite -q {input.rois} offsets/{wildcards.method}-{wildcards.condition}-{wildcards.replicate} --min_length 22 --max_length 40 --require_upstream --count_files {input.bam}; sed -i '/^#/ d' {output}"
