@@ -2,6 +2,7 @@ import csv
 import pandas as pd
 import argparse
 import re
+import collections
 
 # little helper function to create named tuple without having to always state every argument
 def createNTuple(row, s0=None, s1=None, s2=None, s3=None, s4=None, s5=None, s6=None, s7=None, s8=None):
@@ -67,7 +68,7 @@ def process_annotation(args):
     annDF = pd.read_csv(args.annotation, sep="\t", comment="#", header=None)
 
     # check if gff2/gtf or gff3 format
-    if annDF[8].str.contains("ID="):
+    if any(annDF[8].str.contains("ID=")):
         # gff3
         annDF.to_csv(args.output, sep="\t", header=False, index=False, quoting=csv.QUOTE_NONE)
     else:
