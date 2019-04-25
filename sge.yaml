@@ -107,7 +107,11 @@ featurecounts:
   parallelenvironment : 'smp 8'
   memory: "h_vmem=3G"
 
-coveragedepth:
+coveragedepthfwd:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=8G"
+
+coveragedepthrev:
   parallelenvironment : 'smp 1'
   memory: "h_vmem=8G"
 
