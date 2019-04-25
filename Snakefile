@@ -42,6 +42,8 @@ include: "rules/mapping.smk"
 #maplink
 include: "rules/maplink.smk"
 include: "rules/maplinktis.smk"
+#coverage
+include: "rules/coverage.smk"
 #auxillary
 include: "rules/auxiliary.smk"
 #indexing

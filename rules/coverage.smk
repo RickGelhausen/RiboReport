@@ -4,7 +4,7 @@ rule coveragedepthfwd:
     output:
         "coverage/{method}-{condition}-{replicate}_fwd.bed"
     conda:
-        "../envs/mergetools.yaml"
+        "../envs/bedtools.yaml"
     threads: 1
     shell:
         "mkdir -p coverage; bedtools genomecov -ibam {input} -bg -strand + > {output}"
@@ -15,7 +15,7 @@ rule coveragedepthrev:
     output:
         "coverage/{method}-{condition}-{replicate}_rev.bed"
     conda:
-        "../envs/mergetools.yaml"
+        "../envs/bedtools.yaml"
     threads: 1
     shell:
         "mkdir -p coverage; bedtools genomecov -ibam {input} -bg -strand - > {output}"
