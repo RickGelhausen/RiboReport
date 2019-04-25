@@ -1,4 +1,6 @@
 channels:
  - conda-forge
+ - bioconda
 dependencies:
- - pandas
+ - pandas= 0.24.2
+ - pysam= 0.15.2
