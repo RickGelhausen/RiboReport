@@ -24,9 +24,9 @@ rule all:
     expand("maplink/{method}-{condition}-{replicate}.bam.bai", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     expand("offsets/{method}-{condition}-{replicate}_p_offsets.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     expand("reparation/{condition}-{replicate}/Predicted_ORFs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"])
+    expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"]),
     expand("coverage/{method}-{condition}-{replicate}_fwd.bed", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
-    expand("coverage/{method}-{condition}-{replicate}_rev.bed", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
+    expand("coverage/{method}-{condition}-{replicate}_rev.bed", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"])
 
 onsuccess:
     print("Done, no error")
