@@ -41,14 +41,14 @@ include: "rules/mapping.smk"
 include: "rules/maplink.smk"
 include: "rules/maplinktis.smk"
 #auxillary
-include: "rules/auxillary.smk"
+include: "rules/auxiliary.smk"
 #indexing
 include: "rules/indexing.smk"
+#ribotish
+include: "rules/ribotishauxiliary.smk"
 if TISHMODE == "RIBOONLY":
-   #ribotish
    include: "rules/ribotish.smk"
 else:
-   #ribotish
    include: "rules/ribotishall.smk"
 #reparation
 include: "rules/reparation.smk"

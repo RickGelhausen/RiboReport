@@ -2,4 +2,4 @@ channels:
  - conda-forge
  - bioconda
 dependencies:
- - trim-galore =0.5.0
+ -  cutadapt =2.1
