@@ -2,7 +2,7 @@ rule coverageDepthFwd:
     input:
         "bam/{method}-{condition}-{replicate}.bam"
     output:
-        "coverage/{method}-{condition}-{replicate}_cov_fwd.bed"
+        "coverage/{method}-{condition}-{replicate}_cov_fwd.bedgraph"
     conda:
         "../envs/bedtools.yaml"
     threads: 1
@@ -13,7 +13,7 @@ rule coverageDepthRev:
     input:
         "bam/{method}-{condition}-{replicate}.bam"
     output:
-        "coverage/{method}-{condition}-{replicate}_cov_rev.bed"
+        "coverage/{method}-{condition}-{replicate}_cov_rev.bedgraph"
     conda:
         "../envs/bedtools.yaml"
     threads: 1
@@ -24,8 +24,8 @@ rule aSiteOccupancy:
     input:
         "bam/{method}-{condition}-{replicate}.bam"
     output:
-        fwd="coverage/{method}-{condition}-{replicate}_asite_fwd.bed",
-        rev="coverage/{method}-{condition}-{replicate}_asite_rev.bed"
+        fwd="coverage/{method}-{condition}-{replicate}_asite_fwd.bedgraph",
+        rev="coverage/{method}-{condition}-{replicate}_asite_rev.bedgraph"
     conda:
         "../envs/pytools.yaml"
     threads: 1
