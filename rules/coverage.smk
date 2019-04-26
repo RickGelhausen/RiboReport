@@ -7,7 +7,7 @@ rule coverageDepthFwd:
         "../envs/bedtools.yaml"
     threads: 1
     shell:
-        "mkdir -p coverage; bedtools genomecov -ibam {input} -bg -strand + > {output}"
+        "mkdir -p coverage; bedtools genomecov -ibam {input} -d -strand + > {output}"
 
 rule coverageDepthRev:
     input:
@@ -18,11 +18,12 @@ rule coverageDepthRev:
         "../envs/bedtools.yaml"
     threads: 1
     shell:
-        "mkdir -p coverage; bedtools genomecov -ibam {input} -bg -strand - > {output}"
+        "mkdir -p coverage; bedtools genomecov -ibam {input} -d -strand - > {output}"
 
 rule aSiteOccupancy:
     input:
-        "bam/{method}-{condition}-{replicate}.bam"
+        bam="maplink/{method}-{condition}-{replicate}.bam",
+        bai="maplink/{method}-{condition}-{replicate}.bam.bai"
     output:
         fwd="coverage/{method}-{condition}-{replicate}_asite_fwd.bedgraph",
         rev="coverage/{method}-{condition}-{replicate}_asite_rev.bedgraph"
@@ -30,4 +31,4 @@ rule aSiteOccupancy:
         "../envs/pytools.yaml"
     threads: 1
     shell:
-        "mkdir -p coverage; ribo_benchmark/scripts/generateASiteOccupancy.py --alignment_file {input} --output_prefix {method}-{condition}-{replicate}"
+        "mkdir -p coverage; ribo_benchmark/scripts/generateASiteOccupancy.py --alignment_file {input.bam} --output_file_prefix coverage/{wildcards.method}-{wildcards.condition}-{wildcards.replicate}"
