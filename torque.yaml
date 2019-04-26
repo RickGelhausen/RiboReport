@@ -1,0 +1,186 @@
+__default__:
+  jobname: "{rule}"
+  qname: "long"
+  resources : 'nodes=1:ppn=8'
+  logoutputdir : "$PWD/logs"
+  erroroutputdir : "$PWD/logs"
+
+# auxillary.smk
+processAnnotation:
+  resources : 'nodes=1:ppn=4'
+
+generateMetageneRoiStart:
+  resources : 'nodes=1:ppn=4'
+
+generateMetageneRoiStop:
+  resources : 'nodes=1:ppn=4'
+
+psiteOffsetsStart:
+  resources : 'nodes=1:ppn=4'
+
+psiteOffsetsStop:
+  resources : 'nodes=1:ppn=4'
+
+createExcelSummary:
+  resources : 'nodes=1:ppn=8'
+
+# mapping.smk
+genomeSegemehlIndex:
+  resources : 'nodes=20:ppn=40'
+
+map:
+  resources : 'nodes=20:ppn=40'
+
+samuniq:
+  resources : 'nodes=20:ppn=40'
+
+samtobam:
+  resources : 'nodes=20:ppn=40'
+
+maplink:
+  resources : 'nodes=1:ppn=1'
+
+# merge.smk + mergetis.smk
+mergeConditions:
+  resources : 'nodes=1:ppn=4'
+
+mergeAll:
+  resources : 'nodes=1:ppn=4'
+
+filterAll:
+  resources : 'nodes=1:ppn=4'
+
+newAnnonation:
+  resources : 'nodes=1:ppn=8'
+
+# preprocessing.smk
+retrieveGenome:
+  resources : 'nodes=1:ppn=1'
+
+retrieveAnnotation:
+  resources : 'nodes=1:ppn=1'
+
+# qc.smk
+fastqcmapped:
+  resources : 'nodes=8:ppn=24'
+
+fastqcraw:
+  resources : 'nodes=8:ppn=24'
+
+fastqctrimmed:
+  resources : 'nodes=8:ppn=24'
+
+fastqcrrnafilter:
+  resources : 'nodes=8:ppn=24'
+
+gff2gtf:
+  resources : 'nodes=1:ppn=4'
+
+featurecounts:
+  resources : 'nodes=8:ppn=24'
+
+coverage:
+  resources : 'nodes=1:ppn=8'
+
+multiqc:
+  resources : 'nodes=1:ppn=4'
+
+# reparation.smk
+uniprotDBRetrieve:
+  resources : 'nodes=1:ppn=4'
+
+reparation:
+  resources : 'nodes=20:ppn=30'
+
+reparationGFF:
+  resources : 'nodes=1:ppn=8'
+
+concatReparation:
+  resources : 'nodes=1:ppn=8'
+
+# report.smk
+xtailreport:
+  resources : 'nodes=1:ppn=4'
+
+ribotishreport:
+  resources : 'nodes=1:ppn=4'
+
+reparationreport:
+  resources : 'nodes=1:ppn=4'
+
+# ribotish.smk + ribotishall.smk + ribotishtis.smk
+ribomaplink:
+  resources : 'nodes=1:ppn=1'
+
+ribobamindexlink:
+  resources : 'nodes=1:ppn=1'
+
+tismaplink:
+  resources : 'nodes=1:ppn=1'
+
+tisbamindexlink:
+  resources : 'nodes=1:ppn=1'
+
+rnaribomaplink:
+  resources : 'nodes=1:ppn=1'
+
+rnaribobamindexlink:
+  resources : 'nodes=1:ppn=1'
+
+rnatismaplink:
+  resources : 'nodes=1:ppn=1'
+
+rnatisbamindexlink:
+  resources : 'nodes=1:ppn=1'
+
+ribotishQualityRIBO:
+  resources : 'nodes=10:ppn=20'
+
+ribotishQualityTIS:
+  resources : 'nodes=10:ppn=20'
+
+ribotish:
+  resources : 'nodes=10:ppn=20'
+
+# ribotishauxiliary.smk
+ribotishGFF:
+  resources : 'nodes=1:ppn=4'
+
+ribotishAnnotation:
+  resources : 'nodes=1:ppn=4'
+
+# rrnafiltering.smk
+rrnaretrieve:
+  resources : 'nodes=1:ppn=1'
+
+rrnaindex:
+  resources : 'nodes=1:ppn=30'
+
+rrnafilter:
+  resources : 'nodes=20:ppn=40'
+
+# trimming.smk
+trim:
+  resources : 'nodes=20:ppn=40'
+
+# visualization.smk
+genomeSamToolsIndex:
+  resources : 'nodes=1:ppn=8'
+
+genomeSize:
+  resources : 'nodes=1:ppn=8'
+
+bamindex:
+  resources : 'nodes=20:ppn=40'
+
+wigrev:
+  resources : 'nodes=5:ppn=15'
+
+wigfwd:
+  resources : 'nodes=5:ppn=15'
+
+bamcompare:
+  resources : 'nodes=5:ppn=15'
+
+plotCorrelation:
+  resources : 'nodes=1:ppn=8'
