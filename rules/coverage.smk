@@ -25,8 +25,10 @@ rule aSiteOccupancy:
         bam="maplink/{method}-{condition}-{replicate}.bam",
         bai="maplink/{method}-{condition}-{replicate}.bam.bai"
     output:
-        fwd="coverage/{method}-{condition}-{replicate}_asite_fwd.bedgraph",
-        rev="coverage/{method}-{condition}-{replicate}_asite_rev.bedgraph"
+        covfwd="coverage/{method}-{condition}-{replicate}_cov_fwd.bedgraph",
+        covrev="coverage/{method}-{condition}-{replicate}_cov_rev.bedgraph",
+        asitefwd="coverage/{method}-{condition}-{replicate}_asite_fwd.bedgraph",
+        asiterev="coverage/{method}-{condition}-{replicate}_asite_rev.bedgraph"
     conda:
         "../envs/pytools.yaml"
     threads: 1
