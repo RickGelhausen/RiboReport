@@ -2,7 +2,7 @@
 import pysam
 import re
 import sys
-
+import argparse
 
 class generateASiteOccupancy:
 
