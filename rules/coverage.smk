@@ -1,26 +1,4 @@
-rule coverageDepthFwd:
-    input:
-        "bam/{method}-{condition}-{replicate}.bam"
-    output:
-        "coverage/{method}-{condition}-{replicate}_cov_fwd.bedgraph"
-    conda:
-        "../envs/bedtools.yaml"
-    threads: 1
-    shell:
-        "mkdir -p coverage; bedtools genomecov -ibam {input} -d -strand + > {output}"
-
-rule coverageDepthRev:
-    input:
-        "bam/{method}-{condition}-{replicate}.bam"
-    output:
-        "coverage/{method}-{condition}-{replicate}_cov_rev.bedgraph"
-    conda:
-        "../envs/bedtools.yaml"
-    threads: 1
-    shell:
-        "mkdir -p coverage; bedtools genomecov -ibam {input} -d -strand - > {output}"
-
-rule aSiteOccupancy:
+rule coverage:
     input:
         bam="maplink/{method}-{condition}-{replicate}.bam",
         bai="maplink/{method}-{condition}-{replicate}.bam.bai"
