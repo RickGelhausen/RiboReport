@@ -83,8 +83,8 @@ def main():
                         , help="the prefix for the output file.")
     args = parser.parse_args()
 
-    sense_out = args.output_prefix + "_asite_fwd.bed"
-    antisense_out = args.output_prefix + "_asite_rev.bed"
+    sense_out = args.output_prefix + "_asite_fwd.bedgraph"
+    antisense_out = args.output_prefix + "_asite_rev.bedgraph"
 
     gBG = generateASiteOccupancy(args.alignment_file, antisense_out, sense_out)
 
