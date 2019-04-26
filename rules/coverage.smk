@@ -30,4 +30,4 @@ rule aSiteOccupancy:
         "../envs/pytools.yaml"
     threads: 1
     shell:
-        "mkdir -p coverage; ribo_benchmark/scripts/generateASiteOccupancy.py --alignment_file {input} --output_prefix {method}-{condition}-{replicate}"
+        "mkdir -p coverage; ribo_benchmark/scripts/generateASiteOccupancy.py --alignment_file {input} --output_prefix {wildcards.method}-{wildcards.condition}-{wildcards.replicate}"
