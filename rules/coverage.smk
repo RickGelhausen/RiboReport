@@ -11,4 +11,4 @@ rule coverage:
         "../envs/pytools.yaml"
     threads: 1
     shell:
-        "mkdir -p coverage; ribo_benchmark/scripts/generateASiteOccupancy.py --alignment_file {input.bam} --output_file_prefix coverage/{wildcards.method}-{wildcards.condition}-{wildcards.replicate}"
+        "mkdir -p coverage; ribo_benchmark/scripts/coverage.py --alignment_file {input.bam} --output_file_prefix coverage/{wildcards.method}-{wildcards.condition}-{wildcards.replicate}"

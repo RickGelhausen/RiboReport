@@ -7,12 +7,10 @@ rule parseDeepRibo:
         genome= rules.retrieveGenome.output,
         annotation= rules.retrieveAnnotation.output
     output:
-        "deepribo/{method}-{condition}-{replicate}/0/noclue"
+        "deepribo/{method}-{condition}-{replicate}/0/noclue.txt"
     conda:
         "../envs/deepribo.yaml"
     threads: 1
-    log:
-        "logs/deepribo_dataparser.log"
     shell:
         """
         mkdir -p deepribo/{wildcards.method}-{wildcards.condition}-{wildcards.replicate}/0/;
