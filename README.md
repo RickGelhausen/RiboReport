@@ -1,1 +1,1 @@
-# RIBOtect
+# ribo_benchmark
