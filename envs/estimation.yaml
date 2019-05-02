@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-sizer= 0.1_5
+  - r-optparse= 1.6.1 
+
