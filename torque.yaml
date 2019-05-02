@@ -5,57 +5,32 @@ __default__:
   logoutputdir : "$PWD/logs"
   erroroutputdir : "$PWD/logs"
 
-trainDeepRibo:
-  resources : 'nodes=20:ppn=2'
+# auxillary.smk
+processAnnotation:
+  resources : 'nodes=1:ppn=8'
+
+generateMetageneRoi:
+  resources : 'nodes=1:ppn=8'
+
+psiteOffsets:
+  resources : 'nodes=1:ppn=8'
+
+gff2gtf:
+  resources : 'nodes=1:ppn=8'
+
+# coverage.smk
+coverage:
+  resources : 'nodes=1:ppn=8'
+
+# deepribo.smk
+parseDeepRibo:
+  resource : 'nodes=20:ppn=2'
 
 predictDeepRibo:
   resource : 'nodes=20:ppn=2'
 
-retrieveGenome:
-  resources : 'nodes=1:ppn=1'
-  qname: "short"
-
-retrieveAnnotation:
-  resources : 'nodes=1:ppn=1'
-  qname: "short"
-
+# indexing
 genomeSamToolsIndex:
-  resources : 'nodes=1:ppn=1'
-
-rrnaretrieve:
-  resources : 'nodes=1:ppn=1'
-  qname: "short"
-
-rrnaindex:
-  resources : 'nodes=1:ppn=1'
-
-rrnafilter:
-  resources : 'nodes=1:ppn=20'
-
-trim:
-  resources : 'nodes=1:ppn=1'
-
-fastqc:
-  resources : 'nodes=1:ppn=6'
-  qname: "short"
-
-genomeIndex:
-  resources : 'nodes=1:ppn=20'
-
-map:
-  resources : 'nodes=1:ppn=20'
-
-maplink:
-  resources : 'nodes=1:ppn=1'
-  qname: "tiny"
-
-ribotish:
-  resources : 'nodes=1:ppn=10'
-
-longestTranscript:
-  resources : 'nodes=1:ppn=1'
-
-normalizedCounts:
   resources : 'nodes=1:ppn=1'
 
 genomeSize:
@@ -64,15 +39,67 @@ genomeSize:
 bamindex:
   resources : 'nodes=1:ppn=20'
 
-wig:
-  resources : 'nodes=1:ppn=5'
-
-annotationBed:
+# maplink.smk + tis
+maplink:
   resources : 'nodes=1:ppn=1'
+  qname: "short"
 
-annotationBigBed:
+ribomaplink:
   resources : 'nodes=1:ppn=1'
+  qname: "short"
 
+ribobamindexlink:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+rnamaplink:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+rnabamindexlink:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+
+tismaplink:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+tisbamindexlink:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+rnatismaplink:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+rnatisbamindexlink:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+# mapping.smk
+genomeSegemehlIndex:
+  resources : 'nodes=20:ppn=2'
+
+map:
+  resources : 'nodes=20:ppn=2'
+
+samuniq:
+  resources : 'nodes=20:ppn=2'
+
+samtobam:
+  resources : 'nodes=20:ppn=2'
+
+# preprocessing.smk
+retrieveGenome:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+retrieveAnnotation:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+# reparation
 reparation:
   resources : 'nodes=1:ppn=20'
 
@@ -80,26 +107,34 @@ uniprotDBRetrieve:
   resources : 'nodes=1:ppn=1'
   qname: "short"
 
-samtobam:
-  resources : 'nodes=1:ppn=20'
+# ribotish
+ribotish:
+  resources : 'nodes=10:ppn=1'
 
-reparationGFF:
+ribotishQualityTIS:
+  resources : 'nodes=10:ppn=1'
+
+ribotishQualityRIBO:
+  resources : 'nodes=10:ppn=1'
+
+ribotishAnnotation:
+  resources : 'nodes=1:ppn=8'
+
+# rrnafiltering.smk
+rrnaretrieve:
+  resources : 'nodes=1:ppn=1'
+  qname: "short"
+
+rrnaindex:
   resources : 'nodes=1:ppn=1'
 
-concatReparation:
-  resources : 'nodes=1:ppn=1'
+rrnafilter:
+  resources : 'nodes=20:ppn=1'
 
-noverlap:
+# trimming.smk
+linktrim:
   resources : 'nodes=1:ppn=1'
-
-mergeConditions:
-  resources : 'nodes=1:ppn=1'
-
-mergeAll:
-  resources : 'nodes=1:ppn=1'
-
-filterAll:
-  resources : 'nodes=1:ppn=1'
-
-newAnnotation:
-  resources : 'nodes=1:ppn=1'
+  qname: "short"
+  
+trim:
+  resources : 'nodes=20:ppn=2'
