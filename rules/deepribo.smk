@@ -17,12 +17,12 @@ rule parseDeepRibo:
         mkdir -p deepribo/{wildcards.condition}-{wildcards.replicate}/1/;
         python tools/DeepRibo/src/DataParser.py {input.covS} {input.covAS} {input.asiteS} {input.asiteAS} {input.genome} deepribo/{wildcards.condition}-{wildcards.replicate} -g {input.annotation}
         """
-
+        
 rule parameterEstimation:
     input:
-        "deepribo/{method}-{condition}-{replicate}/data_list.csv"
+        "deepribo/{condition}-{replicate}/data_list.csv"
     output:
-        "deepribo/{method}-{condition}-{replicate}/figure/dunno.txt"
+        "deepribo/{condition}-{replicate}/figure/dunno.txt"
     conda:
         "../envs/estimation.yaml"
     threads: 1

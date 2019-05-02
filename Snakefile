@@ -24,13 +24,14 @@ rule all:
     expand("maplink/{method}-{condition}-{replicate}.bam.bai", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     expand("offsets/{method}-{condition}-{replicate}_p_offsets.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     expand("reparation/{condition}-{replicate}/Predicted_ORFs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    #expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"]),
-    expand("coverage/{condition}-{replicate}_cov_fwd.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    expand("coverage/{condition}-{replicate}_cov_rev.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    expand("coverage/{condition}-{replicate}_asite_fwd.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    expand("coverage/{condition}-{replicate}_asite_rev.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    expand("deepribo/{condition}-{replicate}/data_list.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    expand("deepribo/{condition}-{replicate}_predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    # expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"]),
+    # expand("coverage/{condition}-{replicate}_cov_fwd.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    # expand("coverage/{condition}-{replicate}_cov_rev.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    # expand("coverage/{condition}-{replicate}_asite_fwd.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    # expand("coverage/{condition}-{replicate}_asite_rev.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    # expand("deepribo/{condition}-{replicate}/data_list.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    # expand("deepribo/{condition}-{replicate}_predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    "annotation/annotation.bed"
 
 onsuccess:
     print("Done, no error")
@@ -53,7 +54,7 @@ include: "rules/auxiliary.smk"
 #indexing
 include: "rules/indexing.smk"
 #ribotish
-include: "rules/ribotishauxiliary.smk"
+include: "rules/annotation.smk"
 if TISHMODE == "RIBOONLY":
    include: "rules/ribotish.smk"
 else:
@@ -62,4 +63,3 @@ else:
 include: "rules/reparation.smk"
 #deepribo
 include: "rules/deepribo.smk"
-
