@@ -1,14 +1,3 @@
-rule processAnnotation:
-    input:
-        annotation=rules.retrieveAnnotation.output
-    output:
-        "annotation/processed-annotation.gtf"
-    conda:
-        "../envs/pytools.yaml"
-    threads: 1
-    shell:
-        "mkdir -p annotation; python3 ribo_benchmark/scripts/processAnnotation.py -a {input.annotation} -o {output}"
-
 rule generateMetageneRoi:
     input:
         annotation="ribotish/annotation_processed.gtf"

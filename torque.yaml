@@ -29,6 +29,31 @@ parseDeepRibo:
 predictDeepRibo:
   resource : 'nodes=20:ppn=2'
 
+# riborater.smk
+pruneTranscripts:
+  resource : 'nodes=20:ppn=2'
+
+makeTfams:
+  resource : 'nodes=1:ppn=8'
+
+findOrfsAndTypes:
+  resource : 'nodes=20:ppn=2'
+
+psiteTrimmed:
+  resource : 'nodes=20:ppn=2'
+
+regressOrfs:
+  resource : 'nodes=20:ppn=2'
+
+rateRegressionOutput:
+  resource : 'nodes=20:ppn=2'
+
+makeOrfBed:
+  resource : 'nodes=1:ppn=8'
+
+quantifyOrfs:
+  resource : 'nodes=20:ppn=2'
+
 # indexing
 genomeSamToolsIndex:
   resources : 'nodes=1:ppn=1'
@@ -135,6 +160,6 @@ rrnafilter:
 linktrim:
   resources : 'nodes=1:ppn=1'
   qname: "short"
-  
+
 trim:
   resources : 'nodes=20:ppn=2'
