@@ -4,4 +4,4 @@ channels:
 dependencies:
   - r-sizer= 0.1_5
   - r-optparse= 1.6.1 
-
+  - r-base= 3.5.1

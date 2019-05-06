@@ -28,6 +28,7 @@ parseDeepRibo:
 
 predictDeepRibo:
   resource : 'nodes=20:ppn=2'
+  qname: "gpu"
 
 # riborater.smk
 pruneTranscripts:
