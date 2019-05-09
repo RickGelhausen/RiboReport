@@ -29,6 +29,7 @@ rule parameterEstimation:
     shell:
         "mkdir -p deepribo; Rscript ribo_benchmark/scripts/parameter_estimation.R -f {input}"
 
+
 rule predictDeepRibo:
     input:
         model= "tools/DeepRibo/models/article/model_coli.pt",
@@ -37,6 +38,9 @@ rule predictDeepRibo:
         "deepribo/{condition}-{replicate}_predictions.csv"
     conda:
         "../envs/deepribo.yaml"
-    threads: 20
+    threads: 10
     shell:
-        "mkdir -p deepribo; python tools/DeepRibo/src/DeepRibo.py predict deepribo/ --pred_data {wildcards.condition}-{wildcards.replicate}/ -r 0.2440181 -c 0.127214 --model {input.model} --dest {output} --GPU"
+        """
+        mkdir -p deepribo;
+        python tools/DeepRibo/src/DeepRibo.py predict deepribo/ --pred_data {wildcards.condition}-{wildcards.replicate}/ -r 0.2440181 -c 0.127214 --model {input.model} --dest {output} --num_workers {threads}
+        """

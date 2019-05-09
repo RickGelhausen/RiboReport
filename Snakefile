@@ -32,9 +32,11 @@ rule all:
     expand("deepribo/{condition}-{replicate}/data_list.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     expand("deepribo/{condition}-{replicate}_predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     ##expand("deepribo/{condition}-{replicate}/figure/dunno.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    "annotation/annotation.bed",
-    expand("ribocode/{condition}-{replicate}/ribocode_orfs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+    #"annotation/annotation.bed",
+    #expand("ribocode/{condition}-{replicate}/ribocode_orfs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     #"ribocode/annotation_ribo.gtf"
+    #expand("orfrater/{condition}-{replicate}/quant.h5", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+
 onsuccess:
     print("Done, no error")
 
@@ -67,3 +69,8 @@ include: "rules/reparation.smk"
 include: "rules/deepribo.smk"
 #ribocode
 include: "rules/ribocode.smk"
+#orfrater:
+include: "rules/orfrater.smk"
+#rnacode
+#include: "rules/rnacode.smk"
+

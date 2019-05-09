@@ -27,8 +27,8 @@ parseDeepRibo:
   resource : 'nodes=20:ppn=2'
 
 predictDeepRibo:
-  resource : 'nodes=20:ppn=2'
-  qname: "gpu"
+  resource : 'nodes=10:ppn=3'
+  qname: "long"
 
 # riborater.smk
 pruneTranscripts:
