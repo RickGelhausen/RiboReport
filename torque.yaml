@@ -1,166 +1,166 @@
 __default__:
   jobname: "{rule}"
   qname: "long"
-  resources : 'nodes=1:ppn=8'
+  resources : 'nodes=1:ppn=1,pmem=8'
   logoutputdir : "$PWD/logs"
   erroroutputdir : "$PWD/logs"
 
 # auxillary.smk
 processAnnotation:
-  resources : 'nodes=1:ppn=8'
+  resources : 'nodes=1:ppn=1,pmem=4'
 
 generateMetageneRoi:
-  resources : 'nodes=1:ppn=8'
+  resources : 'nodes=1:ppn=1,pmem=8'
 
 psiteOffsets:
-  resources : 'nodes=1:ppn=8'
+  resources : 'nodes=1:ppn=1,pmem=8'
 
 gff2gtf:
-  resources : 'nodes=1:ppn=8'
+  resources : 'nodes=1:ppn=1,pmem=4'
 
 # coverage.smk
 coverage:
-  resources : 'nodes=1:ppn=8'
+  resources : 'nodes=1:ppn=1,pmem=8'
 
 # deepribo.smk
 parseDeepRibo:
-  resource : 'nodes=20:ppn=2'
+  resource : 'nodes=1:ppn=20,pmem=2'
 
 predictDeepRibo:
-  resource : 'nodes=10:ppn=3'
+  resource : 'nodes=1:ppn=10,pmem=2'
   qname: "long"
 
 # riborater.smk
-pruneTranscripts:
-  resource : 'nodes=20:ppn=2'
-
-makeTfams:
-  resource : 'nodes=1:ppn=8'
-
-findOrfsAndTypes:
-  resource : 'nodes=20:ppn=2'
-
-psiteTrimmed:
-  resource : 'nodes=20:ppn=2'
-
-regressOrfs:
-  resource : 'nodes=20:ppn=2'
-
-rateRegressionOutput:
-  resource : 'nodes=20:ppn=2'
-
-makeOrfBed:
-  resource : 'nodes=1:ppn=8'
-
-quantifyOrfs:
-  resource : 'nodes=20:ppn=2'
+# pruneTranscripts:
+#   resource : 'nodes=1:ppn=20'
+#
+# makeTfams:
+#   resource : 'nodes=1:ppn=1'
+#
+# findOrfsAndTypes:
+#   resource : 'nodes=1:ppn=20'
+#
+# psiteTrimmed:
+#   resource : 'nodes=1:ppn=20'
+#
+# regressOrfs:
+#   resource : 'nodes=1:ppn=20'
+#
+# rateRegressionOutput:
+#   resource : 'nodes=1:ppn=20'
+#
+# makeOrfBed:
+#   resource : 'nodes=1:ppn=1'
+#
+# quantifyOrfs:
+#   resource : 'nodes=1:ppn=20'
 
 # indexing
 genomeSamToolsIndex:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=8'
 
 genomeSize:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=8'
 
 bamindex:
-  resources : 'nodes=1:ppn=20'
+  resources : 'nodes=1:ppn=20,pmem=2'
 
 # maplink.smk + tis
 maplink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 ribomaplink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 ribobamindexlink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 rnamaplink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 rnabamindexlink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 
 tismaplink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 tisbamindexlink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 rnatismaplink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 rnatisbamindexlink:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 # mapping.smk
 genomeSegemehlIndex:
-  resources : 'nodes=20:ppn=2'
+  resources : 'nodes=1:ppn=20,pmem=2'
 
 map:
-  resources : 'nodes=20:ppn=2'
+  resources : 'nodes=1:ppn=20,pmem=2'
 
 samuniq:
-  resources : 'nodes=20:ppn=2'
+  resources : 'nodes=1:ppn=20,pmem=2'
 
 samtobam:
-  resources : 'nodes=20:ppn=2'
+  resources : 'nodes=1:ppn=20,pmem=2'
 
 # preprocessing.smk
 retrieveGenome:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 retrieveAnnotation:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 # reparation
 reparation:
-  resources : 'nodes=1:ppn=20'
+  resources : 'nodes=1:ppn=20,pmem=2'
 
 uniprotDBRetrieve:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 # ribotish
 ribotish:
-  resources : 'nodes=10:ppn=1'
+  resources : 'nodes=1:ppn=10,pmem=2'
 
 ribotishQualityTIS:
-  resources : 'nodes=10:ppn=1'
+  resources : 'nodes=1:ppn=10,pmem=2'
 
 ribotishQualityRIBO:
-  resources : 'nodes=10:ppn=1'
+  resources : 'nodes=1:ppn=10,pmem=2'
 
 ribotishAnnotation:
-  resources : 'nodes=1:ppn=8'
+  resources : 'nodes=1:ppn=1,pmem=4'
 
 # rrnafiltering.smk
 rrnaretrieve:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 rrnaindex:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=20'
 
 rrnafilter:
-  resources : 'nodes=20:ppn=1'
+  resources : 'nodes=1:ppn=20,pmem=2'
 
 # trimming.smk
 linktrim:
-  resources : 'nodes=1:ppn=1'
+  resources : 'nodes=1:ppn=1,pmem=1'
   qname: "short"
 
 trim:
-  resources : 'nodes=20:ppn=2'
+  resources : 'nodes=1:ppn=20,pmem=2'
