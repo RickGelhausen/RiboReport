@@ -46,6 +46,7 @@ def create_dictionary(inputDF):
 
 def create_gtf(args):
     inputDF = pd.read_csv(args.inputGFF, sep='\t', header=None)
+    nTuple = collections.namedtuple('Pandas', ["seqName","source","type","start","stop","score","strand","phase","attribute"])
 
     # create a dictionary for common ids
     geneDict = create_dictionary(inputDF)
@@ -86,7 +87,7 @@ def main():
        open(args.outputGFF, 'a').close()
     else:
        newDF = create_gtf(args)
-       newDF.to_csv(args.outputGTF, sep="\t", header=True, index=False, quoting=csv.QUOTE_NONE)
+       newDF.to_csv(args.outputGTF, sep="\t", header=False, index=False, quoting=csv.QUOTE_NONE)
 
 if __name__ == '__main__':
     main()
