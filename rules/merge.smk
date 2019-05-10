@@ -7,7 +7,7 @@ rule reparationGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/reparationGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/reparationGFF.py -c {wildcards.condition}  -i {input} -o {output}"
 
 rule concatReparation:
     input:
@@ -18,7 +18,7 @@ rule concatReparation:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/concatGFF.py {input} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
 
 rule deepriboGFF:
     input:
@@ -29,7 +29,7 @@ rule deepriboGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/deepriboGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/deepriboGFF.py -c {wildcards.condition}  -i {input} -o {output}"
 
 rule concatDeepRibo:
     input:
@@ -40,7 +40,7 @@ rule concatDeepRibo:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/concatGFF.py {input} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
 
 rule ribotishGFF:
     input:
@@ -51,18 +51,20 @@ rule ribotishGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/ribotish.py {input} --condition {wildcards.condition} --output_gff3_filepath {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/ribotish.py {input} --condition {wildcards.condition} --output_gff3_filepath {output}"
+
 rule mergeConditions:
     input:
         ribotish="tracks/{condition}.ribotish.gff",
-        reparation="tracks/{condition}.reparation.gff"
+        reparation="tracks/{condition}.reparation.gff",
+        deepribo="tracks/{condition}.deepribo.gff"
     output:
         report("tracks/{condition, [a-zA-Z]+}.merged.gff", caption="../report/novelmerged.rst", category="Novel ORFs")
     conda:
         "../envs/bedtools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; cat {input.ribotish} > {output}.unsorted; cat {input.reparation} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
+        "mkdir -p tracks; cat {input.ribotish} > {output}.unsorted; cat {input.reparation} >> {output}.unsorted; cat {input.deepribo} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
 
 rule mergeAll:
     input:
@@ -73,15 +75,15 @@ rule mergeAll:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/concatGFF.py {input.mergedGff} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input.mergedGff} -o {output}"
 
 rule filterAll:
     input:
         "tracks/all.gff"
     output:
-        report("tracks/combined.gff", caption="../report/combined.rst", category="Novel ORFs")
+        report("tracks/combined.gtf", caption="../report/combined.rst", category="Novel ORFs")
     conda:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/noverlapper.py -i {input} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/noverlapper.py -i {input} -o {output}"
