@@ -20,6 +20,28 @@ rule concatReparation:
     shell:
         "mkdir -p tracks; SPtools/scripts/concatGFF.py {input} -o {output}"
 
+rule deepriboGFF:
+    input:
+        "deepribo/{condition}-{replicate}/predictions.csv"
+    output:
+        "deepribo/{condition, [a-zA-Z]+}-{replicate,\d+}.deepribo.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; SPtools/scripts/deepriboGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatDeepRibo:
+    input:
+        lambda wildcards: expand("deepribo/{{condition}}-{replicate}.deepribo.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.deepribo.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; SPtools/scripts/concatGFF.py {input} -o {output}"
+
 rule ribotishGFF:
     input:
         "ribotish/{condition}-newORFs.tsv_all.txt"

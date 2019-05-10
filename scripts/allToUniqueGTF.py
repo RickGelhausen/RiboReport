@@ -29,21 +29,22 @@ def create_dictionary(inputDF):
         strand = getattr(row, "_6")
 
         if getattr(row, "_1") == "ribotish":
-            score = attributes[attributes.index("Ribo_pvalue")+1]
+            score = float(attributes[attributes.index("Ribo_pvalue")+1])
         elif getattr(row, "_1") == "reparation":
-            score = attributes[attributes.index("Prob")+1]
+            score = 1 - float(attributes[attributes.index("Prob")+1])
         elif getattr(row, "_1") == "deepribo":
-            score = attributes[attributes.index("pvalue")+1]
+            score = float(attributes[attributes.index("pvalue")+1])
 
 
         idx = (getattr(row, "_0"), method, condition, start, stop, strand)
         if idx in geneDict:
-            geneDict[idx].append(score)
+            if geneDict[idx] > score:
+                geneDict[idx] = score
         else:
-            geneDict[geneID] = [score]
+            geneDict[geneID] = score
     return geneDict
 
-def create_bed(args):
+def create_gtf(args):
     inputDF = pd.read_csv(args.inputGFF, sep='\t', header=None)
 
     # create a dictionary for common ids
@@ -52,10 +53,25 @@ def create_bed(args):
     # run over all entries in the dictionary and combine overlapping ones
     rows = []
     for key in geneDict.keys():
-        scores = geneDict[key]
-        rows.append(nTuple(key[0], key[1], key[2], key[3], keys[4], keys[5], ",".join(scores)))
+        score = geneDict[key]
+        accession = key[0]
+        method = key[1]
+        condition = key[2]
+        start = key[3]
+        stop = key[4]
+        strand = key[5]
 
-    return pd.DataFrame.from_records(rows, columns=["id", "method", "condition", "start", "stop", "strand", "scores"])
+        # new content
+        seqName = "chr"
+        source = method
+        type = "CDS"
+        phase = "."
+        id = "%s:%s-%s:%s" % (accession, start, stop, strand)
+
+        attribute = "gene_id \"%s\"; method \"%s\"; condition \"%s\"" % (id, method, condition)
+        rows.append(nTuple(seqName, source, type, start, stop, score, strand, phase, attribute))
+
+    return pd.DataFrame.from_records(rows, columns=["seqName","source","type","start","stop","score","strand","phase","attribute"])
 
 def main():
     # store commandline args
@@ -63,14 +79,14 @@ def main():
                                                     the longest non-overlapping interval')
     parser.add_argument("-i", "--inputGFF", action="store", dest="inputGFF", required=True
                                           , help= "the input file (gff3 format).")
-    parser.add_argument("-o", "--outputBED", action="store", dest="outputBED", required=True
-                                           , help= "the output file name (bed format)")
+    parser.add_argument("-o", "--outputGTF", action="store", dest="outputGTF", required=True
+                                           , help= "the output file name (gtf format)")
     args = parser.parse_args()
     if os.stat(args.inputGFF).st_size == 0:
        open(args.outputGFF, 'a').close()
     else:
-       newDF = create_bed(args)
-       newDF.to_csv(args.outputBED, sep="\t", header=True, index=False, quoting=csv.QUOTE_NONE)
+       newDF = create_gtf(args)
+       newDF.to_csv(args.outputGTF, sep="\t", header=True, index=False, quoting=csv.QUOTE_NONE)
 
 if __name__ == '__main__':
     main()
