@@ -41,7 +41,7 @@ def create_dictionary(inputDF):
             if geneDict[idx] > score:
                 geneDict[idx] = score
         else:
-            geneDict[geneID] = score
+            geneDict[idx] = score
     return geneDict
 
 def create_gtf(args):
@@ -63,7 +63,7 @@ def create_gtf(args):
         strand = key[5]
 
         # new content
-        seqName = "chr"
+        seqName = "1"
         source = method
         type = "CDS"
         phase = "."

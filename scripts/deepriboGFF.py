@@ -50,13 +50,13 @@ def createNTuple(args, row):
     phase = "."
     attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
               + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
-              + ";pvalue=" + pred + ";Reference=" + Reference + ";Condition=" + args.condition + ";Method=deepribo"
+              + ";pvalue=" + pred + ";Condition=" + args.condition + ";Method=deepribo"
 
     return nTuple(seqName, source, type, start, stop, score, strand, phase, attribute)
 
 
 def to_gff3(args):
-    inputDF = pd.read_csv(args.predictedORFs, sep='\t')
+    inputDF = pd.read_csv(args.predictedORFs, sep=',')
 
     # extract information from each row and build new dataframe in gff format
     rows = []

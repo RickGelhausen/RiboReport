@@ -86,4 +86,4 @@ rule filterAll:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/noverlapper.py -i {input} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/allToUniqueGTF.py -i {input} -o {output}"

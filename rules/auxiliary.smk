@@ -1,6 +1,6 @@
 rule generateMetageneRoi:
     input:
-        annotation="ribotish/annotation_processed.gtf"
+        annotation="annotation/annotation_processed.gtf"
     output:
         "offsets/metagene_rois.txt"
     conda:

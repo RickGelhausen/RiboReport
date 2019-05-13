@@ -35,7 +35,7 @@ rule predictDeepRibo:
         model= "tools/DeepRibo/models/article/model_coli.pt",
         data= "deepribo/{condition}-{replicate}/data_list.csv"
     output:
-        "deepribo/{condition}-{replicate}_predictions.csv"
+        "deepribo/{condition}-{replicate}/predictions.csv"
     conda:
         "../envs/deepribo.yaml"
     threads: 10

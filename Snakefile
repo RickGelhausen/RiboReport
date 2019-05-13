@@ -69,3 +69,4 @@ include: "rules/ribocode.smk"
 include: "rules/orfrater.smk"
 #rnacode
 #include: "rules/rnacode.smk"
+include: "rules/merge.smk"

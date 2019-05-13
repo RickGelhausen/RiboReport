@@ -11,13 +11,11 @@ rule ribotishQualityRIBO:
         offsetdone="maplink/RIBO/{condition, [a-zA-Z]+}-{replicate,\d+}.qualdone"
     params:
         offsetparameters="maplink/RIBO/{condition, [a-zA-Z]+}-{replicate,\d+}.bam.para.py"
-    conda:
-        "../envs/ribotish.yaml"
     threads: 10
     log:
         "logs/{condition, [a-zA-Z]+}-{replicate,\d+}_ribotishquality.log"
     shell:
-        "source activate /scratch/bi03/egg/miniconda3/envs/ribotish; mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.fp} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
+        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/ribotish2; mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.fp} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
 
 rule ribotishQualityTIS:
     input:
@@ -36,7 +34,7 @@ rule ribotishQualityTIS:
     log:
         "logs/{condition, [a-zA-Z]+}-{replicate,\d+}_ribotishqualitytis.log"
     shell:
-        "source activate /scratch/bi03/egg/miniconda3/envs/ribotish; mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.tis} -b {input.tis} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
+        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/ribotish2; mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.tis} -b {input.tis} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
 
 rule ribotish:
     input:
@@ -56,10 +54,8 @@ rule ribotish:
         fplist= lambda wildcards, input: ','.join(list(set(input.fp))),
         tislist= lambda wildcards, input: ','.join(list(set(input.tis))),
         codons= lambda wildcards: ("" if not CODONS else (" --alt --altcodons " + CODONS)),
-    conda:
-        "../envs/ribotish.yaml"
     threads: 10
     log:
         "logs/{condition, [a-zA-Z]+}_ribotish.log"
     shell:
-        "source activate /scratch/bi03/egg/miniconda3/envs/ribotish; mkdir -p ribotish; ribotish predict --harr -v {params.codons} -p {threads} -t {params.tislist} -b {params.fplist} -g {input.annotation} -f {input.genome} -o {output.filtered} 2> {log}"
+        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/ribotish2; mkdir -p ribotish; ribotish predict --harr -v {params.codons} -p {threads} -t {params.tislist} -b {params.fplist} -g {input.annotation} -f {input.genome} -o {output.filtered} 2> {log}"
