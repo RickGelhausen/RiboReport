@@ -70,3 +70,4 @@ include: "rules/orfrater.smk"
 #rnacode
 #include: "rules/rnacode.smk"
 include: "rules/merge.smk"
+include: "rules/cpat.smk"
