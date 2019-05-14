@@ -41,33 +41,35 @@ def create_dictionary(inputDF):
             strand = getattr(row, "_6")
             chromosome = getattr(row, "_0")
 
-            biotypeDict[biotype] = (chromosome, start, stop, ID, "0", strand)
-
+            if biotype in biotypeDict:
+                biotypeDict[biotype].append((chromosome, start, stop, ID, "0", strand))
+            else:
+                biotypeDict[biotype] = []
     return biotypeDict
 
 
 def create_bed(args):
-    inputDF = pd.read_csv(args.inputGFF, sep='\t', header=None)
+    inputDF = pd.read_csv(args.inputGFF, sep='\t', header=None, comment="#")
     nTuple = collections.namedtuple('Pandas', ["chromosome","start","stop","name","score","strand"])
 
     # create a dictionary for common ids
     biotypeDict = create_dictionary(inputDF)
 
-    number_noncoding = len(biotypeDict["noncoding"])
+    number_noncoding = len(biotypeDict["noncoding"]) #+ 200
     # noncoding
     with open(args.outputBED+"_noncoding.bed", "w") as f:
-        for chr, start, stop, name, score, strand in biotypeDict["noncoding"]:
-            f.write("%s\t%s\t%s\t%s\t%s\t%s" % (chr, start, stop, name, score, strand))
+        for chrom, start, stop, name, score, strand in biotypeDict["noncoding"]:
+            f.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (chrom, start, stop, name, score, strand))
 
     # coding
     with open(args.outputBED+"_coding.bed", "w") as f:
-        for chr, start, stop, name, score, strand in biotypeDict["coding"][0:number_noncoding+1]:
-            f.write("%s\t%s\t%s\t%s\t%s\t%s" % (chr, start, stop, name, score, strand))
+        for chrom, start, stop, name, score, strand in biotypeDict["coding"][0:number_noncoding+1]:
+            f.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (chrom, start, stop, name, score, strand))
 
     # all
     with open(args.outputBED+"_all.bed", "w") as f:
-        for chr, start, stop, name, score, strand in biotypeDict["coding"] + biotypeDict["noncoding"]:
-            f.write("%s\t%s\t%s\t%s\t%s\t%s" % (chr, start, stop, name, score, strand))
+        for chrom, start, stop, name, score, strand in biotypeDict["coding"] + biotypeDict["noncoding"]:
+            f.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (chrom, start, stop, name, score, strand))
 
 def main():
     # store commandline args

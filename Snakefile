@@ -31,7 +31,8 @@ rule all:
     expand("coverage/{condition}-{replicate}_asite_rev.bedgraph", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     expand("deepribo/{condition}-{replicate}/data_list.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     expand("deepribo/{condition}-{replicate}/predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-    "tracks/combined.gtf"
+    "tracks/combined.gtf",
+    "cpat/cpat_predictions.tsv"
 
 onsuccess:
     print("Done, no error")

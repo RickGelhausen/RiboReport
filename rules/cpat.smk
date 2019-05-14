@@ -3,7 +3,7 @@ rule createCodingBed:
         "annotation/annotation.gtf"
     output:
         coding="cpat/annotation_coding.bed",
-        noncoding="cpat/annotation_noncoding.bed"
+        noncoding="cpat/annotation_noncoding.bed",
         all="cpat/annotation_all.bed"
     conda:
         "../envs/mergetools.yaml"
@@ -18,7 +18,7 @@ rule bedToFasta:
         noncoding="cpat/annotation_noncoding.bed"
     output:
         coding="cpat/annotation_coding.fa",
-        noncoding"cpat/annotation_noncoding.fa"
+        noncoding="cpat/annotation_noncoding.fa"
     conda:
         "../envs/bedtools.yaml"
     threads: 1
@@ -38,10 +38,10 @@ rule makeHexamerTab:
     threads: 1
     shell:
         """
-        conda activate cpat;
-        mkdir -p cpat;
+        source activate cpat; 
+        mkdir -p cpat; 
         make_hexamer_tab.py -c {input.coding} -n {input.noncoding} > {output};
-        conda deactivate cpat;
+        source deactivate
         """
 
 rule makeLogitModel:
@@ -50,16 +50,27 @@ rule makeLogitModel:
         coding="cpat/annotation_coding.fa",
         noncoding="cpat/annotation_noncoding.fa"
     output:
-        xls="cpat/model.feature.xls",
-        rdata="cpat/model.logit.RData",
-        model="cpat/model.make_logitModel.r"
+          xls="cpat/model.feature.xls",
+          model="cpat/model.make_logitModel.r"
     threads: 1
     shell:
         """
-        conda activate cpat;
+        source activate cpat;
         make_logitModel.py -x {input.hexamer} -c {input.coding} -n {input.noncoding} -o cpat/model;
-        conda deactivate cpat;
+        source deactivate
         """
+
+rule logit:
+    input:
+        xls="cpat/model.feature.xls",
+        model="cpat/model.make_logitModel.r"
+    output:
+        "cpat/model.logit.RData"
+    threads: 1
+    conda:
+        "../envs/rtools.yaml"
+    shell:
+        "mkdir -p cpat; Rscript {input.model}"
 
 rule cpat:
     input:
@@ -72,7 +83,7 @@ rule cpat:
     threads: 1
     shell:
         """
-        conda activate cpat;
+        source activate cpat;
         cpat.py -r {input.genome} -g {input.annotation} -x {input.hexamer} -d {input.logit} -o {output}
-        conda deactivate cpat;
+        source deactivate
         """
