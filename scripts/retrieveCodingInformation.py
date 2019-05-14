@@ -69,7 +69,7 @@ def create_bed(args):
     # all
     with open(args.outputBED+"_all.bed", "w") as f:
         for chrom, start, stop, name, score, strand in biotypeDict["coding"] + biotypeDict["noncoding"]:
-            f.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (chrom, start, stop, name, score, strand))
+            f.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (chrom, start, stop, name, score, strand, start, stop, "0,0,255", "1", stop-start+1, start))
 
 def main():
     # store commandline args
