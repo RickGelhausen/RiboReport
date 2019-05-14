@@ -21,13 +21,19 @@ def main():
          start_coordinate = row[0]
          end_coordinate = row[1]
          strand = row[2]
-         orf_id = row[3]
-         locus_tag= row[5]
-         gene_name= row[4]
-         transcribed= row[6]
-         translated= row[7]
-         attributes = "gene_id \"" + gene_name + "\";"
-         entry = seqid + "\t" + "annotation" + "\t" + "CDS" + "\t" + str(start_coordinate)  + "\t" + str(end_coordinate) + "\t" + "." + "\t" + strand + "\t" + "." + "\t" + attributes + "\n"
+         locus_tag = row[3]
+         gene_name = row[4]
+         expr = row[5]
+         #orf_id = row[3]
+         #locus_tag= row[5]
+         #gene_name= row[4]
+         #transcribed= row[6]
+         #translated= row[7]
+         attributes = "gene_id \"" + gene_name + "\"; locus_tag \"" + locus_tag + "\";" + " expr \"" + expr +"\";"
+         if expr == "+":
+             entry = seqid + "\t" + "annotation" + "\t" + "CDS" + "\t" + str(start_coordinate)  + "\t" + str(end_coordinate) + "\t" + "." + "\t" + strand + "\t" + "." + "\t" + attributes + "\n"
+         else:
+             entry=""
          output+=entry
     gtfout.write(output)
 
