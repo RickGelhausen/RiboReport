@@ -17,9 +17,7 @@ def create_bed(args):
         for row in inputDF.itertuples(index=False, name='Pandas'):
             if getattr(row, "_2").lower() == "transcript":
                 attributes = re.split('[; ]', getattr(row, "_8"))
-                name = ""
-                if "gene_id" in attributes:
-                    name = attributes[attributes.index("ID")+1].replace("\"", "")
+                name = "%s:%s-%s:%s" % (chromosome, start, stop, strand)
 
                 start = getattr(row, "_3")
                 stop = getattr(row, "_4")
