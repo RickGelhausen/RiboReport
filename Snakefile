@@ -34,6 +34,7 @@ rule all:
     "tracks/combined.gtf",
     #"cpat/cpat.tsv",
     expand("transcripts/{condition}-{replicate}/transcripts.gtf", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
+    expand("cpat/{condition}-{replicate}.tsv", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
 
 
 onsuccess:

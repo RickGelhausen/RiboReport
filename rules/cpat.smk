@@ -1,14 +1,15 @@
 rule generateTranscripts:
     input:
         bam="maplink/RNA-{condition}-{replicate}.bam",
-        bamindex="maplink/RNA-{condition}-{replicate}.bam.bai"
+        bamindex="maplink/RNA-{condition}-{replicate}.bam.bai",
+        annotation="annotation/annotation.gtf"
     output:
         "transcripts/{condition}-{replicate}/transcripts.gtf"
     conda:
         "../envs/cufflinks.yaml"
     threads: 20
     shell:
-        "mkdir -p transcripts; cufflinks {input.bam} -p {threads} -o ./transcripts/{wildcards.condition}-{wildcards.replicate}/"
+        "mkdir -p transcripts; cufflinks {input.bam} -p {threads} -o ./transcripts/{wildcards.condition}-{wildcards.replicate}/ -g {input.annotation} --library-type fr-firststrand"
 
 rule createCodingBed:
     input:
@@ -87,7 +88,7 @@ rule transcriptsBED:
     input:
         "transcripts/{condition}-{replicate}/transcripts.gtf"
     output:
-        "transcripts/{¢ondition}-{replicate}/transcripts.bed"
+        "transcripts/{condition}-{replicate}/transcripts.bed"
     threads: 1
     conda:
         "../envs/mergetools.yaml"
@@ -107,13 +108,13 @@ rule cpat:
     shell:
         """
         source activate cpat_fix;
-        cpat.py -r {input.genome} -g {input.annotation} -x {input.hexamer} -d {input.logit} -o cpat/{wildcards.condition}-{wildcards.replicate}
+        cpat.py -r {input.genome} -g {input.ref} -x {input.hexamer} -d {input.logit} -o cpat/{wildcards.condition}-{wildcards.replicate}
         """
 
 rule cpatScript:
     input:
         xls="cpat/{condition}-{replicate}.dat",
-        model="cpat/{condition-{replicate}.r"
+        model="cpat/{condition}-{replicate}.r"
     output:
         "cpat/{condition}-{replicate}.tsv"
     threads: 1

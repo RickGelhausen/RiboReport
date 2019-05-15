@@ -13,16 +13,16 @@ import collections
 
 def create_bed(args):
     inputDF = pd.read_csv(args.inputGTF, sep='\t', header=None)
-    with open(args.outputBED) as out:
+    with open(args.outputBED, "w") as out:
         for row in inputDF.itertuples(index=False, name='Pandas'):
             if getattr(row, "_2").lower() == "transcript":
                 attributes = re.split('[; ]', getattr(row, "_8"))
-                name = "%s:%s-%s:%s" % (chromosome, start, stop, strand)
 
                 start = getattr(row, "_3")
                 stop = getattr(row, "_4")
                 strand = getattr(row, "_6")
                 chromosome = getattr(row, "_0")
+                name = "%s:%s-%s:%s" % (chromosome, start, stop, strand)
 
                 out.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (chromosome, start, stop, name, "0", strand, start, stop, "0,0,255", "1", stop-start+1, start))
 
