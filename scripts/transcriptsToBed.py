@@ -40,8 +40,7 @@ def main():
     if os.stat(args.inputGTF).st_size == 0:
        open(args.outputBED, 'a').close()
     else:
-       newDF = create_gtf(args)
-       newDF.to_csv(args.outputBED, sep="\t", header=False, index=False, quoting=csv.QUOTE_NONE)
+       create_bed(args)
 
 if __name__ == '__main__':
     main()
