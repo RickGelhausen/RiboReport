@@ -5,6 +5,10 @@ __default__:
   logoutputdir : "$PWD/logs"
   erroroutputdir : "$PWD/logs"
 
+
+generateTranscripts:
+  resources : 'nodes=1:ppn=20,pmem=2'
+
 # auxillary.smk
 processAnnotation:
   resources : 'nodes=1:ppn=1,pmem=4'

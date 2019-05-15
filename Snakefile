@@ -32,7 +32,9 @@ rule all:
     expand("deepribo/{condition}-{replicate}/data_list.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     expand("deepribo/{condition}-{replicate}/predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     "tracks/combined.gtf",
-    "cpat/cpat_predictions.tsv"
+    "cpat/cpat.tsv",
+    expand("transcripts/{condition}-{replicate}_transcripts.gtf", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
+
 
 onsuccess:
     print("Done, no error")

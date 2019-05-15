@@ -1,3 +1,15 @@
+rule generateTranscripts:
+    input:
+        bam="maplink/RNA-{condition}-{replicate}.bam",
+        bamindex="maplink/RNA-{condition}-{replicate}.bam.bai"
+    output:
+        "transcripts/{condition}-{replicate}/transcripts.gtf"
+    conda:
+        "../envs/cufflinks.yaml"
+    threads: 20
+    shell:
+        "mkdir -p transcripts; cufflinks {input.bam} -p {threads} -o ./transcripts/{wildcards.condition}-{wildcards.replicate}/"
+
 rule createCodingBed:
     input:
         "annotation/annotation.gtf"
@@ -38,10 +50,9 @@ rule makeHexamerTab:
     threads: 1
     shell:
         """
-        source activate cpat; 
+        source activate cpat_fix; 
         mkdir -p cpat; 
         make_hexamer_tab.py -c {input.coding} -n {input.noncoding} > {output};
-        source deactivate
         """
 
 rule makeLogitModel:
@@ -55,9 +66,8 @@ rule makeLogitModel:
     threads: 1
     shell:
         """
-        source activate cpat;
+        source activate cpat_fix;
         make_logitModel.py -x {input.hexamer} -c {input.coding} -n {input.noncoding} -o cpat/model;
-        source deactivate
         """
 
 rule logit:
@@ -72,18 +82,43 @@ rule logit:
     shell:
         "mkdir -p cpat; Rscript {input.model}"
 
+
+rule transcriptsBED:
+    input:
+        "transcripts/{condition}-{replicate}/transcripts.gtf"
+    output:
+        "transcripts/{¢ondition}-{replicate}/transcripts.bed"
+    threads: 1
+    conda:
+        "../envs/mergetools.yaml"
+    shell:
+        "mkdir -p transcripts; ribo_benchmark/scripts/transcriptsToBed.py -i {input} -o {output}"
+
 rule cpat:
     input:
         genome="genomes/genome.fa",
-        annotation="cpat/annotation_all.bed",
+        ref="transcripts/{condition}-{replicate}/transcripts.bed",
         hexamer="cpat/hexamer.tsv",
         logit="cpat/model.logit.RData"
     output:
-        "cpat/cpat_predictions.tsv"
+        script="cpat/{condition}-{replicate}.r",
+        dat="cpat/{condition}-{replicate}.dat"
     threads: 1
     shell:
         """
-        source activate cpat;
-        cpat.py -r {input.genome} -g {input.annotation} -x {input.hexamer} -d {input.logit} -o {output}
-        source deactivate
+        source activate cpat_fix;
+        cpat.py -r {input.genome} -g {input.annotation} -x {input.hexamer} -d {input.logit} -o cpat/{wildcards.condition}-{wildcards.replicate}
         """
+
+rule cpatScript:
+    input:
+        xls="cpat/{condition}-{replicate}.dat",
+        model="cpat/{condition-{replicate}.r"
+    output:
+        "cpat/{condition}-{replicate}.tsv"
+    threads: 1
+    conda:
+        "../envs/rtools.yaml"
+    shell:
+        "mkdir -p cpat; Rscript {input.model}; mv cpat/{wildcards.condition}-{wildcards.replicate} cpat/{wildcards.condition}-{wildcards.replicate}.tsv"
+
