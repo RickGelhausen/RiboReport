@@ -34,7 +34,8 @@ def create_dictionary(inputDF):
             score = 1 - float(attributes[attributes.index("Prob")+1])
         elif getattr(row, "_1") == "deepribo":
             score = float(attributes[attributes.index("pvalue")+1])
-
+        elif getattr(row, "_1") == "irsom":
+            score = 1 - float(attributes[attributes.index("Prob")+1])
 
         idx = (getattr(row, "_0"), method, condition, start, stop, strand)
         if idx in geneDict:
