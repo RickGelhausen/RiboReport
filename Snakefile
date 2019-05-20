@@ -3,7 +3,7 @@ import re
 import pandas as pd
 import itertools as iter
 from snakemake.utils import validate, min_version
-min_version("5.4.2")
+min_version("5.4.5")
 
 ADAPTERS=config["adapter"]
 INDEXPATH=config["genomeindexpath"]
@@ -34,7 +34,7 @@ rule all:
     "tracks/combined.gtf",
     expand("transcripts/{condition}-{replicate}/transcripts.fa", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
     "intersect/tools_operon_intersect.gtf",
-    "intersect/ref_operon_intersect.gtf",    
+    "intersect/ref_operon_intersect.gtf",
     "intersect/tools_operon_complement.gtf",
     "intersect/ref_operon_complement.gtf",
     "intersect/tools_smallORFs_intersect.gtf",
@@ -78,12 +78,9 @@ else:
 include: "rules/reparation.smk"
 #deepribo
 include: "rules/deepribo.smk"
-#ribocode
-include: "rules/ribocode.smk"
 #orfrater:
 include: "rules/orfrater.smk"
 #rnacode
 #include: "rules/rnacode.smk"
 include: "rules/postprocessing.smk"
-include: "rules/cpat.smk"
 include: "rules/irsom.smk"
