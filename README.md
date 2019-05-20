@@ -83,7 +83,7 @@ This section will be updated as soon as the data GEO upload is finished.
     snakemake --latency-wait 600 --use-conda -s ribo_benchmark/Snakefile --configfile ribo_benchmark/config.yaml --directory ${PWD} -j 20 --cluster-config ribo_benchmark/torque.yaml --cluster "qsub -N {cluster.jobname} -S /bin/bash -q {cluster.qname} -d <file path>/benchmark -l {cluster.resources} -o {cluster.logoutputdir} -j oe"
     ~~~~
 
-    All <file path> statements have to be replaced by the path to your benchmark folder.
+    All **file path** statements have to be replaced by the path to your benchmark folder.
 
     **Please note** that these scripts might need some extra changes depending on your cluster system. If your cluster system does not run SGE or TORQUE, these files will most likely not work at all. In the case they run one SGE or TORQUE, there might be slightly different definitions for the resource statements (here `#PBS -l nodes=1:ppn=1`). This is then also the case for the configuration files `sge.yaml` and `torque.yaml`.
 
