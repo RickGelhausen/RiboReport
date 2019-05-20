@@ -97,36 +97,39 @@ All data can be visualised using the following scripts inside the evaluation fol
 - seaborn =0.9.0
 - pandas =0.24.2
 - simple_venn =0.1.0 
+- bedtools =v2.28.0
 
 ### statistics.py
 
 Parameters:
-- reference_data (-r) path to the gtf file soreing all genes of invertigated genome or the to be inverstigated subset of genes
+- reference_data (-r) path to the .gtf file soreing all genes of invertigated genome or the to be inverstigated subset of genes
 - tool_data (-t) path to gtf file containing all predichtions for the tools: deepribom, ribotish, reparation and irsom
 - save_path (-o) path to a directory, where the result tables should be stored
 - overlap_cutoff (-c) dieserd sequence overlap cutoff between gene and prediction
 
 Output:
-- df_stat.csv main reault talbel soring all computed statistical measurments
-- df_venn_FN_gene_dict.csv
-- df_venn_FP_predictions_dict.csv
-- df_venn_predictions.csv
-- df_venn_genes.csv
+- df_stat.csv -> main reault talbel soring all computed statistical measurments
+- df_venn_FN_gene_dict.csv -> table containing a column of each tool listing its fales FN counted genes
+- df_venn_FP_predictions_dict.csv -> table containing a column of each tool listing its FP counted prediction
+- df_venn_predictions.csv -> table containing a column of each tool listing its suboptimal predictions
+- df_venn_genes.csv -> table containing a column of each tool listing its TP counted genes
 
-This scipt generats for a reference and tool prediteion gtf file several statisitcal measuments. First true positives (TP), false positives (FP) and false negatives (FN) are predicted. One prediction will be assoiated with one gene and counted as one true positve. The assosiation selection is based on the lowest p-value (0.05). All genes fulfilling a overlap cutoff will be counted as suboptimals and not as false positvies. False positives are all predictions, where no gene fulfilling the overlap cutoff could be found and the false negatives vice verser. Based on this computations the recall, FNR, precision, FDR and F1 measure are calculated. 
+This scipt generats for a reference and tool prediteion .gtf file several statisitcal measuments. First true positives (TP), false positives (FP) and false negatives (FN) are predicted. One prediction will be assoiated with one gene and counted as one true positve. The assosiation selection is based on the lowest p-value (0.05). All genes fulfilling a overlap cutoff will be counted as suboptimals and not as false positvies. False positives are all predictions, where no gene fullfilling the overlap cutoff could be found and the false negatives vice verser. Based on this computations the recall, FNR, precision, FDR and F1 measure are calculated. 
 
 ### plot_barplots.py
 Parameters:
-- input1_df (-i1)
-- input2_df (-i2)
-- save_path (-o)
+- input1_df (-i1) df_stat.csv of the statistics.py script for the first overlap cutoff
+- input2_df (-i2) df_stat.csv of the statistics.py script for the second overlap cutoff
+- save_path (-o) path to dictectiory where the plots should be stored
 
 Output:
-- bar_FNR.pdf
-- bar_recall.pdf
-- bar_precision.pdf
-- bar_FDR.pdf
-- bar_F1.pdf
+- bar_FNR.pdf -> barplot of FNR measures for different tools and two cutoff conditions
+- bar_recall.pdf -> barplot of recall meameasures for different tools and two cutoff conditions
+- bar_precision.pdf -> barplot of precision meameasures for different tools and two cutoff conditions
+- bar_FDR.pdf -> barplot of FDR meameasures for different tools and two cutoff conditions
+- bar_F1.pdf -> barplot of F1 meameasures for different tools and two cutoff conditions
+
+This scitps generats barplots of statisical mesures for the differnt tools and two overlap cutoff conditions. The ouputed barplots are for the FNR, recall, precision, RDR and F1 measures. It is based on the statistics.py statistical output table
 
 ### venn_diagram.py
 Parameters:
