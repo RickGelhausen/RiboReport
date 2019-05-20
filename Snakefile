@@ -32,9 +32,20 @@ rule all:
     expand("deepribo/{condition}-{replicate}/data_list.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     expand("deepribo/{condition}-{replicate}/predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     "tracks/combined.gtf",
-    #"cpat/cpat.tsv",
-    expand("transcripts/{condition}-{replicate}/transcripts.gtf", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
-    expand("cpat/{condition}-{replicate}.tsv", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
+    expand("transcripts/{condition}-{replicate}/transcripts.fa", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
+    "intersect/tools_operon_intersect.gtf",
+    "intersect/ref_operon_intersect.gtf",    
+    "intersect/tools_operon_complement.gtf",
+    "intersect/ref_operon_complement.gtf",
+    "intersect/tools_smallORFs_intersect.gtf",
+    "intersect/ref_smallORFs_intersect.gtf",
+    "intersect/tools_ncRNAs_intersect.gtf",
+    "intersect/ref_ncRNAs_intersect.gtf",
+    "intersect/tools_pseudogenes_intersect.gtf",
+    "intersect/ref_pseudogenes_intersect.gtf",
+
+
+    #expand("irsom/{condition}-{replicate}/test.txt", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
 
 
 onsuccess:
@@ -73,5 +84,6 @@ include: "rules/ribocode.smk"
 include: "rules/orfrater.smk"
 #rnacode
 #include: "rules/rnacode.smk"
-include: "rules/merge.smk"
+include: "rules/postprocessing.smk"
 include: "rules/cpat.smk"
+include: "rules/irsom.smk"

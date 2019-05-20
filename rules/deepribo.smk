@@ -32,7 +32,7 @@ rule parameterEstimation:
 
 rule predictDeepRibo:
     input:
-        model= "tools/DeepRibo/models/article/model_coli.pt",
+        model= "tools/DeepRibo/models/DeepRibo_model_v1.pt",
         data= "deepribo/{condition}-{replicate}/data_list.csv"
     output:
         "deepribo/{condition}-{replicate}/predictions.csv"

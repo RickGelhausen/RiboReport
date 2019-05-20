@@ -17,8 +17,7 @@ def create_dictionary(inputDF):
     geneDict = dict()
     for row in inputDF.itertuples(index=False, name='Pandas'):
         attributes = re.split('[;=]', getattr(row, "_8"))
-        # if "ID" in attributes:
-        #      geneID = attributes[attributes.index("ID")+1]
+        
         if "Condition" in attributes and "Method" in attributes:
             condition = attributes[attributes.index("Condition")+1]
             method = attributes[attributes.index("Method")+1]
@@ -33,7 +32,7 @@ def create_dictionary(inputDF):
         elif getattr(row, "_1") == "reparation":
             score = 1 - float(attributes[attributes.index("Prob")+1])
         elif getattr(row, "_1") == "deepribo":
-            score = float(attributes[attributes.index("pvalue")+1])
+            score = 0.0001 # take all
         elif getattr(row, "_1") == "irsom":
             score = 1 - float(attributes[attributes.index("Prob")+1])
 
