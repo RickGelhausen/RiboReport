@@ -62,19 +62,32 @@ All data can be visualised using the following scripts inside the evaluation fol
 - matplotlib =3.0.3
 - seaborn =0.9.0
 - pandas =0.24.2
-- simple_venn
+- simple_venn =0.1.0 
 
 ### statistics.py
+Description:
+
 Parameters:
+- reference_data (-r)
+- tool_data (-t)
+- save_path (-o)
+- overlap_cutoff (-c)
 
 Output:
 
 ### plot_barplots.py
 Parameters:
+- input1_df (-i1)
+- input2_df (-i2)
+- save_path (-o)
 
 Output:
 
 ### venn_diagram.py
 Parameters:
+- input_df (-i)
+- save_path (-o)
+- name_folder (-n)
+- coverage_percent (-c)
 
 Output:
