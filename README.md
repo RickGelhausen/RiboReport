@@ -101,18 +101,19 @@ All data can be visualised using the following scripts inside the evaluation fol
 ### statistics.py
 
 Parameters:
-- reference_data (-r)
-- tool_data (-t)
-- save_path (-o)
-- overlap_cutoff (-c)
+- reference_data (-r) path to the gtf file soreing all genes of invertigated genome or the to be inverstigated subset of genes
+- tool_data (-t) path to gtf file containing all predichtions for the tools: deepribom, ribotish, reparation and irsom
+- save_path (-o) path to a directory, where the result tables should be stored
+- overlap_cutoff (-c) dieserd sequence overlap cutoff between gene and prediction
 
 Output:
+- df_stat.csv main reault talbel soring all computed statistical measurments
 - df_venn_FN_gene_dict.csv
-- df_stat.csv
 - df_venn_FP_predictions_dict.csv
 - df_venn_predictions.csv
 - df_venn_genes.csv
 
+This scipt generats for a reference and tool prediteion gtf file several statisitcal measuments. First true positives (TP), false positives (FP) and false negatives (FN) are predicted. One prediction will be assoiated with one gene and counted as one true positve. The assosiation selection is based on the lowest p-value (0.05). All genes fulfilling a overlap cutoff will be counted as suboptimals and not as false positvies. False positives are all predictions, where no gene fulfilling the overlap cutoff could be found and the false negatives vice verser. Based on this computations the recall, FNR, precision, FDR and F1 measure are calculated. 
 
 ### plot_barplots.py
 Parameters:
