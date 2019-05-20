@@ -65,7 +65,6 @@ All data can be visualised using the following scripts inside the evaluation fol
 - simple_venn =0.1.0 
 
 ### statistics.py
-Description:
 
 Parameters:
 - reference_data (-r)
@@ -74,6 +73,12 @@ Parameters:
 - overlap_cutoff (-c)
 
 Output:
+- df_venn_FN_gene_dict.csv
+- df_stat.csv
+- df_venn_FP_predictions_dict.csv
+- df_venn_predictions.csv
+- df_venn_genes.csv
+
 
 ### plot_barplots.py
 Parameters:
@@ -82,6 +87,11 @@ Parameters:
 - save_path (-o)
 
 Output:
+- bar_FNR.pdf
+- bar_recall.pdf
+- bar_precision.pdf
+- bar_FDR.pdf
+- bar_F1.pdf
 
 ### venn_diagram.py
 Parameters:
@@ -91,3 +101,5 @@ Parameters:
 - coverage_percent (-c)
 
 Output:
+- venn_diagram.pdf 
+
