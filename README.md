@@ -27,19 +27,19 @@ To run the provided snakemake workflow, follow the instructions below:
 
 #### 1. Setup the workflow folder and download the workflow:
 
-   ~~~~
-   mkdir benchmark; cd benchmark;
-   git clone git@github.com:RickGelhausen/ribo_benchmark.git
-   ~~~~
+~~~~
+mkdir benchmark; cd benchmark;
+git clone git@github.com:RickGelhausen/ribo_benchmark.git
+~~~~
 
 #### 2. Fetch the annotation and genome files:
 
-   ~~~~
-   cp ribo_benchmark/data/annotation.zip . ;
-   unzip annotation.zip;
-   cp ribo_benchmark/data/genome.zip . ;
-   unzip genome.zip;
-   ~~~~
+~~~~
+cp ribo_benchmark/data/annotation.zip . ;
+unzip annotation.zip;
+cp ribo_benchmark/data/genome.zip . ;
+unzip genome.zip;
+~~~~
 
 #### 3. Retrieve the sequencing data:
 ---
@@ -50,42 +50,42 @@ This section will be updated as soon as the data GEO upload is finished.
 
 #### 4. Run the snakemake workflow:
 
-    In order to run snakemake, the creation of a conda environment is required. First install [miniconda3](https://docs.conda.io/en/latest/miniconda.html).
+In order to run snakemake, the creation of a conda environment is required. First install [miniconda3](https://docs.conda.io/en/latest/miniconda.html).
 
-    Once miniconda3 is installed. Create a snakemake environment:
-    ~~~~
-    conda create -n snakemake -c conda-forge -c bioconda snakemake
-    ~~~~
+Once miniconda3 is installed. Create a snakemake environment:
+~~~~
+conda create -n snakemake -c conda-forge -c bioconda snakemake
+~~~~
 
-    Then you can copy and complete one of the provided submission scripts, or create your own.
-    ~~~~
-    cp ribo_benchmark/torque.sh .
-    ~~~~
-    or
-    ~~~~
-    cp ribo_benchmark/sge.sh .
-    ~~~~
+Then you can copy and complete one of the provided submission scripts, or create your own.
+~~~~
+cp ribo_benchmark/torque.sh .
+~~~~
+or
+~~~~
+cp ribo_benchmark/sge.sh .
+~~~~
 
-    Example for torque.sh:
+Example for torque.sh:
 
-    ~~~~
-    #!/bin/bash
-    #PBS -N benchmark
-    #PBS -S /bin/bash
-    #PBS -q "long"
-    #PBS -d <file path>/benchmark
-    #PBS -l nodes=1:ppn=1
-    #PBS -o <file path>/benchmark
-    #PBS -j oe
-    cd <file path>/benchmark
-    export PATH="<file path>/miniconda3/bin/:$PATH"
-    source activate snakemake
-    snakemake --latency-wait 600 --use-conda -s ribo_benchmark/Snakefile --configfile ribo_benchmark/config.yaml --directory ${PWD} -j 20 --cluster-config ribo_benchmark/torque.yaml --cluster "qsub -N {cluster.jobname} -S /bin/bash -q {cluster.qname} -d <file path>/benchmark -l {cluster.resources} -o {cluster.logoutputdir} -j oe"
-    ~~~~
+~~~~
+#!/bin/bash
+#PBS -N benchmark
+#PBS -S /bin/bash
+#PBS -q "long"
+#PBS -d <file path>/benchmark
+#PBS -l nodes=1:ppn=1
+#PBS -o <file path>/benchmark
+#PBS -j oe
+cd <file path>/benchmark
+export PATH="<file path>/miniconda3/bin/:$PATH"
+source activate snakemake
+snakemake --latency-wait 600 --use-conda -s ribo_benchmark/Snakefile --configfile ribo_benchmark/config.yaml --directory ${PWD} -j 20 --cluster-config ribo_benchmark/torque.yaml --cluster "qsub -N {cluster.jobname} -S /bin/bash -q {cluster.qname} -d <file path>/benchmark -l {cluster.resources} -o {cluster.logoutputdir} -j oe"
+~~~~
 
-    All **file path** statements have to be replaced by the path to your benchmark folder.
+All **file path** statements have to be replaced by the path to your benchmark folder.
 
-    **Please note** that these scripts might need some extra changes depending on your cluster system. If your cluster system does not run SGE or TORQUE, these files will most likely not work at all. In the case they run one SGE or TORQUE, there might be slightly different definitions for the resource statements (here `#PBS -l nodes=1:ppn=1`). This is then also the case for the configuration files `sge.yaml` and `torque.yaml`.
+**Please note** that these scripts might need some extra changes depending on your cluster system. If your cluster system does not run SGE or TORQUE, these files will most likely not work at all. In the case they run one SGE or TORQUE, there might be slightly different definitions for the resource statements (here `#PBS -l nodes=1:ppn=1`). This is then also the case for the configuration files `sge.yaml` and `torque.yaml`.
 
 
 ## Visualisation and plotting of the Results
