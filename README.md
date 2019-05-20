@@ -95,19 +95,44 @@ All data can be visualised using the following scripts inside the evaluation fol
 - matplotlib =3.0.3
 - seaborn =0.9.0
 - pandas =0.24.2
-- simple_venn
+- simple_venn =0.1.0 
 
 ### statistics.py
+
 Parameters:
+- reference_data (-r)
+- tool_data (-t)
+- save_path (-o)
+- overlap_cutoff (-c)
 
 Output:
+- df_venn_FN_gene_dict.csv
+- df_stat.csv
+- df_venn_FP_predictions_dict.csv
+- df_venn_predictions.csv
+- df_venn_genes.csv
+
 
 ### plot_barplots.py
 Parameters:
+- input1_df (-i1)
+- input2_df (-i2)
+- save_path (-o)
 
 Output:
+- bar_FNR.pdf
+- bar_recall.pdf
+- bar_precision.pdf
+- bar_FDR.pdf
+- bar_F1.pdf
 
 ### venn_diagram.py
 Parameters:
+- input_df (-i)
+- save_path (-o)
+- name_folder (-n)
+- coverage_percent (-c)
 
 Output:
+- venn_diagram.pdf 
+
