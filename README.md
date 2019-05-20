@@ -13,7 +13,7 @@ This repository contains all code to recreate the contents of "RiboReport19 - Be
 For running the workflow, several input files are required:
 - genome.fa (in the data folder)
 - annotation.gtf (in the data folder)
-- fastq files (Download link provided as soon as the GEO upload is finished)
+- fastq files and bigwig files available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514, token:ofkbusuqzbcvfip)
 
 ### Workflow
 ---
