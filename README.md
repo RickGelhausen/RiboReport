@@ -25,14 +25,14 @@ Even though snakemake workflows are executable locally, we do not advise this du
 
 To run the provided snakemake workflow, follow the instructions below:
 
-1. Setup the workflow folder and download the workflow:
+#### 1. Setup the workflow folder and download the workflow:
 
    ~~~~
    mkdir benchmark; cd benchmark;
    git clone git@github.com:RickGelhausen/ribo_benchmark.git
    ~~~~
 
-2. Fetch the annotation and genome files:
+#### 2. Fetch the annotation and genome files:
 
    ~~~~
    cp ribo_benchmark/data/annotation.zip . ;
@@ -41,14 +41,14 @@ To run the provided snakemake workflow, follow the instructions below:
    unzip genome.zip;
    ~~~~
 
-3. Retrieve the sequencing data:
+#### 3. Retrieve the sequencing data:
 ---
 **Note**
 This section will be updated as soon as the data GEO upload is finished.
 
 ---
 
-4. Run the snakemake workflow:
+#### 4. Run the snakemake workflow:
 
     In order to run snakemake, the creation of a conda environment is required. First install [miniconda3](https://docs.conda.io/en/latest/miniconda.html).
 
