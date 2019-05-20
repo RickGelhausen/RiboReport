@@ -18,9 +18,10 @@ For running the workflow, several input files are required:
 ### Workflow
 ---
 **Note**
-Even though snakemake workflows are executable locally, we do not advise this due to high memory usage and runtime of some of the processing steps.
-We ran the workflow on a TORQUE cluster system and provide according configuration files for TORQUE and SQE.
+Even though snakemake workflows are executable locally, we do not advise this due to high memory usage and runtime of some of the processing steps. We ran the workflow on a TORQUE cluster system and provide according configuration files for TORQUE and SQE.
+
 ---
+
 
 To run the provided snakemake workflow, follow the instructions below:
 
