@@ -17,7 +17,7 @@ def create_dictionary(inputDF):
     geneDict = dict()
     for row in inputDF.itertuples(index=False, name='Pandas'):
         attributes = re.split('[;=]', getattr(row, "_8"))
-        
+
         if "Condition" in attributes and "Method" in attributes:
             condition = attributes[attributes.index("Condition")+1]
             method = attributes[attributes.index("Method")+1]
@@ -63,7 +63,7 @@ def create_gtf(args):
         strand = key[5]
 
         # new content
-        seqName = "1"
+        seqName = accession
         source = method
         type = "CDS"
         phase = "."

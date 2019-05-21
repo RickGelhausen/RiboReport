@@ -34,31 +34,6 @@ predictDeepRibo:
   resource : 'nodes=1:ppn=10,pmem=2'
   qname: "long"
 
-# riborater.smk
-# pruneTranscripts:
-#   resource : 'nodes=1:ppn=20'
-#
-# makeTfams:
-#   resource : 'nodes=1:ppn=1'
-#
-# findOrfsAndTypes:
-#   resource : 'nodes=1:ppn=20'
-#
-# psiteTrimmed:
-#   resource : 'nodes=1:ppn=20'
-#
-# regressOrfs:
-#   resource : 'nodes=1:ppn=20'
-#
-# rateRegressionOutput:
-#   resource : 'nodes=1:ppn=20'
-#
-# makeOrfBed:
-#   resource : 'nodes=1:ppn=1'
-#
-# quantifyOrfs:
-#   resource : 'nodes=1:ppn=20'
-
 # indexing
 genomeSamToolsIndex:
   resources : 'nodes=1:ppn=1,pmem=8'

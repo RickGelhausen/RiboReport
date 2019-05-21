@@ -6,34 +6,91 @@ __default__:
   joinlogs : 'y'
   memory: "h_vmem=8G"
 
+generateTranscripts:
+  parallelenvironment : 'smp 10'
+  memory: "h_vmem=2G"
+
 # auxillary.smk
 processAnnotation:
   parallelenvironment : 'smp 1'
-  memory: "h_vmem=2G"
-
-generateMetageneRoiStart:
-  parallelenvironment : 'smp 1'
   memory: "h_vmem=4G"
 
-generateMetageneRoiStop:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-psiteOffsetsStart:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-psiteOffsetsStop:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-createExcelSummary:
+generateMetageneRoi:
   parallelenvironment : 'smp 1'
   memory: "h_vmem=8G"
 
-#totalMappedReads:
-#  parallelenvironment : 'smp 1'
-#  memory: "h_vmem=8G"
+psiteOffsets:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=8G"
+
+gff2gtf:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=4G"
+
+# coverage.smk
+coverage:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=8G"
+
+# deepribo.smk
+parseDeepRibo:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=2G"
+
+predictDeepRibo:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=2G"
+
+# indexing
+genomeSamToolsIndex:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=8G"
+
+genomeSize:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=8G"
+
+bamindex:
+  parallelenvironment : 'smp 20'
+  memory: "h_vmem=2G"
+
+# maplink.smk + tis
+maplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+ribomaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+ribobamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnamaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnabamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+
+tismaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+tisbamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnatismaplink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
+rnatisbamindexlink:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
 
 # mapping.smk
 genomeSegemehlIndex:
@@ -52,27 +109,6 @@ samtobam:
   parallelenvironment : 'smp 20'
   memory: "h_vmem=2G"
 
-maplink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-# merge.smk + mergetis.smk
-mergeConditions:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-mergeAll:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-filterAll:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-newAnnonation:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
 # preprocessing.smk
 retrieveGenome:
   parallelenvironment : 'smp 1'
@@ -82,103 +118,17 @@ retrieveAnnotation:
   parallelenvironment : 'smp 1'
   memory: "h_vmem=1G"
 
-# qc.smk
-fastqcmapped:
-  parallelenvironment: 'smp 8'
-  memory: "h_vmem=3G"
-
-fastqcraw:
-  parallelenvironment : 'smp 8'
-  memory: "h_vmem=3G"
-
-fastqctrimmed:
-  parallelenvironment : 'smp 8'
-  memory: "h_vmem=3G"
-
-fastqcrrnafilter:
-  parallelenvironment : 'smp 8'
-  memory: "h_vmem=3G"
-
-gff2gtf:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-featurecounts:
-  parallelenvironment : 'smp 8'
-  memory: "h_vmem=3G"
-
-coverage:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-multiqc:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
-
-# reparation.smk
-uniprotDBRetrieve:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=2G"
-
+# reparation
 reparation:
   parallelenvironment : 'smp 20'
-  memory: "h_vmem=1.5G"
-
-reparationGFF:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-concatReparation:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-# report.smk
-xtailreport:
-  parallelenvironment : 'smp 1'
   memory: "h_vmem=2G"
 
-ribotishreport:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=2G"
-
-reparationreport:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=2G"
-
-# ribotish.smk + ribotishall.smk + ribotishtis.smk
-ribomaplink:
+uniprotDBRetrieve:
   parallelenvironment : 'smp 1'
   memory: "h_vmem=1G"
 
-ribobamindexlink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-tismaplink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-tisbamindexlink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-rnaribomaplink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-rnaribobamindexlink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-rnatismaplink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-rnatisbamindexlink:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=1G"
-
-ribotishQualityRIBO:
+# ribotish
+ribotish:
   parallelenvironment : 'smp 10'
   memory: "h_vmem=2G"
 
@@ -186,14 +136,9 @@ ribotishQualityTIS:
   parallelenvironment : 'smp 10'
   memory: "h_vmem=2G"
 
-ribotish:
+ribotishQualityRIBO:
   parallelenvironment : 'smp 10'
   memory: "h_vmem=2G"
-
-# ribotishauxiliary.smk
-ribotishGFF:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=4G"
 
 ribotishAnnotation:
   parallelenvironment : 'smp 1'
@@ -206,107 +151,17 @@ rrnaretrieve:
 
 rrnaindex:
   parallelenvironment : 'smp 1'
-  memory: "h_vmem=30G"
+  memory: "h_vmem=20G"
 
 rrnafilter:
   parallelenvironment : 'smp 20'
-  memory: "h_vmem=3G"
+  memory: "h_vmem=2G"
 
 # trimming.smk
+linktrim:
+  parallelenvironment : 'smp 1'
+  memory: "h_vmem=1G"
+
 trim:
   parallelenvironment : 'smp 20'
   memory: "h_vmem=2G"
-
-# visualization.smk
-genomeSamToolsIndex:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-genomeSize:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-reversecomplementGenome:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-startCodonTrack:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-stopCodonTrack:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-rbsTrack:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-bamindex:
-  parallelenvironment : 'smp 20'
-  memory: "h_vmem=3G"
-
-wigrev:
-  parallelenvironment : 'smp 5'
-  memory: "h_vmem=3G"
-
-wigfwd:
-  parallelenvironment : 'smp 5'
-  memory: "h_vmem=3G"
-
-bamcompare:
-  parallelenvironment : 'smp 5'
-  memory: "h_vmem=3G"
-
-plotCorrelation:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-annotationBed:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=30G"
-
-annotationBigBed:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=30G"
-
-colorBigWig:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=2G"
-
-colorGFF:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=2G"
-
-# xtail.smk
-longestTranscript:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-sizeFactors:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-cdsNormalizedCounts:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-contrastInput:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-xtail:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-riborex:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-riborexresults:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
-
-xtailclassicnormalize:
-  parallelenvironment : 'smp 1'
-  memory: "h_vmem=8G"
