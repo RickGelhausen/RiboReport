@@ -128,7 +128,7 @@ def get_stat_for_tool(ref_file, tools_file, df_overlap_score, tool):
     # get all genes which are found by the tools prediction and the genes that are not found!
     gene_predicted_dict = get_genes(gene_dict, df_overlap_score, tool)
     #print(df_overlap_score)
-    print(gene_predicted_dict)
+    #print(gene_predicted_dict)
     #print('\n')
     #get all predicitons of the tools that have a overlap with a gene of the reference
     predition_overlap_dict = get_prediction(tool_dict, df_overlap_score, tool)
@@ -161,35 +161,35 @@ def get_stat_for_tool(ref_file, tools_file, df_overlap_score, tool):
     if TP+FN != 0:
         recall = TP / (TP + FN)
     else:
-        recall = 0 
-	     
-    if TP+FN != 0:        
+        recall = 0
+
+    if TP+FN != 0:
         FNR = FN / (TP + FN)
     else:
-        FNR = 0 
-	   
+        FNR = 0
+
     if TP+FP!= 0:
         precision = TP / (TP+FP)
     else:
         precision = 0
-	    
+
     if TP+FP != 0:
         FDR = FP / (TP+FP)
     else:
         FDR = 0
-	    
+
     if recall+precision != 0:
         F1 = (2* (recall*precision)) / (recall+precision)
     else:
         F1 = 0
-        
+
 
 
     #if not pred_predition_sub_list:
         #subset = 0
     #else:
     suboptimals = len(pred_predition_sub_list)
-    print("TOOL: %s, SUBOPTIMALS: %s" % (tool, suboptimals))
+    #print("TOOL: %s, SUBOPTIMALS: %s" % (tool, suboptimals))
     #print('TP '+ str(TP) +'\n')
     #print('FP '+ str(FP) +'\n')
     #print('FP with suboptimals '+ str(FP_with_suboptimals) +'\n')
@@ -231,8 +231,9 @@ def main():
         os.makedirs(args.tools_path)
     overlap_gtf = os.path.splitext(os.path.basename(args.reference_path))[0] +"_"+ os.path.splitext(os.path.basename(args.tools_path))[0] + "_overlap.gtf"
     cmd = 'bedtools intersect -a '+ ref_file +' -b ' + tools_file + ' -wo -s > ' + overlap_gtf
+    print(cmd)
     os.system(cmd)
-    
+
     #test if gtf file is emty:
     if os.stat(overlap_gtf).st_size == 0:
         sys.exit('no overlap was found for %s' %(overlap_gtf))
@@ -319,8 +320,8 @@ def main():
 
     stat_list_header = ['TP', 'FP', 'FN', 'recall', 'FNR', 'precision', 'FDR', 'F1', 'subopt', 'tool']
     df_stat = pd.DataFrame([stat_reparation_list, stat_ribotish_list, stat_deepribo_list, stat_irsom_list], columns=stat_list_header)
-    
-    
+
+
 
 
 
