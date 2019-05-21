@@ -15,7 +15,7 @@ rule ribotishQualityRIBO:
     log:
         "logs/{condition, [a-zA-Z]+}-{replicate,\d+}_ribotishquality.log"
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/ribotish2; mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.fp} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
+        "mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.fp} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
 
 rule ribotishQualityTIS:
     input:
@@ -34,7 +34,7 @@ rule ribotishQualityTIS:
     log:
         "logs/{condition, [a-zA-Z]+}-{replicate,\d+}_ribotishqualitytis.log"
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/ribotish2; mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.tis} -b {input.tis} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
+        "mkdir -p ribotish; ribotish quality -v -p {threads} -b {input.tis} -b {input.tis} -g {input.annotation} -o {params.reporttxt} -f {params.reportpdf} 2> {log} || true; if grep -q \"offdict = {{'m0': {{}}}}\" {params.offsetparameters}; then mv {params.offsetparameters} {params.offsetparameters}.unused; fi; touch {output.offsetdone}"
 
 rule ribotish:
     input:
@@ -58,4 +58,4 @@ rule ribotish:
     log:
         "logs/{condition, [a-zA-Z]+}_ribotish.log"
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/ribotish2; mkdir -p ribotish; ribotish predict --harr -v {params.codons} -p {threads} -t {params.tislist} -b {params.fplist} -g {input.annotation} -f {input.genome} -o {output.filtered} 2> {log}"
+        "mkdir -p ribotish; ribotish predict -v {params.codons} -p {threads} -t {params.tislist} -b {params.fplist} -g {input.annotation} -f {input.genome} -o {output.filtered} 2> {log}"
