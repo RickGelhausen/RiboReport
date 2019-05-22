@@ -53,6 +53,7 @@ Next, we install irsom. To make it compatible with our workflow, we first create
 conda create -n irsom -c bioconda -c conda-forge plotnine pandas numpy tensorflow matplotlib docopt
 conda activate irsom
 ~~~~
+(use source activate, if conda is not set-up for your bash)
 
 Then, we download and install irsom:
 
