@@ -12,6 +12,30 @@ rule trainIrsom:
         python tools/IRSOM/scripts/train.py --featurer=tools/IRSOM/bin/Featurer -c {input.coding} -n {input.noncoding} --output=irsom/model
         """
 
+rule generateTranscripts:
+    input:
+        bam="maplink/RNA-{condition}-{replicate}.bam",
+        bamindex="maplink/RNA-{condition}-{replicate}.bam.bai",
+        annotation="annotation/annotation.gtf"
+    output:
+        "transcripts/{condition}-{replicate}/transcripts.gtf"
+    conda:
+        "../envs/cufflinks.yaml"
+    threads: 20
+    shell:
+        "mkdir -p transcripts; cufflinks {input.bam} -p {threads} -o ./transcripts/{wildcards.condition}-{wildcards.replicate}/ -g {input.annotation} --library-type fr-firststrand"
+
+rule transcriptsBED:
+    input:
+        "transcripts/{condition}-{replicate}/transcripts.gtf"
+    output:
+        "transcripts/{condition}-{replicate}/transcripts.bed"
+    threads: 1
+    conda:
+        "../envs/mergetools.yaml"
+    shell:
+        "mkdir -p transcripts; ribo_benchmark/scripts/transcriptsToBed.py -i {input} -o {output}"
+
 rule bedtoolsGetfasta:
     input:
         genome="genomes/genome.fa",
