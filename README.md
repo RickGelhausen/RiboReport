@@ -213,10 +213,12 @@ This script generates barplots of statistical measures for the different tools a
 
 ### venn_diagram.py
 Parameters:
-- input_df (-i)
-- save_path (-o)
-- name_folder (-n)
-- coverage_percent (-c)
+- input_df (-i) .cvs containing the list of true positive genes for the used tools
+- save_path (-o) path where the Venn diagramm will be saved
+- name_folder (-n) name of the result folder of the investigated set. It will be used in the file name to make it unique.
+- coverage_percent (-c) percentage of overlap cutoff that was used to determine the true positves. It will be used in the file name to make it unique
 
 Output:
-- venn_diagram.pdf
+- venn_diagram.pdf -> a 4 Venn diagram highlighting overlapping predictions of the tool. 
+
+This script will generate a 4 Venn diagram for the overlap of true positive predicted genes of the 4 investigated tools. 
