@@ -23,7 +23,7 @@ For running the workflow, several input files are required:
 ### Workflow
 ---
 **Note**
-Even though `snakemake` workflows are executable locally, we do not advise this due to high memory usage and runtime of some of the processing steps. We ran the workflow on a TORQUE cluster system and provide according configuration files for TORQUE and SQE.
+Even though `snakemake` workflows are executable locally, we do not advise this due to high memory usage and runtime of some of the processing steps. We ran the workflow on a TORQUE cluster system and provide according configuration files for TORQUE and SGE.
 
 ---
 
@@ -36,7 +36,54 @@ mkdir benchmark; cd benchmark;
 git clone git@github.com:RickGelhausen/ribo_benchmark.git
 ~~~~
 
-#### 2. Fetch the annotation and genome files:
+#### 2. Required tools
+In order to run the workflow, the tools analysed in the publication have to be installed.
+Reparation and Ribotish are automatically downloaded from bioconda and do not need any prior installation.
+IRSOM and DeepRibo are not on conda and have to be installed manually.
+
+First of all, create a `tools` folder in the benchmark repository.
+
+~~~~
+mkdir tools; cd tools;
+~~~~
+
+Next, we install irsom. To make it compatible with our workflow, we first create a conda environment for the dependencies:
+
+~~~~
+conda create -n irsom -c bioconda -c conda-forge plotnine pandas numpy tensorflow matplotlib docopt
+conda activate irsom
+~~~~
+
+Then, we download and install irsom:
+
+~~~~
+git clone https://forge.ibisc.univ-evry.fr/lplaton/IRSOM.git
+pip install -r IRSOM/pip_package.txt
+~~~~
+
+This should only install irsom, as the other dependencies are already installed in the conda environment.
+
+~~~~
+conda activate irsom
+~~~~
+
+This leaves the installation of DeepRibo. For DeepRibo all dependencies will be downloaded automatically by the workflow.
+We just have to download DeepRibo itself.
+
+~~~~
+git clone git@github.com:Biobix/DeepRibo.git
+~~~~
+
+Unfortunately, DeepRibo did not work out-of-the-box for us. In order to get it working, we had to do two changes to their prediction script.
+To apply these changes, we provided a `deepribo-patch.sh` in the script folder. Just navigate to the script folder and execute the file.
+
+~~~~
+cd ../ribo_benchmark/scripts;
+bash deepribo-patch.sh;
+cd ../../
+~~~~
+
+#### 3. Fetch the annotation and genome files:
 
 ~~~~
 cp ribo_benchmark/data/annotation.zip . ;
@@ -45,20 +92,49 @@ cp ribo_benchmark/data/genome.zip . ;
 unzip genome.zip;
 ~~~~
 
-#### 3. Retrieve the sequencing data:
+#### 4. Retrieve the sequencing data:
 ---
 **Note**
-This section will be updated as soon as the data GEO upload is finished.
+This section will be updated as soon as the data SRA data is available.
 
 ---
 
-#### 4. Run the snakemake workflow:
+[comment]: <> (There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/).)
+
+[comment]: <> (The simplest way is most likely the usage of the [SRA Toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc&f=std), as it allows direct conversion into `.fastq` files.)
+
+[comment]: <> (Using the `SRA Toolkit` and the `SRR IDs` for our 3 samples we can use the `fasterq-dump` executable to download the according `.fastq` files.)
+
+[comment]: <> (If you do not have the `SRA Toolkit`, we suggest using the conda environment:)
+
+[comment]: <> (~~~~)
+[comment]: <> (conda create -n sra-tools -c bioconda -c conda-forge sra-tools)
+[comment]: <> (conda activate sra-tools)
+[comment]: <> (~~~~)
+[comment]: <> ((use source activate, if conda is not set-up for your bash))
+
+[comment]: <> (Then you can use the following commands to generate the required `.fastq` files.)
+
+[comment]: <> (~~~~)
+[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
+[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
+[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
+[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
+[comment]: <> (~~~~)
+
+[comment]: <> (Afterwards, you can deactivate your conda environment.)
+[comment]: <> (~~~~)
+[comment]: <> (conda deactivate sra-tools)
+[comment]: <> (~~~~)
+
+#### 5. Run the snakemake workflow:
 
 In order to run `snakemake`, the creation of a conda environment is required. First install [miniconda3](https://docs.conda.io/en/latest/miniconda.html).
 
 Once miniconda3 is installed. Create a snakemake environment:
 ~~~~
 conda create -n snakemake -c conda-forge -c bioconda snakemake
+conda activate snakemake
 ~~~~
 
 Then you can copy and complete one of the provided submission scripts, or create your own.
