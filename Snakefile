@@ -68,8 +68,6 @@ else:
 include: "rules/reparation.smk"
 #deepribo
 include: "rules/deepribo.smk"
-#orfrater:
-include: "rules/orfrater.smk"
 #rnacode
 #include: "rules/rnacode.smk"
 include: "rules/postprocessing.smk"
