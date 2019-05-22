@@ -99,33 +99,33 @@ This section will be updated as soon as the data SRA data is available.
 
 ---
 
-[comment]: <> (There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/).)
+<!---There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/). --->
 
-[comment]: <> (The simplest way is most likely the usage of the [SRA Toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc&f=std), as it allows direct conversion into `.fastq` files.)
+<!--- The simplest way is most likely the usage of the [SRA Toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc&f=std), as it allows direct conversion into `.fastq` files. --->
 
-[comment]: <> (Using the `SRA Toolkit` and the `SRR IDs` for our 3 samples we can use the `fasterq-dump` executable to download the according `.fastq` files.)
+<!--- Using the `SRA Toolkit` and the `SRR IDs` for our 3 samples we can use the `fasterq-dump` executable to download the according `.fastq` files. --->
 
-[comment]: <> (If you do not have the `SRA Toolkit`, we suggest using the conda environment:)
+<!--- If you do not have the `SRA Toolkit`, we suggest using the conda environment: --->
 
-[comment]: <> (~~~~)
-[comment]: <> (conda create -n sra-tools -c bioconda -c conda-forge sra-tools)
-[comment]: <> (conda activate sra-tools)
-[comment]: <> (~~~~)
-[comment]: <> ((use source activate, if conda is not set-up for your bash))
+<!--- ~~~~ --->
+<!--- conda create -n sra-tools -c bioconda -c conda-forge sra-tools --->
+<!--- conda activate sra-tools --->
+<!--- ~~~~ --->
+<!--- (use source activate, if conda is not set-up for your bash) --->
 
-[comment]: <> (Then you can use the following commands to generate the required `.fastq` files.)
+<!--- Then you can use the following commands to generate the required `.fastq` files. --->
 
-[comment]: <> (~~~~)
-[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
-[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
-[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
-[comment]: <> (fasterq-dump SRR; gzip SRR .fastq;)
-[comment]: <> (~~~~)
+<!--- ~~~~ --->
+<!--- fasterq-dump SRR; gzip SRR .fastq; --->
+<!--- fasterq-dump SRR; gzip SRR .fastq; --->
+<!--- fasterq-dump SRR; gzip SRR .fastq; --->
+<!--- fasterq-dump SRR; gzip SRR .fastq; --->
+<!--- ~~~~ --->
 
-[comment]: <> (Afterwards, you can deactivate your conda environment.)
-[comment]: <> (~~~~)
-[comment]: <> (conda deactivate sra-tools)
-[comment]: <> (~~~~)
+<!--- Afterwards, you can deactivate your conda environment. --->
+<!--- ~~~~ --->
+<!--- conda deactivate sra-tools --->
+<!--- ~~~~ --->
 
 #### 5. Run the snakemake workflow:
 
