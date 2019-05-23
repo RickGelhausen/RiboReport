@@ -50,7 +50,7 @@ mkdir tools; cd tools;
 Next, we install irsom. To make it compatible with our workflow, we first create a conda environment for the dependencies:
 
 ~~~~
-conda create -n irsom -c bioconda -c conda-forge plotnine pandas numpy tensorflow matplotlib docopt
+conda create -n irsom -c bioconda -c conda-forge plotnine pandas numpy tensorflow matplotlib docopt python=3.6.8
 conda activate irsom
 ~~~~
 (use source activate, if conda is not set-up for your bash)
