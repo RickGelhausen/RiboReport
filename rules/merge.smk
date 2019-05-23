@@ -42,6 +42,28 @@ rule concatDeepRibo:
     shell:
         "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
 
+rule irsomGFF:
+    input:
+        "irsom/{condition}-{replicate}/predictions.csv"
+    output:
+        "irsom/{condition, [a-zA-Z]+}-{replicate,\d+}.irsom.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; ribo_benchmark/scripts/irsomGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatIrsom:
+    input:
+        lambda wildcards: expand("irsom/{{condition}}-{replicate}.irsom.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.irsom.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
+
 rule ribotishGFF:
     input:
         "ribotish/{condition}-newORFs.tsv_all.txt"
@@ -57,7 +79,8 @@ rule mergeConditions:
     input:
         ribotish="tracks/{condition}.ribotish.gff",
         reparation="tracks/{condition}.reparation.gff",
-        deepribo="tracks/{condition}.deepribo.gff"
+        deepribo="tracks/{condition}.deepribo.gff",
+        irsom="tracks/{condition}.irsom.gff"
     output:
         report("tracks/{condition, [a-zA-Z]+}.merged.gff", caption="../report/novelmerged.rst", category="Novel ORFs")
     conda:

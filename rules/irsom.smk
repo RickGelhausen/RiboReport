@@ -52,7 +52,7 @@ rule predictIrsom:
     input:
         transcripts="transcripts/{condition}-{replicate}/transcripts.fa",
     output:
-        "irsom/{condition}-{replicate}/test.txt"
+        "irsom/{condition}-{replicate}/result.txt"
     threads: 1
     shell:
         """
