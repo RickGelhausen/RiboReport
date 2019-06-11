@@ -33,7 +33,7 @@ rule all:
     expand("deepribo/{condition}-{replicate}/predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
     "tracks/combined.gtf",
     "qc/multi/multiqc_report.html",
-
+    expand("transcripts/{condition}-{replicate}/transcripts.fa", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
 
     #expand("irsom/{condition}-{replicate}/test.txt", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
 
