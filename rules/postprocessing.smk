@@ -20,6 +20,17 @@ rule concatReparation:
     shell:
         "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
 
+rule irsomGFF:
+    input:
+        "irsom/{condition}-{replicate}/result.txt"
+    output:
+        "irsom/{condition, [a-zA-Z]+}-{replicate,\d+}.irsom.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; ribo_benchmark/scripts/irsomGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
 rule concatIrsom:
     input:
         lambda wildcards: expand("irsom/{{condition}}-{replicate}.irsom.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
