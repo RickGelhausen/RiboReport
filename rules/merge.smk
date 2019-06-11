@@ -87,7 +87,7 @@ rule mergeConditions:
         "../envs/bedtools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; cat {input.ribotish} > {output}.unsorted; cat {input.reparation} >> {output}.unsorted; cat {input.deepribo} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
+        "mkdir -p tracks; cat {input.ribotish} > {output}.unsorted; cat {input.reparation} >> {output}.unsorted; cat {input.deepribo} >> {output}.unsorted; cat {input.irsom} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
 
 rule mergeAll:
     input:
