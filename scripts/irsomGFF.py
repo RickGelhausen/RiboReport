@@ -49,7 +49,7 @@ def main():
     # store commandline args
     parser = argparse.ArgumentParser(description='Converts reperation output to new data frame\
                                      containing specified information and saves it in gff3 format.')
-    parser.add_argument("-i", "--inputCSV", action="store", dest="predictedORFs", required=True
+    parser.add_argument("-i", "--inputTXT", action="store", dest="predictedORFs", required=True
                                           , help= "the input file. (created by reparation)")
     parser.add_argument("-c", "--condition", action="store", dest="condition", required=True
                                           , help= "the condition of the current file")

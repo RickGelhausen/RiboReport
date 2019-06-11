@@ -44,7 +44,7 @@ rule concatDeepRibo:
 
 rule irsomGFF:
     input:
-        "irsom/{condition}-{replicate}/predictions.csv"
+        "irsom/{condition}-{replicate}/result.txt"
     output:
         "irsom/{condition, [a-zA-Z]+}-{replicate,\d+}.irsom.gff"
     conda:
