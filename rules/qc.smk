@@ -1,3 +1,17 @@
+rule fastqcunique:
+    input:
+        bam="maplink/{method}-{condition}-{replicate}.bam"
+    output:
+        html="qc/unique/{method}-{condition}-{replicate}-map_fastqc.html",
+        zip="qc/unique/{method}-{condition}-{replicate}-map_fastqc.zip",
+    conda:
+        "../envs/fastqc.yaml"
+    threads: 8
+    params:
+        prefix=lambda wildcards, input: (os.path.splitext(os.path.basename(input.bam))[0])
+    shell:
+        "mkdir -p qc/unique; fastqc -o qc/unique -t {threads} -f bam_mapped {input.bam}; mv qc/unique/{params.prefix}_fastqc.html {output.html}; mv qc/unique/{params.prefix}_fastqc.zip {output.zip}"
+
 rule fastqcmapped:
     input:
         sam="sam/{method}-{condition}-{replicate}.sam"
@@ -64,6 +78,7 @@ rule multiqc:
         expand("qc/trimmed/{method}-{condition}-{replicate}-trimmed_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         expand("qc/norRNA/{method}-{condition}-{replicate}-norRNA_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         expand("qc/map/{method}-{condition}-{replicate}-map_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
+        expand("qc/unique/{method}-{condition}-{replicate}-map_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     output:
         report("qc/multi/multiqc_report.html", caption="../report/multiqc.rst", category="Quality control")
     params:
