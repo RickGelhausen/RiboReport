@@ -1,7 +1,7 @@
-def read_parameters(filename):
+def read_parameters(filename, idx):
     with open(filename, "r") as f:
-        rpkm, cov = f.readline().split(",")
-    return rpkm, cov
+        parameters = f.readline().split(",")
+    return parameters[idx]
 
 
 
@@ -48,7 +48,8 @@ rule predictDeepRibo:
         "../envs/deepribo.yaml"
     threads: 10
     params:
-        rpkm, cov = read_parameters({input.parameters})
+        rpkm= read_parameters({input.parameters}, 0),
+        cov= read_parameters({input.parameters}, 1),
     shell:
         """
         mkdir -p deepribo;
