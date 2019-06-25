@@ -2,7 +2,7 @@ def read_parameters(filename, idx):
     try:
         line = ""
         with open(filename, "r") as f:
-            line = f.readline()[::-1].split(",")
+            line = f.readline()[:-1].split(",")
         return line[idx]
     except FileNotFoundError:
         return "failed"
