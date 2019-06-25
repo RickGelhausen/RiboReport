@@ -1,8 +1,11 @@
 def read_parameters(filename, idx):
-    with open(filename, "r") as f:
-        parameters = f.readline().split(",")
-    return parameters[idx]
-
+    try:
+        line = ""
+        with open(filename, "r") as f:
+            line = f.readline()[::-1].split(",")
+        return line[idx]
+    except FileNotFoundError:
+        return "failed"
 
 
 rule parseDeepRibo:
@@ -34,22 +37,22 @@ rule parameterEstimation:
         "../envs/estimation.yaml"
     threads: 1
     shell:
-        "mkdir -p deepribo; Rscript ribo_benchmark/scripts/parameter_estimation.R -f {input} > {output}"
+        "mkdir -p deepribo; Rscript ribo_benchmark/scripts/parameter_estimation.R -f {input} -o {output}"
 
 
 rule predictDeepRibo:
     input:
         model= "tools/DeepRibo/models/DeepRibo_model_v1.pt",
         data= "deepribo/{condition}-{replicate}/data_list.csv",
-        parameter="deepribo/{condition}-{replicate}/parameters.txt"
+        parameter= "deepribo/{condition}-{replicate}/parameters.txt"
     output:
         "deepribo/{condition}-{replicate}/predictions.csv"
     conda:
         "../envs/deepribo.yaml"
     threads: 10
     params:
-        rpkm= read_parameters({input.parameters}, 0),
-        cov= read_parameters({input.parameters}, 1),
+        rpkm= lambda wildcards, input: read_parameters(input[2], 0),
+        cov= lambda wildcards, input: read_parameters(input[2], 1)
     shell:
         """
         mkdir -p deepribo;
