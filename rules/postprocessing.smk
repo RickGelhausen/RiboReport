@@ -7,7 +7,7 @@ rule reparationGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/reparationGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/reparationGFF.py -c {wildcards.condition}  -r {wildcards.replicate} -i {input} -o {output}"
 
 rule concatReparation:
     input:
