@@ -1,6 +1,6 @@
 rule fastqcmulti:
     input:
-        bam="sammulti/{method}-{condition}-{replicate}.b"
+        bam="sammulti/{method}-{condition}-{replicate}.sam"
     output:
         html="qc/sammulti/{method}-{condition}-{replicate}-map_fastqc.html",
         zip="qc/sammulti/{method}-{condition}-{replicate}-map_fastqc.zip",
@@ -10,7 +10,7 @@ rule fastqcmulti:
     params:
         prefix=lambda wildcards, input: (os.path.splitext(os.path.basename(input.bam))[0])
     shell:
-        "mkdir -p qc/sammulti; fastqc -o qc/sammulti -t {threads} -f bam_mapped {input.bam}; mv qc/sammulti/{params.prefix}_fastqc.html {output.html}; mv qc/sammulti/{params.prefix}_fastqc.zip {output.zip}"
+        "mkdir -p qc/sammulti; fastqc -o qc/sammulti -t {threads} -f sam_mapped {input.bam}; mv qc/sammulti/{params.prefix}_fastqc.html {output.html}; mv qc/sammulti/{params.prefix}_fastqc.zip {output.zip}"
 
 rule fastqcmapped:
     input:
