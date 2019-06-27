@@ -1,16 +1,16 @@
-rule fastqcunique:
+rule fastqcmulti:
     input:
-        bam="maplink/{method}-{condition}-{replicate}.bam"
+        bam="sammulti/{method}-{condition}-{replicate}.b"
     output:
-        html="qc/unique/{method}-{condition}-{replicate}-map_fastqc.html",
-        zip="qc/unique/{method}-{condition}-{replicate}-map_fastqc.zip",
+        html="qc/sammulti/{method}-{condition}-{replicate}-map_fastqc.html",
+        zip="qc/sammulti/{method}-{condition}-{replicate}-map_fastqc.zip",
     conda:
         "../envs/fastqc.yaml"
     threads: 8
     params:
         prefix=lambda wildcards, input: (os.path.splitext(os.path.basename(input.bam))[0])
     shell:
-        "mkdir -p qc/unique; fastqc -o qc/unique -t {threads} -f bam_mapped {input.bam}; mv qc/unique/{params.prefix}_fastqc.html {output.html}; mv qc/unique/{params.prefix}_fastqc.zip {output.zip}"
+        "mkdir -p qc/sammulti; fastqc -o qc/sammulti -t {threads} -f bam_mapped {input.bam}; mv qc/sammulti/{params.prefix}_fastqc.html {output.html}; mv qc/sammulti/{params.prefix}_fastqc.zip {output.zip}"
 
 rule fastqcmapped:
     input:
@@ -72,13 +72,25 @@ rule fastqcrrnafilter:
     shell:
         "mkdir -p qc/norRNA; fastqc -o qc/norRNA -t {threads} {input}; mv qc/norRNA/{params.prefix}_fastqc.html {output.html}; mv qc/norRNA/{params.prefix}_fastqc.zip {output.zip}"
 
+rule featurescounts:
+    input:
+        annotation={rules.gff2gtf.output.gtf},
+        bam="bam/{method}-{condition}-{replicate}.bam"
+    output:
+        txt="qc/featurecount/{method}-{condition}-{replicate}.txt",
+    conda:
+        "../envs/subread.yaml"
+    threads: 8
+    shell:
+        "mkdir -p qc/featurecount; featureCounts -T {threads} -t exon -g transcript_id -a {input.annotation} -o {output.txt} {input.bam}"
+
 rule multiqc:
     input:
         expand("qc/raw/{method}-{condition}-{replicate}-raw_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         expand("qc/trimmed/{method}-{condition}-{replicate}-trimmed_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         expand("qc/norRNA/{method}-{condition}-{replicate}-norRNA_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         expand("qc/map/{method}-{condition}-{replicate}-map_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
-        expand("qc/unique/{method}-{condition}-{replicate}-map_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
+        expand("qc/sammulti/{method}-{condition}-{replicate}-map_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     output:
         report("qc/multi/multiqc_report.html", caption="../report/multiqc.rst", category="Quality control")
     params:
@@ -88,4 +100,4 @@ rule multiqc:
     conda:
         "../envs/multiqc.yaml"
     shell:
-        "export LC_ALL=en_US.utf8; export LANG=en_US.utf8; multiqc -f -d --exclude picard --exclude gatk -z -o {params.dir} qc/raw qc/trimmed qc/norRNA qc/map qc/unique trimmed  2> {log}"
+        "export LC_ALL=en_US.utf8; export LANG=en_US.utf8; multiqc -f -d --exclude picard --exclude gatk -z -o {params.dir} qc/raw qc/trimmed qc/norRNA qc/map qc/sammulti trimmed qc/featurecount  2> {log}"
