@@ -84,6 +84,17 @@ rule featurescounts:
     shell:
         "mkdir -p qc/featurecount; featureCounts -T {threads} -t exon -g transcript_id -a {input.annotation} -o {output.txt} {input.bam}"
 
+rule coveragedepth:
+    input:
+        "bam/{method}-{condition}-{replicate}.bam"
+    output:
+        "coverage/{method}-{condition}-{replicate}.bed"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p coverage; bedtools genomecov -ibam {input} -bg > {output}"
+
 rule multiqc:
     input:
         expand("qc/raw/{method}-{condition}-{replicate}-raw_fastqc.html", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
