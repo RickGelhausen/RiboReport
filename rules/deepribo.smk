@@ -10,10 +10,10 @@ def read_parameters(filename, idx):
 
 rule parseDeepRibo:
     input:
-        covS= "coverage/{condition}-{replicate}_cov_fwd.bedgraph",
-        covAS= "coverage/{condition}-{replicate}_cov_rev.bedgraph",
-        asiteS= "coverage/{condition}-{replicate}_asite_fwd.bedgraph",
-        asiteAS= "coverage/{condition}-{replicate}_asite_rev.bedgraph",
+        covS= "coverage_deepribo/{condition}-{replicate}_cov_fwd.bedgraph",
+        covAS= "coverage_deepribo/{condition}-{replicate}_cov_rev.bedgraph",
+        asiteS= "coverage_deepribo/{condition}-{replicate}_asite_fwd.bedgraph",
+        asiteAS= "coverage_deepribo/{condition}-{replicate}_asite_rev.bedgraph",
         genome= rules.retrieveGenome.output,
         annotation= rules.retrieveAnnotation.output
     output:
