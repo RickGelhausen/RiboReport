@@ -1,28 +1,5 @@
 from pathlib import Path
 
-rule genomeSamToolsIndex:
-    input:
-        rules.retrieveGenome.output
-    output:
-        "genomes/genome.fa.fai"
-    conda:
-        "../envs/samtools.yaml"
-    threads: 1
-    shell:
-        "samtools faidx {rules.retrieveGenome.output}"
-
-rule genomeSize:
-    input:
-        rules.genomeSamToolsIndex.output
-    output:
-        "genomes/sizes.genome"
-    conda:
-        "../envs/samtools.yaml"
-    threads: 1
-    log: "logs/genomeSamToolsIndex.log"
-    shell:
-        "mkdir -p genomes; cut -f1,2 {input[0]} > genomes/sizes.genome"
-
 rule reversecomplementGenome:
     input:
         rules.retrieveGenome.output
