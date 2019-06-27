@@ -60,21 +60,6 @@ rule rbsTrack:
     shell:
         "mkdir -p tracks; SPtools/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string AAGG --output_gff3_filepath {output}"
 
-
-rule bamindex:
-    input:
-        rules.maplink.output,
-        rules.genomeSize.output
-    output:
-        "maplink/{method}-{condition}-{replicate}.bam.bai"
-    conda:
-        "../envs/samtools.yaml"
-    threads: 20
-    params:
-        prefix=lambda wildcards, output: (os.path.splitext(os.path.basename(output[0]))[0])
-    shell:
-        "samtools index -@ {threads} maplink/{params.prefix}"
-
 rule readcountstats:
     input:
         bam=rules.maplink.output,
