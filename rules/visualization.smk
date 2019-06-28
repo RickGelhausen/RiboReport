@@ -9,7 +9,7 @@ rule reversecomplementGenome:
         "../envs/biopython.yaml"
     threads: 1
     shell:
-        "mkdir -p genomes; SPtools/scripts/reverseComplement.py --input_fasta_filepath genomes/genome.fa --output_fasta_filepath genomes/genome.rev.fa"
+        "mkdir -p genomes; ribo_benchmark/scripts/reverseComplement.py --input_fasta_filepath genomes/genome.fa --output_fasta_filepath genomes/genome.rev.fa"
 
 rule startCodonTrack:
     input:
@@ -21,7 +21,7 @@ rule startCodonTrack:
         "../envs/biopython.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string ATG --output_gff3_filepath {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string ATG --output_gff3_filepath {output}"
 
 rule alternativeStartCodonTrack:
     input:
@@ -33,7 +33,7 @@ rule alternativeStartCodonTrack:
         "../envs/biopython.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string GTG,TTG,CTG --output_gff3_filepath {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string GTG,TTG,CTG --output_gff3_filepath {output}"
 
 
 rule stopCodonTrack:
@@ -46,7 +46,7 @@ rule stopCodonTrack:
         "../envs/biopython.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string TAG,TGA,TAA --output_gff3_filepath {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string TAG,TGA,TAA --output_gff3_filepath {output}"
 
 rule rbsTrack:
     input:
@@ -58,7 +58,7 @@ rule rbsTrack:
         "../envs/biopython.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; SPtools/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string AAGG --output_gff3_filepath {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string AAGG --output_gff3_filepath {output}"
 
 
 rule readcountstats:
