@@ -46,5 +46,6 @@ def main():
     gff3=str(plusgff3+minusgff3)
     f = open(args.output_gff3_filepath, 'wt', encoding='utf-8')
     f.write(gff3)
+    
 if __name__ == '__main__':
-main()
+    main()
