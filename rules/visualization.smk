@@ -70,7 +70,7 @@ rule readcountstats:
         stat="maplink/{method}-{condition}-{replicate}.readstats"
     threads: 1
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p tracks; readstats.py --bam_path {input.bam} > {output.stat}; conda deactivate;"
+        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p tracks; readstats.py --bam_path {input.bam} > {output.stat}; "
 
 rule minreadcounts:
     input:
@@ -81,7 +81,7 @@ rule minreadcounts:
     params:
         prefix=lambda wildcards, output: (os.path.splitext(output[0])[0])
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p tracks; minreads.py {input.stats} > {output.minreads}; conda deactivate;"
+        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p tracks; minreads.py {input.stats} > {output.minreads}; "
 
 rule globalwig:
     input:
@@ -102,7 +102,7 @@ rule globalwig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p globaltracks; mkdir -p globaltracks/raw; mkdir -p globaltracks/mil; mkdir -p globaltracks/min; coverage.py --coverage_style global --bam_path {input.bam} --wiggle_file_path globaltracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; conda deactivate;"
+        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p globaltracks; mkdir -p globaltracks/raw; mkdir -p globaltracks/mil; mkdir -p globaltracks/min; coverage.py --coverage_style global --bam_path {input.bam} --wiggle_file_path globaltracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
 
 rule globalwigtobigwigrawforward:
     input:
@@ -195,7 +195,7 @@ rule centeredwig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p centeredtracks; mkdir -p centeredtracks/raw; mkdir -p centeredtracks/mil; mkdir -p centeredtracks/min; coverage.py --coverage_style centered --bam_path {input.bam} --wiggle_file_path centeredtracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; conda deactivate;"
+        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p centeredtracks; mkdir -p centeredtracks/raw; mkdir -p centeredtracks/mil; mkdir -p centeredtracks/min; coverage.py --coverage_style centered --bam_path {input.bam} --wiggle_file_path centeredtracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
 
 rule centeredwigtobigwigrawforward:
     input:
@@ -288,7 +288,7 @@ rule fiveprimewig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p fiveprimetracks; mkdir -p fiveprimetracks/raw; mkdir -p fiveprimetracks/mil; mkdir -p fiveprimetracks/min; coverage.py --coverage_style first_base_only --bam_path {input.bam} --wiggle_file_path fiveprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; conda deactivate;"
+        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p fiveprimetracks; mkdir -p fiveprimetracks/raw; mkdir -p fiveprimetracks/mil; mkdir -p fiveprimetracks/min; coverage.py --coverage_style first_base_only --bam_path {input.bam} --wiggle_file_path fiveprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
 
 rule fiveprimewigtobigwigrawforward:
     input:
@@ -381,7 +381,7 @@ rule threeprimewig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "conda activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p threeprimetracks; mkdir -p threeprimetracks/raw; mkdir -p threeprimetracks/mil; mkdir -p threeprimetracks/min; coverage.py --coverage_style last_base_only --bam_path {input.bam} --wiggle_file_path threeprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; conda deactivate;"
+        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p threeprimetracks; mkdir -p threeprimetracks/raw; mkdir -p threeprimetracks/mil; mkdir -p threeprimetracks/min; coverage.py --coverage_style last_base_only --bam_path {input.bam} --wiggle_file_path threeprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
 
 rule threeprimewigtobigwigrawforward:
     input:
