@@ -1,14 +1,14 @@
 rule ribotishAnnotation:
     input:
-        annotation="annotation/annotation_togtf.gtf",
+        annotation="qc/featurecount/annotation.gtf",
         sizes="genomes/sizes.genome"
     output:
         "annotation/annotation_processed.gtf"
     conda:
-        "../envs/annotation.yaml"
+        "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p annotation; ribo_benchmark/scripts/createRiboTISHannotation.py -a {input.annotation}  --genome_sizes {input.sizes} --annotation_output {output}"
+        "mkdir -p ribotish; SPtools/scripts/createRiboTISHannotation.py -a {input.annotation} --genome_sizes {input.sizes} --annotation_output {output}"
 
 rule gff3ToGenePred:
     input:
@@ -31,3 +31,39 @@ rule genePredToBed:
     threads: 1
     shell:
         "mkdir -p ribotish; genePredToBed {input} {output}"
+
+rule featurecountAnnotation:
+    input:
+        annotation={rules.retrieveAnnotation.output},
+    output:
+        "qc/all/annotationall.gtf",
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p qc/all; SPtools/scripts/annotation_featurecount.py -a {input.annotation} -o {output};"
+
+rule enrichAnnotation:
+    input:
+        "annotation/annotation.gtf"
+    output:
+        "auxiliary/enriched_annotation.gtf"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p auxiliary; SPtools/scripts/enrich_annotation.py -a {input} -o {output}"
+
+rule unambigousAnnotation:
+    input:
+        "auxiliary/enriched_annotation.gtf"
+    output:
+        "auxiliary/unambigous_annotation.gtf"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        """
+        mkdir -p auxiliary;
+        awk '/^[^#]/ {{printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\tID=uid%s;\\n", $1, $2, $3, $4, $5, $6, $7, $8, NR-1}}' {input} > {output}
+        """

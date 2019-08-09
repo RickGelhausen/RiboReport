@@ -22,6 +22,21 @@ psiteOffsets:
 gff2gtf:
   resources : 'nodes=1:ppn=1,pmem=4'
 
+generateAnnotationReadCounts:
+  resources : 'nodes=1:ppn=5,pmem=10'
+  qname: "short"
+
+mapReads:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+totalMappedReads:
+  resources : 'nodes=1:ppn=1,pmem=8'
+
+createExcelSummary:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
 # coverage.smk
 coverage:
   resources : 'nodes=1:ppn=1,pmem=8'
@@ -95,6 +110,10 @@ samuniq:
 samtobam:
   resources : 'nodes=1:ppn=20,pmem=2'
 
+sammultitobam:
+  resources : 'nodes=1:ppn=20,pmem=2'
+
+
 # preprocessing.smk
 retrieveGenome:
   resources : 'nodes=1:ppn=1,pmem=1'
@@ -136,6 +155,7 @@ rrnaindex:
 rrnafilter:
   resources : 'nodes=1:ppn=20,pmem=2'
 
+
 # trimming.smk
 linktrim:
   resources : 'nodes=1:ppn=1,pmem=1'
@@ -143,3 +163,233 @@ linktrim:
 
 trim:
   resources : 'nodes=1:ppn=20,pmem=2'
+
+# qc.smk
+fastqcmapped:
+  resources : 'nodes=1:ppn=8,pmem=8'
+  qname: "short"
+
+fastqcmulti:
+  resources : 'nodes=1:ppn=8,pmem=8'
+  qname: "short"
+
+fastqcraw:
+  resources : 'nodes=1:ppn=8,pmem=8'
+  qname: "short"
+
+fastqctrimmed:
+  resources : 'nodes=1:ppn=8,pmem=8'
+  qname: "short"
+
+fastqcrrnafilter:
+  resources : 'nodes=1:ppn=8,pmem=8'
+  qname: "short"
+
+gff2gtf:
+  resources : 'nodes=1:ppn=1,pmem=4'
+  qname: "short"
+
+featurescounts:
+  resources : 'nodes=1:ppn=8,pmem=2'
+  qname: "short"
+
+trnafeaturescounts:
+  resources : 'nodes=1:ppn=8,pmem=2'
+  qname: "short"
+
+rrnauniquefeaturescounts:
+  resources : 'nodes=1:ppn=8,pmem=2'
+  qname: "short"
+
+rrnatotalfeaturescounts:
+  resources : 'nodes=1:ppn=8,pmem=2'
+  qname: "short"
+
+ncrnafeaturescounts:
+  resources : 'nodes=1:ppn=8,pmem=2'
+  qname: "short"
+
+norrnafeaturescounts:
+  resources : 'nodes=1:ppn=8,pmem=2'
+  qname: "short"
+
+coveragedepth:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+multiqc:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+
+# visualization
+genomeSamToolsIndex:
+  resources : 'nodes=1:ppn=1,pmem=8'
+
+genomeSize:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+bamindex:
+  resources : 'nodes=1:ppn=20,pmem=2'
+
+reversecomplementGenome:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+startCodonTrack:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+alternativeStartCodonTrack:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+stopCodonTrack:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+rbsTrack:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+readcountstats:
+  resources : 'nodes=1:ppn=1,pmem=8'
+
+minreadcounts:
+  resources : 'nodes=1:ppn=1,pmem=8'
+
+globalwig:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+globalwigtobigwigrawforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+globalwigtobigwigminrawreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+globalwigtobigwigminforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+globalwigtobigwigminreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+globalwigtobigwigmilforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+globalwigtobigwigmilreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+centeredwig:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+centeredwigtobigwigrawforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+centeredwigtobigwigminrawreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+centeredwigtobigwigminforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+centeredwigtobigwigminreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+centeredwigtobigwigmilforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+centeredwigtobigwigmilreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+fiveprimewig:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+fiveprimewigtobigwigrawforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+fiveprimewigtobigwigminrawreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+fiveprimewigtobigwigminforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+fiveprimewigtobigwigminreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+fiveprimewigtobigwigmilforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+fiveprimewigtobigwigmilreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+threeprimewig:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+threeprimewigtobigwigrawforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+threeprimewigtobigwigminrawreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+threeprimewigtobigwigminforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+threeprimewigtobigwigminreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+threeprimewigtobigwigmilforward:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+threeprimewigtobigwigmilreverse:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+bamcompare:
+  resources : 'nodes=1:ppn=5,pmem=4'
+
+plotCorrelation:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+annotationBed:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+annotationBigBed:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+colorBigWig:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"
+
+colorGFF:
+  resources : 'nodes=1:ppn=1,pmem=8'
+  qname: "short"

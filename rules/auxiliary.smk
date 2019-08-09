@@ -26,9 +26,9 @@ rule gff2gtf:
     input:
         annotation={rules.retrieveAnnotation.output},
     output:
-        gtf="annotation/annotation_togtf.gtf",
+        gtfcds="qc/featurecount/annotation.gtf",
     conda:
         "../envs/cufflinks.yaml"
     threads: 1
     shell:
-        "mkdir -p annotation; gffread {input.annotation} -T -o {output.gtf}"
+        "mkdir -p qc/featurecount; gffread -T {input.annotation} -o {output.gtfcds};"
