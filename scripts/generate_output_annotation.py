@@ -202,7 +202,7 @@ def parse_orfs(args):
     prefix_columns = len(read_df.columns) - len(wildcards)
     name_list = ["s%s" % str(x) for x in range(len(header))]
     nTuple = collections.namedtuple('Pandas', name_list)
-
+    nTupleGFF = collections.namedtuple('Pandas', ["s0","s1","s2","s3","s4","s5","s6","s7","s8"])
     count = 0
     for row in read_df.itertuples(index=False, name='Pandas'):
         reference_name = getattr(row, "_0")
@@ -234,8 +234,8 @@ def parse_orfs(args):
         result_complete = [reference_name, source, feature, start, stop, getattr(row, "_5"), strand, getattr(row, "_7"), attributes]
         count += 1
         all_sheet.append(nTuple(*result))
-        rows_simple.append(nTuple(*result_simple))
-        rows_complete.append(nTuple(*result_complete))
+        rows_simple.append(nTupleGFF(*result_simple))
+        rows_complete.append(nTupleGFF(*result_complete))
 
     all_df = pd.DataFrame.from_records(all_sheet, columns=[header[x] for x in range(len(header))])
     simple_df = pd.DataFrame.from_records(rows_simple, columns=[0,1,2,3,4,5,6,7,8])
