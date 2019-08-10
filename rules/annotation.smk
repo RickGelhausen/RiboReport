@@ -8,7 +8,7 @@ rule ribotishAnnotation:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p ribotish; SPtools/scripts/createRiboTISHannotation.py -a {input.annotation} --genome_sizes {input.sizes} --annotation_output {output}"
+        "mkdir -p ribotish; ribo_benchmark/scripts/createRiboTISHannotation.py -a {input.annotation} --genome_sizes {input.sizes} --annotation_output {output}"
 
 rule gff3ToGenePred:
     input:
@@ -41,7 +41,7 @@ rule featurecountAnnotation:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p qc/all; SPtools/scripts/annotation_featurecount.py -a {input.annotation} -o {output};"
+        "mkdir -p qc/all; ribo_benchmark/scripts/annotation_featurecount.py -a {input.annotation} -o {output};"
 
 rule enrichAnnotation:
     input:
@@ -52,7 +52,7 @@ rule enrichAnnotation:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p auxiliary; SPtools/scripts/enrich_annotation.py -a {input} -o {output}"
+        "mkdir -p auxiliary; ribo_benchmark/scripts/enrich_annotation.py -a {input} -o {output}"
 
 rule unambigousAnnotation:
     input:
