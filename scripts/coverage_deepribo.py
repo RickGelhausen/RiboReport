@@ -49,19 +49,19 @@ class generateASiteOccupancy:
                 # write line to file
                 of.write("%s\t%s\t%s\t%s\n" % (key[0], key[1], key[2], val))
 
-    def _a_site_occupancy(self, flag, region, start):
+    def _a_site_occupancy(self, flag, region, stop):
         """
         calculate the a-site occupancy
         """
         if flag == 0:
-            pow = 1
-        elif flag == 16:
             pow = -1
+        elif flag == 16:
+            pow = 1
         else:
             return
 
-        a_site_start = start + pow * 12
-        a_site_stop = a_site_start + pow
+        a_site_start = stop + pow * 12
+        a_site_stop = a_site_start - pow
 
         entry = (region, a_site_start, a_site_stop)
         if flag == 0:
