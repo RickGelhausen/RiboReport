@@ -11,7 +11,7 @@ rule asiteOccupancy:
     shell:
         "mkdir -p coverage_deepribo; ribo_benchmark/scripts/coverage_deepribo.py --alignment_file {input.bam} --output_file_prefix coverage_deepribo/{wildcards.condition}-{wildcards.replicate}"
 
-ruke coverage:
+rule coverage:
     input:
         bam="maplink/RIBO-{condition}-{replicate}.bam",
         bai="maplink/RIBO-{condition}-{replicate}.bam.bai"
