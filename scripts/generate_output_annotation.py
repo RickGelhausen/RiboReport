@@ -136,6 +136,15 @@ def calculate_TE(read_list, wildcards, conditions):
 
     TE_list = []
     for cond in conditions:
+        if ("RNA", cond) not in read_dict:
+            t_eff = [0 for idx in range(len(read_dict[("RIBO", cond)]))]
+            if len(t_eff) > 1:
+                t_eff.extend([sum(t_eff) / len(read_dict[("RIBO", cond)])])
+
+            t_eff = [float("%.2f" % x) for x in t_eff]
+            TE_list.extend(t_eff)
+            continue
+
         if len(read_dict[("RIBO", cond)]) == len(read_dict[("RNA", cond)]):
             ribo_list = read_dict[("RIBO", cond)]
             rna_list = read_dict[("RNA", cond)]
@@ -198,6 +207,8 @@ def parse_orfs(args):
     rows_simple = []
     rows_complete = []
 
+    print(wildcards)
+    print(TE_header)
     header = ["Translated", "Genome", "Start", "Stop", "Strand", "Locus_tag", "Name", "Length", "Codon_count"] + [cond + "_TE" for cond in TE_header] + [card + "_rpkm" for card in wildcards] + ["Start_codon", "Stop_codon", "Nucleotide_seq", "Aminoacid_seq"]
     prefix_columns = len(read_df.columns) - len(wildcards)
     name_list = ["s%s" % str(x) for x in range(len(header))]
