@@ -73,7 +73,7 @@ rule ribotishGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/ribotish.py {input} --condition {wildcards.condition} --output_gff3_filepath {output}"
+        "mkdir -p tracks; ribo_benchmark/scripts/ribotishGFF.py -c {wildcards.condition} -i {input} -o {output}"
 
 rule mergeConditions:
     input:

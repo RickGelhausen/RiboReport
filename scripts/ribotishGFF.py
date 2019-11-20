@@ -17,46 +17,41 @@ import collections
 def createNTuple(args, row):
     nTuple = collections.namedtuple('Pandas', ["seqName","source","type","start","stop","score","strand","phase","attribute"])
     # txt file content
-    filename = getattr(row, "filename")
-    filename_counts = getattr(row, "filename_counts")
-    label = bool(getattr(row, "label"))
-    in_gene = getattr(row, "in_gene")
-    strand = str(getattr(row, "strand"))
-    coverage = str(getattr(row, "coverage"))
-    coverage_elo = str(getattr(row, "coverage_elo"))
-    rpk = str(getattr(row, "rpk"))
-    rpk_elo = str(getattr(row, "rpk_elo"))
-    start_site = str(getattr(row, "start_site"))
-    start_codon = getattr(row, "start_codon")
-    stop_site = str(getattr(row, "stop_site"))
-    stop_codon = str(getattr(row, "stop_codon"))
-    locus = str(getattr(row, "locus"))
-    prot_seq = str(getattr(row, "prot_seq"))
-    nuc_seq = str(getattr(row, "nuc_seq"))
-    pred = str(getattr(row, "pred"))
-    pred_rank = str(getattr(row, "pred_rank"))
-    SS = str(getattr(row, "SS"))
-    dist = str(getattr(row, "dist"))
-    SS_pred_rank = getattr(row, "SS_pred_rank")
+    gid = str(getattr(row, "Gid"))
+    tid = str(getattr(row, "Tid"))
+    symbol = getattr(row, "Symbol")
+    gene_type = getattr(row, "GeneType")
+    genome_pos = str(getattr(row, "GenomePos"))
+    start_codon = str(getattr(row, "StartCodon"))
+    start = getattr(row, "Start")
+    stop = getattr(row, "Stop")
+    tis_type = str(getattr(row, "TisType"))
+    tis_group = str(getattr(row, "TISGroup"))
+    tis_counts = getattr(row, "TISCounts")
+    tis_pvalue = getattr(row, "TISPvalue")
+    ribo_pvalue = getattr(row, "RiboPvalue")
+    ribo_pstatus = str(getattr(row, "RiboPStatus"))
+    fisher_pvalue = getattr(row, "FisherPvalue"))
+    tis_qvalue = getattr(row, "TISQvalue")
+    frame_qvalue = getattr(row, "FrameQvalue")
+    fisher_qvalue = getattr(row, "FisherQvalue")
+    AA_length = getattr(row, "AALen")
 
     # new content
-    chromosome, rest = locus.split(":")
+    chromosome, rest, strand = genome_pos.split(":")
     start, stop = rest.split("-")
 
-    if label == False:
+    if ribo_pstatus == "N":
         continue
 
-    if SS_pred_rank == 999999:
-        continue
-        
     seqName = chromosome
-    source = "deepribo"
+    source = "ribotish"
     type = "CDS"
     score = "."
     phase = "."
     attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
               + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
-              + ";SS_pred_rank=" + SS_pred_rank + ";Condition=" + args.condition + ";Method=deepribo"
+              + ";Ribo_pvalue=" + ribo_pvalue + ";Condition=" + args.condition + ";Method=ribotish"
 
     return nTuple(seqName, source, type, start, stop, score, strand, phase, attribute)
 
@@ -74,7 +69,7 @@ def to_gff3(args):
 
 def main():
     # store commandline args
-    parser = argparse.ArgumentParser(description='Converts reperation output to new data frame\
+    parser = argparse.ArgumentParser(description='Converts ribotish output to new data frame\
                                      containing specified information and saves it in gff3 format.')
     parser.add_argument("-i", "--inputCSV", action="store", dest="predictedORFs", required=True
                                           , help= "the input file. (created by reparation)")

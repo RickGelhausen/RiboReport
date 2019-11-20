@@ -48,15 +48,15 @@ rule bedtoolsGetfasta:
     shell:
         "mkdir -p transcripts; bedtools getfasta -fi {input.genome} -name -bed {input.transcripts} -fo {output}"
 
-rule predictIrsom:
-    input:
-        transcripts="transcripts/{condition}-{replicate}/transcripts.fa",
-    output:
-        "irsom/{condition}-{replicate}/result.txt"
-    threads: 1
-    shell:
-        """
-        source activate irsom
-        mkdir -p irsom;
-        python tools/IRSOM/scripts/predict.py --featurer=tools/IRSOM/bin/Featurer --file={input.transcripts} --model=tools/IRSOM/model/Escherichia_coli/ --output=irsom/{wildcards.condition}-{wildcards.replicate}/
-        """
+#rule predictIrsom:
+#    input:
+#        transcripts="transcripts/{condition}-{replicate}/transcripts.fa",
+#    output:
+#        "irsom/{condition}-{replicate}/result.txt"
+#    threads: 1
+#    shell:
+#        """
+#        source activate irsom
+#        mkdir -p irsom;
+#        python tools/IRSOM/scripts/predict.py --featurer=tools/IRSOM/bin/Featurer --file={input.transcripts} --model=tools/IRSOM/model/Escherichia_coli/ --output=irsom/{wildcards.condition}-{wildcards.replicate}/
+#        """
