@@ -56,7 +56,7 @@ def createNTuple(args, row):
     phase = "."
     attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
               + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
-              + ";SS_pred_rank=" + SS_pred_rank + ";Condition=" + args.condition + ";Method=deepribo"
+              + ";SS_pred_rank=" + str(SS_pred_rank) + ";Condition=" + args.condition + ";Method=deepribo"
 
     return nTuple(seqName, source, type, start, stop, score, strand, phase, attribute)
 
@@ -68,7 +68,7 @@ def to_gff3(args):
     rows = []
     for row in inputDF.itertuples(index=True, name='Pandas'):
         rows.append(createNTuple(args, row))
-
+    rows = [row for row in rows if row is not None]
     return pd.DataFrame.from_records(rows, columns=["seqName","source","type","start","stop","score","strand","phase","attribute"])
 
 
