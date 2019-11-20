@@ -31,7 +31,7 @@ def createNTuple(args, row):
     tis_pvalue = getattr(row, "TISPvalue")
     ribo_pvalue = getattr(row, "RiboPvalue")
     ribo_pstatus = str(getattr(row, "RiboPStatus"))
-    fisher_pvalue = getattr(row, "FisherPvalue"))
+    fisher_pvalue = getattr(row, "FisherPvalue")
     tis_qvalue = getattr(row, "TISQvalue")
     frame_qvalue = getattr(row, "FrameQvalue")
     fisher_qvalue = getattr(row, "FisherQvalue")

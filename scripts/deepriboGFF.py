@@ -44,11 +44,11 @@ def createNTuple(args, row):
     start, stop = rest.split("-")
 
     if label == False:
-        continue
+        return
 
     if SS_pred_rank == 999999:
-        continue
-        
+        return
+
     seqName = chromosome
     source = "deepribo"
     type = "CDS"
