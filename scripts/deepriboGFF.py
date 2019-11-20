@@ -50,7 +50,7 @@ def createNTuple(args, row):
     phase = "."
     attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
               + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
-              + ";ss_pred_rank=" + SS_pred_rank + ";Condition=" + args.condition + ";Method=deepribo"
+              + ";SS_pred_rank=" + SS_pred_rank + ";Condition=" + args.condition + ";Method=deepribo"
 
     return nTuple(seqName, source, type, start, stop, score, strand, phase, attribute)
 
