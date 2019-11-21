@@ -32,13 +32,13 @@ def create_dictionary(inputDF):
         elif getattr(row, "_1") == "reparation":
             score = float(attributes[attributes.index("Prob")+1])
         elif getattr(row, "_1") == "deepribo":
-            score = float(attributes[attributes.index("SS_pred_rank")+1])
+            score = int(attributes[attributes.index("SS_pred_rank")+1]) * -1
         elif getattr(row, "_1") == "irsom":
             score = float(attributes[attributes.index("Prob")+1])
 
         idx = (getattr(row, "_0"), method, condition, start, stop, strand)
         if idx in geneDict:
-            if geneDict[idx] > score:
+            if geneDict[idx] < score:
                 geneDict[idx] = score
         else:
             geneDict[idx] = score

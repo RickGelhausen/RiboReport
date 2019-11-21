@@ -19,6 +19,7 @@ def to_gff3(args):
     # extract information from each row and build new dataframe in gff format
     rows = []
     for row in inputDF.itertuples(index=True, name='Pandas'):
+
         # txt file content
         name = getattr(row, "_1")
         BMU = getattr(row, "BMU")
