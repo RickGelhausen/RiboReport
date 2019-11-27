@@ -43,22 +43,19 @@ def createNTuple(args, row):
     chromosome, rest = locus.split(":")
     start, stop = rest.split("-")
 
-    if label == False:
-        return
-
     if SS_pred_rank == 999999:
         return
 
     seqName = chromosome
     source = "deepribo"
-    type = "CDS"
+    feature = "CDS"
     score = "."
     phase = "."
     attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
               + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
               + ";SS_pred_rank=" + str(SS_pred_rank) + ";Condition=" + args.condition + ";Method=deepribo"
 
-    return nTuple(seqName, source, type, start, stop, score, strand, phase, attribute)
+    return nTuple(seqName, source, feature, start, stop, score, strand, phase, attribute)
 
 
 def to_gff3(args):
