@@ -15,7 +15,7 @@ rule parseDeepRibo:
         asiteS= "coverage_deepribo/{condition}-{replicate}_asite_fwd.bedgraph",
         asiteAS= "coverage_deepribo/{condition}-{replicate}_asite_rev.bedgraph",
         genome= rules.retrieveGenome.output,
-        #annotation= rules.retrieveAnnotation.output
+        annotation= rules.retrieveAnnotation.output
     output:
         "deepribo/{condition}-{replicate}/data_list.csv"
     conda:
@@ -25,7 +25,7 @@ rule parseDeepRibo:
         """
         mkdir -p deepribo/{wildcards.condition}-{wildcards.replicate}/0/;
         mkdir -p deepribo/{wildcards.condition}-{wildcards.replicate}/1/;
-        python tools/DeepRibo/src/DataParser.py {input.covS} {input.covAS} {input.asiteS} {input.asiteAS} {input.genome} deepribo/{wildcards.condition}-{wildcards.replicate}
+        python tools/DeepRibo/src/DataParser.py {input.covS} {input.covAS} {input.asiteS} {input.asiteAS} {input.genome} deepribo/{wildcards.condition}-{wildcards.replicate} -g {input.annotation}
         """
 
 rule parameterEstimation:
