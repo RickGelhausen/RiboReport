@@ -33,31 +33,31 @@ class generateASiteOccupancy:
                 # write line to file
                 of.write("%s\t%s\t%s\t%s\n" % (key[0], key[1], key[2], val))
 
-    def _a_site_occupancy(self, flag, region, stop):
+    def _a_site_occupancy_fwd(self, flag, region, stop):
         """
-        calculate the a-site occupancy
+        calculate the a-site occupancy for the forward strand
         """
-        if flag == 0:
-            pow = -1
-        elif flag == 16:
-            pow = 1
-        else:
-            return
-
-        a_site_start = stop + pow * 12
-        a_site_stop = a_site_start - pow
+        a_site_start = stop - 12
+        a_site_stop = a_site_start + 1
 
         entry = (region, a_site_start, a_site_stop)
-        if flag == 0:
-            if entry in self.a_site_s_dict:
-                self.a_site_s_dict[entry] += 1
-            else:
-                self.a_site_s_dict[entry] = 1
-        elif flag == 16:
-            if entry in self.a_site_as_dict:
-                self.a_site_as_dict[entry] += 1
-            else:
-                self.a_site_as_dict[entry] = 1
+        if entry in self.a_site_s_dict:
+            self.a_site_s_dict[entry] += 1
+        else:
+            self.a_site_s_dict[entry] = 1
+
+    def _a_site_occupancy_rev(self, flag, region, stop):
+        """
+        calculate the a-site occupancy for the reverse strand
+        """
+        a_site_start = stop + 11
+        a_site_stop = a_site_start + 1
+
+        entry = (region, a_site_start, a_site_stop)
+        if entry in self.a_site_as_dict:
+            self.a_site_as_dict[entry] += 1
+        else:
+            self.a_site_as_dict[entry] = 1
 
     def _fill_dictionary(self):
         """
@@ -72,7 +72,12 @@ class generateASiteOccupancy:
             reference_pos = read.pos + 1 # 0- based leftmost mapping position (reference_pos)
             read_length = len(read.query_sequence)
 
-            self._a_site_occupancy(flag, reference_name, reference_pos+read_length-1)
+            if flag == 0:
+                self._a_site_occupancy_fwd(flag, reference_name, reference_pos+read_length)
+            elif flag == 16:
+                self._a_site_occupancy_rev(flag, reference_name, reference_pos-read_length)
+            else:
+                continue
 
         samfile.close()
         self._write_output()
@@ -87,7 +92,7 @@ def main():
     args = parser.parse_args()
 
     gBG = generateASiteOccupancy(args.alignment_file, args.output_prefix)
-
+    print("DONE!")
 
 if __name__ == '__main__':
     main()
