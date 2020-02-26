@@ -2,7 +2,7 @@
 taxonomy: "Bacteria"
 #Adapter sequence used
 adapter: "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"
-samples: "ribo_benchmark/samples.tsv"
+samples: "RiboReport/samples.tsv"
 genomeindexpath: ""
 alternativestartcodons: "GTG,TTG"
 tishmode: "RIBOONLY"

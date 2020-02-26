@@ -1,5 +1,0 @@
-method	condition	replicate	fastqFile
-RIBO	WT	1	"fastq/MG1655-WT-RBP1.fastq.gz"
-RIBO	WT	2	"fastq/MG1655-WT-S400-RBP1.fastq.gz"
-RNA	WT	1	"fastq/MG1655-WT-TR1.fastq.gz"
-RNA	WT	2	"fastq/MG1655-WT-TR1-2.fastq.gz"

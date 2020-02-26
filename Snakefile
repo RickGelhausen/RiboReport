@@ -66,7 +66,6 @@ rule all:
     "auxiliary/final_annotation.xlsx",
     "auxiliary/final_annotation.gff",
     "auxiliary/final_annotation_complete.gff"
-    #expand("irsom/{condition}-{replicate}/test.txt", zip, condition=samples.loc[samples["method"] == "RNA", "condition"], replicate=samples.loc[samples["method"] == "RNA", "replicate"]),
 
 
 onsuccess:

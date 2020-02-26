@@ -37,7 +37,7 @@ rule parameterEstimation:
         "../envs/estimation.yaml"
     threads: 1
     shell:
-        "mkdir -p deepribo; Rscript ribo_benchmark/scripts/parameter_estimation.R -f {input} -o {output}"
+        "mkdir -p deepribo; Rscript RiboReport/scripts/parameter_estimation.R -f {input} -o {output}"
 
 rule predictDeepRibo:
     input:

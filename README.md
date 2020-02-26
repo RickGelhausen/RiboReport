@@ -1,7 +1,7 @@
 # RiboReport20
 This repository contains all code to recreate the contents of "RiboReport '20 - Benchmarking ribosome-profiling based identification of open reading frames in bacteria". Following are descriptions of the required steps.
 
-| WARNING: This documentation will be updated as soon as the sequencing data is made public! Until then, please use the link in the "Input Data" section. |
+| WARNING: This documentation will be updated as soon as the sequencing data for the *escherichia_coli* is made public! |
 | --- |
 
 ## Processing of High Throughput Sequencing Data
@@ -18,6 +18,8 @@ The generation and usage of the final tables and figures is described below.
 For running the workflow, several input files are required:
 - genome.fa (in the data folder)
 - annotation.gtf (in the data folder)
+- samples.tsv (in the data folder)
+- config.yaml (in the data folder)
 - fastq files and bigwig files available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514, token:ofkbusuqzbcvfip)
 
 ### Workflow
@@ -27,27 +29,28 @@ Even though `snakemake` workflows are executable locally, we do not advise this 
 
 ---
 
-To run the provided `snakemake` workflow, follow the instructions below:
+To run the provided `snakemake` workflow, follow the example for *salmonella_enterica* below below:
 
 #### 1. Setup the workflow folder and download the workflow:
 
 ~~~~
-mkdir benchmark; cd benchmark;
-git clone git@github.com:RickGelhausen/ribo_benchmark.git
+mkdir salmonella_enterica; cd salmonella_enterica;
+wget https://github.com/RickGelhausen/RiboReport/archive/2020.tar.gz;
+tar -xzf 2020.tar.gz; mv RiboReport-2020 RiboReport; rm 2020.tar.gz;
 ~~~~
 
 #### 2. Required tools
-In order to run the workflow, the tools analysed in the publication have to be installed.
-Reparation and Ribotish are automatically downloaded from bioconda and do not need any prior installation.
+In order to run the workflow, the tools analyzed in the publication have to be installed.
+Reparation and RiboTISH are automatically downloaded from bioconda and do not need any prior installation.
 IRSOM and DeepRibo are not on conda and have to be installed manually.
 
-First of all, create a `tools` folder in the benchmark repository.
+First of all, create a `tools` folder in the *salmonella_enterica* repository.
 
 ~~~~
 mkdir tools; cd tools;
 ~~~~
 
-Next, we install irsom. To make it compatible with our workflow, we first create a conda environment for the dependencies:
+Next, we install *IRSOM*. To make it compatible with our workflow, we first create a conda environment for the dependencies:
 
 ~~~~
 conda create -n irsom -c bioconda -c conda-forge plotnine pandas numpy tensorflow matplotlib docopt python=3.6.8
@@ -62,7 +65,7 @@ git clone https://forge.ibisc.univ-evry.fr/lplaton/IRSOM.git
 pip install -r IRSOM/pip_package.txt
 ~~~~
 
-This should only install irsom, as the other dependencies are already installed in the conda environment.
+This should only install *IRSOM*, as the other dependencies are already installed in the conda environment.
 
 ~~~~
 conda activate irsom
@@ -72,61 +75,41 @@ This leaves the installation of DeepRibo. For DeepRibo all dependencies will be 
 We just have to download DeepRibo itself.
 
 ~~~~
-git clone git@github.com:Biobix/DeepRibo.git
-~~~~
-
-Unfortunately, DeepRibo did not work out-of-the-box for us. In order to get it working, we had to do two changes to their prediction script.
-To apply these changes, we provided a `deepribo-patch.sh` in the script folder. Just navigate to the script folder and execute the file.
-
-~~~~
-cd ../ribo_benchmark/scripts;
-bash deepribo-patch.sh;
-cd ../../
+wget https://github.com/Biobix/DeepRibo/archive/v1.1.zip
+unzip v1.1.zip; mv DeepRibo-1.1 DeepRibo; rm v1.1.zip; cd ..
 ~~~~
 
 #### 3. Fetch the annotation and genome files:
 
 ~~~~
-cp ribo_benchmark/data/annotation.zip . ;
-unzip annotation.zip;
-cp ribo_benchmark/data/genome.zip . ;
-unzip genome.zip;
+cp RiboReport/data/salmonella_enterica/annotation.gtf . ;
+cp RiboReport/data/salmonella_enterica/genome.fa . ;
 ~~~~
 
 #### 4. Retrieve the sequencing data:
----
-**Note**
-This section will be updated as soon as the data SRA data is available.
 
----
+There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/).
 
-<!---There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/). --->
+The simplest way is most likely the usage of the [SRA Toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc&f=std), as it allows direct conversion into `.fastq` files.
 
-<!--- The simplest way is most likely the usage of the [SRA Toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc&f=std), as it allows direct conversion into `.fastq` files. --->
+Using the `SRA Toolkit` and the `SRR ID` of each sample, we can use the `fasterq-dump` executable to download the according `.fastq` files.
 
-<!--- Using the `SRA Toolkit` and the `SRR IDs` for our 3 samples we can use the `fasterq-dump` executable to download the according `.fastq` files. --->
+If you do not have the `SRA Toolkit`, we suggest using the conda environment:
 
-<!--- If you do not have the `SRA Toolkit`, we suggest using the conda environment: --->
+~~~~
+conda create -n sra-tools -c bioconda -c conda-forge sra-tools pigz
+conda activate sra-tools
+~~~~
+(use source activate, if conda is not set-up for your bash)
 
-<!--- ~~~~ --->
-<!--- conda create -n sra-tools -c bioconda -c conda-forge sra-tools --->
-<!--- conda activate sra-tools --->
-<!--- ~~~~ --->
-<!--- (use source activate, if conda is not set-up for your bash) --->
+For simplicity, we already collected the required `fasterq-dump` calls in a file.
 
-<!--- Then you can use the following commands to generate the required `.fastq` files. --->
+~~~~
+cp RiboReport/data/salmonella_enterica/download.sh .
+bash download.sh
+~~~~
 
-<!--- ~~~~ --->
-<!--- fasterq-dump SRR; gzip SRR .fastq; --->
-<!--- fasterq-dump SRR; gzip SRR .fastq; --->
-<!--- fasterq-dump SRR; gzip SRR .fastq; --->
-<!--- fasterq-dump SRR; gzip SRR .fastq; --->
-<!--- ~~~~ --->
-
-<!--- Afterwards, you can deactivate your conda environment. --->
-<!--- ~~~~ --->
-<!--- conda deactivate sra-tools --->
-<!--- ~~~~ --->
+This will download all required fastq files into a fastq folder.
 
 #### 5. Run the snakemake workflow:
 
@@ -140,11 +123,11 @@ conda activate snakemake
 
 Then you can copy and complete one of the provided submission scripts, or create your own.
 ~~~~
-cp ribo_benchmark/torque.sh .
+cp RiboReport/torque.sh .
 ~~~~
 or
 ~~~~
-cp ribo_benchmark/sge.sh .
+cp RiboReport/sge.sh .
 ~~~~
 
 Example for torque.sh:
@@ -161,7 +144,7 @@ Example for torque.sh:
 cd <file path>/benchmark
 export PATH="<file path>/miniconda3/bin/:$PATH"
 source activate snakemake
-snakemake --latency-wait 600 --use-conda -s ribo_benchmark/Snakefile --configfile ribo_benchmark/config.yaml --directory ${PWD} -j 20 --cluster-config ribo_benchmark/torque.yaml --cluster "qsub -N {cluster.jobname} -S /bin/bash -q {cluster.qname} -d <file path>/benchmark -l {cluster.resources} -o {cluster.logoutputdir} -j oe"
+snakemake --latency-wait 600 --use-conda -s RiboReport/Snakefile --configfile RiboReport/config.yaml --directory ${PWD} -j 20 --cluster-config RiboReport/torque.yaml --cluster "qsub -N {cluster.jobname} -S /bin/bash -q {cluster.qname} -d <file path>/benchmark -l {cluster.resources} -o {cluster.logoutputdir} -j oe"
 ~~~~
 
 All **file path** statements have to be replaced by the path to your benchmark folder.
