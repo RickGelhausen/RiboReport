@@ -29,7 +29,7 @@ Even though `snakemake` workflows are executable locally, we do not advise this 
 
 ---
 
-To run the provided `snakemake` workflow, follow the example for *salmonella_enterica* below below:
+To run the provided `snakemake` workflow, follow the example for `salmonella_enterica` below below:
 
 #### 1. Setup the workflow folder and download the workflow:
 
@@ -44,13 +44,13 @@ In order to run the workflow, the tools analyzed in the publication have to be i
 Reparation and RiboTISH are automatically downloaded from bioconda and do not need any prior installation.
 IRSOM and DeepRibo are not on conda and have to be installed manually.
 
-First of all, create a `tools` folder in the *salmonella_enterica* repository.
+First of all, create a `tools` folder in the `salmonella_enterica` repository.
 
 ~~~~
 mkdir tools; cd tools;
 ~~~~
 
-Next, we install *IRSOM*. To make it compatible with our workflow, we first create a conda environment for the dependencies:
+Next, we install `IRSOM`. To make it compatible with our workflow, we first create a conda environment for the dependencies:
 
 ~~~~
 conda create -n irsom -c bioconda -c conda-forge plotnine pandas numpy tensorflow matplotlib docopt python=3.6.8
@@ -58,14 +58,14 @@ conda activate irsom
 ~~~~
 (use source activate, if conda is not set-up for your bash)
 
-Then, we download and install irsom:
+Then, we download and install `IRSOM`:
 
 ~~~~
 git clone https://forge.ibisc.univ-evry.fr/lplaton/IRSOM.git
 pip install -r IRSOM/pip_package.txt
 ~~~~
 
-This should only install *IRSOM*, as the other dependencies are already installed in the conda environment.
+This should only install `IRSOM`, as the other dependencies are already installed in the conda environment.
 
 ~~~~
 conda activate irsom
@@ -130,7 +130,7 @@ or
 cp RiboReport/sge.sh .
 ~~~~
 
-Example for torque.sh:
+Example for `torque.sh`:
 
 ~~~~
 #!/bin/bash
@@ -149,7 +149,7 @@ snakemake --latency-wait 600 --use-conda -s RiboReport/Snakefile --configfile Ri
 
 All **file path** statements have to be replaced by the path to your benchmark folder.
 
-**Please note** that these scripts might need some extra changes depending on your cluster system. If your cluster system does not run SGE or TORQUE, these files will most likely not work at all. In the case they run one SGE or TORQUE, there might be slightly different definitions for the resource statements (here `#PBS -l nodes=1:ppn=1`). This is then also the case for the configuration files `sge.yaml` and `torque.yaml`.
+**Please note** that these scripts might need some extra changes depending on your cluster system. If your cluster system does not run SGE or TORQUE, these files will most likely not work at all. In the case they run SGE or TORQUE, there might be slightly different definitions for the resource statements (here `#PBS -l nodes=1:ppn=1`). This is then also the case for the configuration files `sge.yaml` and `torque.yaml`.
 
 
 ## Visualisation and plotting of the Results
