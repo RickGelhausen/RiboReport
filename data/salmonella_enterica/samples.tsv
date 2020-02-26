@@ -1,0 +1,3 @@
+method	condition	replicate	fastqFile
+RIBO	WT	3	"fastq/RIBO-WT-3.fastq.gz"
+RNA	WT	3	"fastq/RNA-WT-3.fastq.gz"

@@ -1,7 +1,7 @@
-# RiboReport19
-This repository contains all code to recreate the contents of "RiboReport19 - Benchmarking ribosome profiling based identification of open reading frames in bacteria. Following are descriptions of the required steps.
+# RiboReport20
+This repository contains all code to recreate the contents of "RiboReport '20 - Benchmarking ribosome-profiling based identification of open reading frames in bacteria". Following are descriptions of the required steps.
 
-| WARNING: This documentation will be updated as soon as the SRA upload of the sequencing data is finished! |
+| WARNING: This documentation will be updated as soon as the sequencing data is made public! Until then, please use the link in the "Input Data" section. |
 | --- |
 
 ## Processing of High Throughput Sequencing Data
@@ -220,6 +220,6 @@ Parameters:
 - coverage_percent (-c) percentage of overlap cutoff that was used to determine the true positves. It will be used in the file name to make it unique
 
 Output:
-- venn_diagram.pdf -> a 4 Venn diagram highlighting overlapping predictions of the tool. 
+- venn_diagram.pdf -> a 4 Venn diagram highlighting overlapping predictions of the tool.
 
-This script will generate a 4 Venn diagram for the overlap of true positive predicted genes of the 4 investigated tools. 
+This script will generate a 4 Venn diagram for the overlap of true positive predicted genes of the 4 investigated tools.

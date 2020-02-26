@@ -1,0 +1,3 @@
+method	condition	replicate	fastqFile
+RNA	CTRL	1	"fastq/LM-RNASeq-mRNA-ctrl.fastq.gz"
+RIBO	CTRL	1	"fastq/LM-RiboSeq-ctrl.fastq.gz"
