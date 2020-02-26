@@ -1,3 +1,5 @@
+<img src="RiboReport.png" width="620">
+
 # RiboReport20
 This repository contains all code to recreate the contents of "RiboReport '20 - Benchmarking ribosome-profiling based identification of open reading frames in bacteria". Following are descriptions of the required steps.
 
