@@ -5,7 +5,7 @@ import os
 from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
-#ribo_benchmark/scripts/motif2GFF3.py --input_genome_fasta_filepath genomes/genome.fa --input_reverse_genome_fasta_filepath genomes/genome.revfa --motif_string ATG --output_gff3_filepath test.gff3
+#RiboReport/scripts/motif2GFF3.py --input_genome_fasta_filepath genomes/genome.fa --input_reverse_genome_fasta_filepath genomes/genome.revfa --motif_string ATG --output_gff3_filepath test.gff3
 def motif_gff3_forward_strand(args):
   seqioparse=SeqIO.parse(args.input_genome_fasta_filepath, "fasta")
   outentries=""

@@ -7,7 +7,7 @@ rule reparationGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/reparationGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/reparationGFF.py -c {wildcards.condition}  -i {input} -o {output}"
 
 rule concatReparation:
     input:
@@ -18,7 +18,7 @@ rule concatReparation:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
 
 rule deepriboGFF:
     input:
@@ -29,7 +29,7 @@ rule deepriboGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/deepriboGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/deepriboGFF.py -c {wildcards.condition}  -i {input} -o {output}"
 
 rule concatDeepRibo:
     input:
@@ -40,7 +40,7 @@ rule concatDeepRibo:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
 
 rule irsomGFF:
     input:
@@ -51,7 +51,7 @@ rule irsomGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/irsomGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/irsomGFF.py -c {wildcards.condition}  -i {input} -o {output}"
 
 rule concatIrsom:
     input:
@@ -62,7 +62,7 @@ rule concatIrsom:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
 
 rule ribotishGFF:
     input:
@@ -73,7 +73,7 @@ rule ribotishGFF:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/ribotish.py {input} --condition {wildcards.condition} --output_gff3_filepath {output}"
+        "mkdir -p tracks; RiboReport/scripts/ribotish.py {input} --condition {wildcards.condition} --output_gff3_filepath {output}"
 
 rule mergeConditions:
     input:
@@ -98,7 +98,7 @@ rule mergeAll:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/concatGFF.py {input.mergedGff} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input.mergedGff} -o {output}"
 
 rule filterAll:
     input:
@@ -109,4 +109,4 @@ rule filterAll:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; ribo_benchmark/scripts/allToUniqueGTF.py -i {input} -o {output}"
+        "mkdir -p tracks; RiboReport/scripts/allToUniqueGTF.py -i {input} -o {output}"

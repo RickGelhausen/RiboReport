@@ -9,6 +9,9 @@ __default__:
 generateTranscripts:
   resources : 'nodes=1:ppn=20,pmem=2'
 
+parameterEstimation:
+  resources : 'nodes=1:ppn=1,pmem=20'
+
 # auxillary.smk
 processAnnotation:
   resources : 'nodes=1:ppn=1,pmem=4'

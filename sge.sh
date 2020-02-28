@@ -10,5 +10,5 @@
 export PATH="<file path>/miniconda3/bin/:$PATH"
 cd <file path>/benchmark
 source activate snakemake
-snakemake --use-conda -p -s ribo_benchmark/Snakefile --configfile ribo_benchmark/config.yaml --directory ${PWD} -j 20 --cluster-config ribo_benchmark/sge.yaml --cluster "qsub -R y -N {cluster.jobname} -cwd -pe {cluster.parallelenvironment} -l {cluster.memory} -o {cluster.logoutputdir} -e {cluster.erroroutputdir} -j {cluster.joinlogs}" --latency-wait 60
+snakemake --use-conda -p -s RiboReport/Snakefile --configfile RiboReport/config.yaml --directory ${PWD} -j 20 --cluster-config RiboReport/sge.yaml --cluster "qsub -R y -N {cluster.jobname} -cwd -pe {cluster.parallelenvironment} -l {cluster.memory} -o {cluster.logoutputdir} -e {cluster.erroroutputdir} -j {cluster.joinlogs}" --latency-wait 60
 

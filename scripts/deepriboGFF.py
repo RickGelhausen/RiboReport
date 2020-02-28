@@ -19,7 +19,7 @@ def createNTuple(args, row):
     # txt file content
     filename = getattr(row, "filename")
     filename_counts = getattr(row, "filename_counts")
-    label = str(getattr(row, "label"))
+    label = bool(getattr(row, "label"))
     in_gene = getattr(row, "in_gene")
     strand = str(getattr(row, "strand"))
     coverage = str(getattr(row, "coverage"))
@@ -37,22 +37,25 @@ def createNTuple(args, row):
     pred_rank = str(getattr(row, "pred_rank"))
     SS = str(getattr(row, "SS"))
     dist = str(getattr(row, "dist"))
-    SS_pred_rank = str(getattr(row, "SS_pred_rank"))
+    SS_pred_rank = getattr(row, "SS_pred_rank")
 
     # new content
     chromosome, rest = locus.split(":")
     start, stop = rest.split("-")
 
+    if SS_pred_rank == 999999:
+        return
+
     seqName = chromosome
     source = "deepribo"
-    type = "CDS"
+    feature = "CDS"
     score = "."
     phase = "."
     attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
               + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
-              + ";pvalue=" + pred + ";Condition=" + args.condition + ";Method=deepribo"
+              + ";SS_pred_rank=" + str(SS_pred_rank) + ";Condition=" + args.condition + ";Method=deepribo"
 
-    return nTuple(seqName, source, type, start, stop, score, strand, phase, attribute)
+    return nTuple(seqName, source, feature, start, stop, score, strand, phase, attribute)
 
 
 def to_gff3(args):
@@ -62,7 +65,7 @@ def to_gff3(args):
     rows = []
     for row in inputDF.itertuples(index=True, name='Pandas'):
         rows.append(createNTuple(args, row))
-
+    rows = [row for row in rows if row is not None]
     return pd.DataFrame.from_records(rows, columns=["seqName","source","type","start","stop","score","strand","phase","attribute"])
 
 

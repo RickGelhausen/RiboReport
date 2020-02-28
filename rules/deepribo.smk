@@ -25,7 +25,7 @@ rule parseDeepRibo:
         """
         mkdir -p deepribo/{wildcards.condition}-{wildcards.replicate}/0/;
         mkdir -p deepribo/{wildcards.condition}-{wildcards.replicate}/1/;
-        python tools/DeepRibo/src/DataParser.py {input.covS} {input.covAS} {input.asiteS} {input.asiteAS} {input.genome} deepribo/{wildcards.condition}-{wildcards.replicate} -g {input.annotation}
+        python3 tools/DeepRibo/src/DataParser.py {input.covS} {input.covAS} {input.asiteS} {input.asiteAS} {input.genome} deepribo/{wildcards.condition}-{wildcards.replicate} -g {input.annotation}
         """
 
 rule parameterEstimation:
@@ -37,8 +37,7 @@ rule parameterEstimation:
         "../envs/estimation.yaml"
     threads: 1
     shell:
-        "mkdir -p deepribo; Rscript ribo_benchmark/scripts/parameter_estimation.R -f {input} -o {output}"
-
+        "mkdir -p deepribo; Rscript RiboReport/scripts/parameter_estimation.R -f {input} -o {output}"
 
 rule predictDeepRibo:
     input:
@@ -56,5 +55,5 @@ rule predictDeepRibo:
     shell:
         """
         mkdir -p deepribo;
-        python tools/DeepRibo/src/DeepRibo.py predict deepribo/ --pred_data {wildcards.condition}-{wildcards.replicate}/ -r {params.rpkm} -c {params.cov} --model {input.model} --dest {output} --num_workers {threads}
+        python3 tools/DeepRibo/src/DeepRibo.py predict deepribo/ --pred_data {wildcards.condition}-{wildcards.replicate}/ -r {params.rpkm} -c {params.cov} --model {input.model} --dest {output} --num_workers {threads}
         """

@@ -19,6 +19,7 @@ def to_gff3(args):
     # extract information from each row and build new dataframe in gff format
     rows = []
     for row in inputDF.itertuples(index=True, name='Pandas'):
+
         # txt file content
         name = getattr(row, "_1")
         BMU = getattr(row, "BMU")
@@ -26,7 +27,7 @@ def to_gff3(args):
         probCoding = str(getattr(row, "proba_class_0"))
         probNonCoding = str(getattr(row, "proba_class_1"))
 
-        if label == "noncoding":
+        if label == "Noncoding":
             continue
 
         seqName, range, strand = name.split(":")

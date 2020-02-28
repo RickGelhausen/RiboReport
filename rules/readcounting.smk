@@ -34,7 +34,7 @@ rule mapReads:
     threads: 1
     shell:
         """
-        mkdir -p auxiliary; ribo_benchmark/scripts/map_reads_to_annotation.py -i {input.reads} -a {input.annotation} -o {output}
+        mkdir -p auxiliary; RiboReport/scripts/map_reads_to_annotation.py -i {input.reads} -a {input.annotation} -o {output}
         """
 
 rule totalMappedReads:
@@ -48,7 +48,7 @@ rule totalMappedReads:
         "../envs/plastid.yaml"
     threads: 1
     shell:
-        "mkdir -p auxiliary; ribo_benchmark/scripts/total_mapped_reads.py -b {input.bam} -m {output.mapped} -l {output.length}"
+        "mkdir -p auxiliary; RiboReport/scripts/total_mapped_reads.py -b {input.bam} -m {output.mapped} -l {output.length}"
 
 rule createExcelSummary:
     input:
@@ -63,4 +63,4 @@ rule createExcelSummary:
         "../envs/excel.yaml"
     threads: 1
     shell:
-        "mkdir -p auxiliary; ribo_benchmark/scripts/generate_output_annotation.py -t {input.total} -r {input.reads} -g {input.genome} -o {output.xlsx} --simple {output.annotation} --complete {output.complete}"
+        "mkdir -p auxiliary; RiboReport/scripts/generate_output_annotation.py -t {input.total} -r {input.reads} -g {input.genome} -o {output.xlsx} --simple {output.annotation} --complete {output.complete}"

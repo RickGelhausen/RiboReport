@@ -28,17 +28,17 @@ def create_dictionary(inputDF):
         strand = getattr(row, "_6")
 
         if getattr(row, "_1") == "ribotish":
-            score = float(attributes[attributes.index("Ribo_pvalue")+1])
+            score = 1 - float(attributes[attributes.index("Ribo_pvalue")+1])
         elif getattr(row, "_1") == "reparation":
-            score = 1 - float(attributes[attributes.index("Prob")+1])
+            score = float(attributes[attributes.index("Prob")+1])
         elif getattr(row, "_1") == "deepribo":
-            score = 0.0001 # take all
+            score = int(attributes[attributes.index("SS_pred_rank")+1]) * -1
         elif getattr(row, "_1") == "irsom":
-            score = 1 - float(attributes[attributes.index("Prob")+1])
+            score = float(attributes[attributes.index("Prob")+1])
 
         idx = (getattr(row, "_0"), method, condition, start, stop, strand)
         if idx in geneDict:
-            if geneDict[idx] > score:
+            if geneDict[idx] < score:
                 geneDict[idx] = score
         else:
             geneDict[idx] = score
