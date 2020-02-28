@@ -34,17 +34,17 @@ def get_sets(a, b, c, d):
                list containing all overlap numbers
     """
     aANDbANDcANDd = len(list(set(a) & set(b) & set(c) & set(d)))
-    aANDbANDc = len(list(set(a) & set(b) & set(c)))
-    aANDbANDd = len(list(set(a) & set(b) & set(d)))
-    aANDcANDd = len(list(set(a) & set(c) & set(d)))
-    bANDcANDd = len(list(set(b) & set(c) & set(d)))
+    aANDbANDc = (len(list(set(a) & set(b) & set(c)))) - aANDbANDcANDd
+    aANDbANDd = (len(list(set(a) & set(b) & set(d)))) - aANDbANDcANDd
+    aANDcANDd = (len(list(set(a) & set(c) & set(d)))) - aANDbANDcANDd
+    bANDcANDd = (len(list(set(b) & set(c) & set(d)))) - aANDbANDcANDd
 
-    aANDb = len(list(set(a) & set(b)))
-    aANDc = len(list(set(a) & set(c)))
-    aANDd = len(list(set(a) & set(d)))
-    bANDc = len(list(set(b) & set(c)))
-    bANDd = len(list(set(b) & set(d)))
-    cANDd = len(list(set(c) & set(d)))
+    aANDb = (len(list(set(a) & set(b)))) - aANDbANDcANDd - aANDbANDc - aANDbANDd
+    aANDc = (len(list(set(a) & set(c)))) - aANDbANDcANDd - aANDbANDc - aANDcANDd
+    aANDd = (len(list(set(a) & set(d)))) - aANDbANDcANDd - aANDbANDd - aANDcANDd
+    bANDc = (len(list(set(b) & set(c)))) - aANDbANDcANDd - aANDbANDc - bANDcANDd
+    bANDd = (len(list(set(b) & set(d)))) - aANDbANDcANDd - aANDbANDd - bANDcANDd
+    cANDd = (len(list(set(c) & set(d)))) - aANDbANDcANDd - aANDcANDd - bANDcANDd
 
     a_remainder = len(list(set(a) - set(b) - set(c) - set(d)))
     b_remainder = len(list(set(b) - set(a) - set(c) - set(d)))
@@ -59,7 +59,7 @@ def get_sets(a, b, c, d):
 def main():
     # store commandline args
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument("-i", "--input1_df", action="store",
+    parser.add_argument("-i", "--input_file", action="store",
                         dest="input_df_path", required=True,
                         help="path to the reference data.")
     parser.add_argument("-o", "--save_path", action="store",
@@ -79,8 +79,14 @@ def main():
     name_folder = args.name_folder
     coverage_percent = args.coverage_percent
 
+    if not os.path.isfile(input_df):
+        sys.exit('not existing file: %s' % (input_df))
+
     if not os.path.exists(args.save_path):
         os.makedirs(args.save_path)
+
+    # repalce . with nothing
+    coverage_percent = coverage_percent.replace(".", "")
 
     # generate save path
     save_venn_diag = (plot_dir + '/venn_diagram' + coverage_percent + '_' +
@@ -106,7 +112,7 @@ def main():
     fig, ax = plt.subplots() # 1, 1, figsize=(24, 8)
 
     venn4(subsets, set_labels=tools, ax=ax)
-    #ax.set_title('venn4', fontsize=24)
+    ax.set_title(name_folder, fontsize=18)
     #fig.suptitle('simple_venn Demo', fontsize=30)
     plt.savefig(save_venn_diag, format='pdf', dpi=300, bbox_inches='tight')
 
