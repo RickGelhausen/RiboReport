@@ -30,7 +30,7 @@ def main():
     plot_key_dir = plot_dir
 
 
-    dummy = pd.DataFrame(columns=["TP", "FP", "FN", "recall", "FNR", "precision", "FDR", "F1", "tool"], data=[[0,0,0,0,0,0,0,0,"reparation"],[0,0,0,0,0,0,0,0,"ribotish"],[0,0,0,0,0,0,0,0,"deepribo"], [0,0,0,0,0,0,0,0,"irsom"]])
+    dummy = pd.DataFrame(columns=["TP", 'TN', "FP", "FN", "recall", "specificity", "FNR", "precision", "FDR", "F1", "accuracy", "subopt_tp", "subopt_fp", "tool"], data=[[0,0,0,0,0,0,0,0,0,0,0,0,0,"reparation"],[0,0,0,0,0,0,0,0,0,0,0,0,0,"ribotish"],[0,0,0,0,0,0,0,0,0,0,0,0,0,"deepribo"], [0,0,0,0,0,0,0,0,0,0,0,0,0,"irsom"]])
 
     if os.path.isfile(args.input1_df):
         df_stat1 = pd.read_csv(args.input1_df,sep='\t')
@@ -87,6 +87,22 @@ def main():
 
     fig, ax = plt.subplots()
 
+    sns.barplot(x="tool", y="specificity", data=df_stat, hue="overlap", ax=ax)
+
+    ax.set_xlabel('')
+    #ax.set_ylabel('recovery')
+
+    ax.set_ylim([0,1])
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=0)
+
+    fig.savefig(plot_key_dir + 'bar_specificity.pdf', format='pdf', dpi=300, bbox_inches='tight')
+
+    ##############################################################################################################
+    ##############################################################################################################
+    sns.set(style="whitegrid", font_scale=1)
+
+    fig, ax = plt.subplots()
+
     sns.barplot(x="tool", y="precision", data=df_stat, hue="overlap", ax=ax)
 
     ax.set_xlabel('')
@@ -128,6 +144,23 @@ def main():
     ax.set_xticklabels(ax.get_xticklabels(), rotation=0)
 
     fig.savefig(plot_key_dir + 'bar_F1.pdf', format='pdf', dpi=300, bbox_inches='tight')
+    
+    
+    ##############################################################################################################
+    ##############################################################################################################
+    sns.set(style="whitegrid", font_scale=1)
+
+    fig, ax = plt.subplots()
+
+    sns.barplot(x="tool", y="accuracy", hue="overlap", data=df_stat, ax=ax)
+
+    ax.set_xlabel('')
+    #ax.set_ylabel('recovery')
+
+    ax.set_ylim([0,1])
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=0)
+
+    fig.savefig(plot_key_dir + 'bar_accuracy.pdf', format='pdf', dpi=300, bbox_inches='tight')    
 
 if __name__ == '__main__':
     main()

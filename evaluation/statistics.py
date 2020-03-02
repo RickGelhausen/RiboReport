@@ -584,16 +584,12 @@ def main():
     df_venn_FN_gene.to_csv(path_or_buf=save_dir+'df_venn_FN_gene_dict.csv',
                            index=False, sep='\t')
 
-
+# df for ploting sensitivity specificity etc.
     stat_list_header = ['TP', 'FP', 'FN', 'recall', 'FNR', 'precision',
                         'FDR', 'F1', 'subopt', 'tool']
     df_stat = pd.DataFrame([stat_reparation_list, stat_ribotish_list,
                            stat_deepribo_list, stat_irsom_list],
                            columns=stat_list_header)
-
-
-
-
 
     #pd.concat([df_stat, stat_reparation_list])
     df_stat
