@@ -465,7 +465,7 @@ def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_fi
         Returns
         -------
         df_overlap_score
-            dataframe containing (not) overlapping regoins
+            dataframe containing overlapping regoins
     """
 
     if os.stat(reference_path).st_size == 0:
@@ -517,7 +517,8 @@ def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_fi
 
 
 def call_bedtools_not_overlap(reference_path, tools_path, overlap_cutoff, overlap_file, score_cutoff):
-    """This fuction computes TP, FN and FP for a given tool.
+    """This fuction computes all genes or predictions (A) which are not overlapping with predictions or genes (B). Given a minmal overlap percentage.
+    The result is computed using bedtools and the result is saved in a gtf format and a dictionary
 
         Parameters
         ----------
@@ -537,10 +538,16 @@ def call_bedtools_not_overlap(reference_path, tools_path, overlap_cutoff, overla
         Returns
         -------
         df_overlap_score
-            dataframe containing (not) overlapping regoins
+            dataframe containing not overlapping regoins
     """
 
-
+    #bedtools parameter
+    # -f: Minimum overlap required as a fraction of A. Default is 1E-9 (i.e. 1bp).
+    # -r: Require that the fraction of overlap be reciprocal for A and B. In other words, if -f is 0.90 and -r is used, this requires that B overlap at least 90% of A and that A also overlaps at least 90% of B.
+    # -s: Force “strandedness”. That is, only report hits in B that overlap A on the same strand. By default, overlaps are reported without respect to strand.
+    # -v: Only report those entries in A that have no overlap in B. Restricted by -f and -r.
+    # -wo: Write the original A and B entries plus the number of base pairs of overlap between the two features. Only A features with overlap are reported. Restricted by -f and -r
+    #
     cmd = ('bedtools intersect -a ' + reference_path + ' -b '  + tools_path + ' -wo -f ' + str(overlap_cutoff) + ' -r -s -v > ' + overlap_file)
 
     os.system(cmd)
@@ -638,6 +645,7 @@ def main():
 
     # get fp that are not overlaping with any gene
     df_temp_overlap = call_bedtools_not_overlap(tools_file, ref_pos_file, overlap_cutoff, temp_overlap_gtf, score_cutoff)
+    # all predictions which are not overlapping with any gene for the given cutoff
     df_fp_overlap = call_bedtools_not_overlap(temp_overlap_gtf, ref_neg_file, overlap_cutoff, fp_overlap_gtf, score_cutoff)
     #print(df_fp_overlap.info)
     #
