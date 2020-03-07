@@ -165,20 +165,30 @@ All data can be visualised using the following scripts inside the evaluation fol
 - simple_venn =0.1.0
 - bedtools =v2.28.0
 
-### statistics.py
+### statistics_pos_neg.py
 
 Parameters:
-- reference_data (-r) path to the .gtf file containing all genes of the investigated genome or the investigated subset of genes
+- reference_pos_data (-p) path to the .gtf file containing all genes of the investigated genome or the investigated subset of genes
+- reference_neg_data (-n) path to the .gtf file containing all genes of the investigated genome or the investigated subset of genes
 - tool_data (-t) path to gtf file containing all predictions for the tools: deepribo, ribotish, reparation and irsom
 - save_path (-o) path to a directory, where the result tables will be stored
 - overlap_cutoff (-c) allowed sequence overlap cutoff between gene and prediction
+- flag_subopt (-s) allowed allow suboptimals in statistical calculation. Set to 1 to enable flag. If not 0
+- flag_no_gene (-g) add predictions which do not overlap with any genen for the given cutoff. Set to 1 to enable flag. If not 0
 
 Output:
 - df_stat.csv -> main result table storing all computed statistical measurements
+
 - df_venn_FN_gene_dict.csv -> table containing a column for each tool listing the number of genes counted as false negatives (FN)
 - df_venn_FP_predictions_dict.csv -> table containing a column for each tool listing the number of genes counted as false positive (FP)
-- df_venn_predictions.csv -> table containing a column for each tool listing the number of genes counted as suboptimal predictions
+
+- SetX_labels_pos_predictions_overlap_fp.gtf 
+- SetX_labels_pos_predictions_overlap_neg.gtf 
+- SetX_labels_pos_predictions_overlap_pos.gtf
+- SetX_labels_pos_predictions_overlap_temp.gtf 
+
 - df_venn_genes.csv -> table containing a column for each tool listing the number of genes counted as true positive (TP)
+- toolX_score_list -> For each prediction, correct genen prediction and not predicted gene a tuple of: (score, overlap, label) is saved as a python object serialization (pickle.dump)
 
 This script generates several statistical measurements for a reference and tool prediction .gtf file. First true positives (TP), false positives (FP) and false negatives (FN) are predicted. One prediction will be associated with one gene and counted as one true positve. The association selection is based on the lowest p-value (0.05). All genes fulfilling the overlap cutoff will be counted as suboptimals and not as false positives. False positives are all predictions, where no gene fulfilling the overlap cutoff could be found and the false negatives vice versa. Based on this computations the recall, FNR, precision, FDR and F1 measure are calculated.
 
