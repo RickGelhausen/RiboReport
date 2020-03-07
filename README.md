@@ -174,47 +174,68 @@ Parameters:
 - save_path (-o) path to a directory, where the result tables will be stored
 - overlap_cutoff (-c) allowed sequence overlap cutoff between gene and prediction
 - flag_subopt (-s) allowed allow suboptimals in statistical calculation. Set to 1 to enable flag. If not 0
-- flag_no_gene (-g) add predictions which do not overlap with any genen for the given cutoff. Set to 1 to enable flag. If not 0
+- flag_no_gene (-g) add predictions which do not overlap with any genen for the given cutoff. Set to 1 to enable flag. If not 0.
 
 Output:
-- df_stat.csv -> main result table storing all computed statistical measurements
-
-- df_venn_FN_gene_dict.csv -> table containing a column for each tool listing the number of genes counted as false negatives (FN)
-- df_venn_FP_predictions_dict.csv -> table containing a column for each tool listing the number of genes counted as false positive (FP)
-
-- SetX_labels_pos_predictions_overlap_fp.gtf 
-- SetX_labels_pos_predictions_overlap_neg.gtf 
-- SetX_labels_pos_predictions_overlap_pos.gtf
-- SetX_labels_pos_predictions_overlap_temp.gtf 
-
-- df_venn_genes.csv -> table containing a column for each tool listing the number of genes counted as true positive (TP)
-- toolX_score_list -> For each prediction, correct genen prediction and not predicted gene a tuple of: (score, overlap, label) is saved as a python object serialization (pickle.dump)
+- df_stat.csv -> main result table storing all computed statistical measurements. Needed for the bar plots.
+- SetX_labels_pos_predictions_overlap_fp.gtf -> all prdictions which do not overlap with the positive or the negative gene set. Therefore, predictions outside of the annotation borders for a given overlap (temporary result).
+- SetX_labels_pos_predictions_overlap_neg.gtf -> all genes of the negative set overlapping with a given percent with any prediction (temporary result).
+- SetX_labels_pos_predictions_overlap_pos.gtf -> all genes of the positive set overlapping with a given percent with any prediction (temporary result).
+- SetX_labels_pos_predictions_overlap_temp.gtf -> all prdictions which do not overlap with the positive gene set (temporary result).
+- df_venn_genes.csv -> table containing a column for each tool listing the number of genes counted as true positive (TP). Needed for the overlap plots.
+- toolX_score_list -> For each prediction, correct genen prediction and not predicted gene a tuple of: (score, overlap, label) is saved as a python object serialization (pickle.dump). Needed to compute the ROC and PRC.
 
 This script generates several statistical measurements for a reference and tool prediction .gtf file. First true positives (TP), false positives (FP) and false negatives (FN) are predicted. One prediction will be associated with one gene and counted as one true positve. The association selection is based on the lowest p-value (0.05). All genes fulfilling the overlap cutoff will be counted as suboptimals and not as false positives. False positives are all predictions, where no gene fulfilling the overlap cutoff could be found and the false negatives vice versa. Based on this computations the recall, FNR, precision, FDR and F1 measure are calculated.
 
 ### plot_barplots.py
 Parameters:
-- input1_df (-i1) df_stat.csv of the statistics.py script for the first overlap cutoff
-- input2_df (-i2) df_stat.csv of the statistics.py script for the second overlap cutoff
-- save_path (-o) path to directory where the plots will be stored
+- input1_df (-i1) df_stat.csv of the statistics.py script for the first overlap cutoff.
+- input2_df (-i2) df_stat.csv of the statistics.py script for the second overlap cutoff.
+- save_path (-o) path to directory where the plots will be stored.
 
 Output:
-- bar_FNR.pdf -> barplot of FNR measures for different tools and two cutoff conditions
-- bar_recall.pdf -> barplot of recall measures for different tools and two cutoff conditions
-- bar_precision.pdf -> barplot of precision measures for different tools and two cutoff conditions
-- bar_FDR.pdf -> barplot of FDR measures for different tools and two cutoff conditions
-- bar_F1.pdf -> barplot of F1 measures for different tools and two cutoff conditions
+- bar_FNR.pdf -> barplot of FNR measures for different tools and two cutoff conditions.
+- bar_recall.pdf -> barplot of recall measures for different tools and two cutoff conditions.
+- bar_precision.pdf -> barplot of precision measures for different tools and two cutoff conditions.
+- bar_FDR.pdf -> barplot of FDR measures for different tools and two cutoff conditions.
+- bar_F1.pdf -> barplot of F1 measures for different tools and two cutoff conditions.
 
 This script generates barplots of statistical measures for the different tools and two overlap cutoff conditions. The output barplots consist of FNR, recall, precision, FDR and F1 measures. It is based on the statistics.py statistical output table.
 
 ### venn_diagram.py
 Parameters:
-- input_df (-i) .cvs containing the list of true positive genes for the used tools
-- save_path (-o) path where the Venn diagramm will be saved
+- input_df (-i) .cvs containing the list of true positive genes for the used tools.
+- save_path (-o) path where the Venn diagramm will be saved.
 - name_folder (-n) name of the result folder of the investigated set. It will be used in the file name to make it unique.
-- coverage_percent (-c) percentage of overlap cutoff that was used to determine the true positves. It will be used in the file name to make it unique
+- coverage_percent (-c) percentage of overlap cutoff that was used to determine the true positves. It will be used in the file name to make it unique.
 
 Output:
 - venn_diagram.pdf -> a 4 Venn diagram highlighting overlapping predictions of the tool.
 
 This script will generate a 4 Venn diagram for the overlap of true positive predicted genes of the 4 investigated tools.
+
+### prc_plotting.py
+Parameters:
+- input_path: path list of trippels (score, overlap, label) for each tool.
+- species_lable: name of the backterial datasets.
+- save_path: path to save data to.
+- percent_overlap: how much of the prediction should overlap with the Gene and vice verser.
+- experiment: name of subset.
+
+Output:
+- datesetX_prc_overlapScore_subset_lables_.pdf
+
+This scripts generates Precion-Recall-Curves (PRC) for all different tools and overlaps.
+
+### roc_plotting.py
+Parameters:
+- input_path: path list of trippels (score, overlap, label) for each tool.
+- save_path: path to save data to.
+- percent_overlap: how much of the prediction should overlap with the Gene and vice verser.
+- experiment: name of subset.
+
+Output:
+- datesetX_roc_overlapScore_.pdf
+
+This scripts generates Reciver-Operater-Curves (ROC) for all different tools and overlaps.
+
