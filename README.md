@@ -216,26 +216,26 @@ This script will generate a 4 Venn diagram for the overlap of true positive pred
 
 ### prc_plotting.py
 Parameters:
-- input_path: path list of trippels (score, overlap, label) for each tool.
-- species_lable: name of the backterial datasets.
+- input_path: path list of triplets (score, overlap, label) for each tool.
+- species_label: name of the bacterial datasets.
 - save_path: path to save data to.
-- percent_overlap: how much of the prediction should overlap with the Gene and vice verser.
-- experiment: name of subset.
+- percent_overlap: how much of the prediction should overlap with the gene and vice versa.
+- experiment: name of the subset.
 
 Output:
 - datesetX_prc_overlapScore_subset_lables_.pdf
 
-This scripts generates Precion-Recall-Curves (PRC) for all different tools and overlaps.
+This scripts generates Precision-Recall-Curves (PRC) for all different tools and overlaps.
 
 ### roc_plotting.py
 Parameters:
-- input_path: path list of trippels (score, overlap, label) for each tool.
+- input_path: path list of triplets (score, overlap, label) for each tool.
 - save_path: path to save data to.
-- percent_overlap: how much of the prediction should overlap with the Gene and vice verser.
-- experiment: name of subset.
+- percent_overlap: how much of the prediction should overlap with the gene and vice versa.
+- experiment: name of the subset.
 
 Output:
 - datesetX_roc_overlapScore_.pdf
 
-This scripts generates Reciver-Operater-Curves (ROC) for all different tools and overlaps.
+This scripts generates Receiver-Operator-Curves (ROC) for all different tools and overlaps.
 
