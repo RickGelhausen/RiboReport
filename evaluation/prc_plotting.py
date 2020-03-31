@@ -165,10 +165,10 @@ def main():
 #     plt.savefig(save_roc_diag, format='pdf', dpi=300, bbox_inches='tight')
 
     #
-    label_deepribo = 'deepribo AUC: %.2f' % (auc_prc_deepribo)
-    label_ribotish = ('ribotish AUC: %.2f' %  (auc_prc_ribotish))
-    label_reparation = ('reparation AUC: %.2f' %(auc_prc_reparation))
-    label_irsom = ('irsom AUC: %.2f' %  (auc_prc_irsom))
+    label_deepribo = 'DeepRibo AUC: %.2f' % (auc_prc_deepribo)
+    label_ribotish = ('Ribo-TISH AUC: %.2f' %  (auc_prc_ribotish))
+    label_reparation = ('Reparation AUC: %.2f' %(auc_prc_reparation))
+    label_irsom = ('IRSOM AUC: %.2f' %  (auc_prc_irsom))
 
     plt.plot(recall_deepribo, precision_deepribo, color='green', label=label_deepribo)
     plt.plot(recall_reparation, precision_reparation, color='blue', label=label_reparation)

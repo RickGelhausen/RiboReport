@@ -87,7 +87,11 @@ def comput_roc_for_tool(saved_dir, tool):
 
     fpr, tpr, auc = compute_roc(label_list, score_list)
 
-    return fpr, tpr, auc
+    # get optimal treshold:
+    optimal_idx = np.argmin(np.abs(tpr - fpr))
+    optimal_threshold = thresholds[optimal_idx]
+
+    return fpr, tpr, auc, optimal_threshold
 
 def main():
     # store commandline args
@@ -112,10 +116,10 @@ def main():
     # 'deepribo', 'ribotish', 'reparation', 'irsom'
 
 
-    fpr_deepribo, tpr_deepribo, auc_deepribo  = comput_roc_for_tool(experiment_dict_path, 'deepribo')
-    fpr_ribotish, tpr_ribotish, auc_ribotish = comput_roc_for_tool(experiment_dict_path, 'ribotish',)
-    fpr_reparation, tpr_reparation, auc_reparation = comput_roc_for_tool(experiment_dict_path, 'reparation')
-    fpr_irsom, tpr_irsom, auc_irsom = comput_roc_for_tool(experiment_dict_path, 'irsom')
+    fpr_deepribo, tpr_deepribo, auc_deepribo, opt_th_deepribo  = comput_roc_for_tool(experiment_dict_path, 'deepribo')
+    fpr_ribotish, tpr_ribotish, auc_ribotish, opt_th_ribotish = comput_roc_for_tool(experiment_dict_path, 'ribotish',)
+    fpr_reparation, tpr_reparation, auc_reparation, opt_th_reparation = comput_roc_for_tool(experiment_dict_path, 'reparation')
+    fpr_irsom, tpr_irsom, auc_irsom, opt_th_irsom = comput_roc_for_tool(experiment_dict_path, 'irsom')
 
     #print('deepribo AUC: %f' % (auc_deepribo))
     #print('ribotish AUC: %f' %  (auc_ribotish))
@@ -123,10 +127,10 @@ def main():
     #print('irsom AUC: %f' %  (auc_irsom))
 
 
-    label_deepribo = 'deepribo AUC: %f' % (auc_deepribo)
-    label_ribotish = ('ribotish AUC: %f' %  (auc_ribotish))
-    label_reparation = ('reparation AUC: %f' %(auc_reparation))
-    label_irsom = ('irsom AUC: %f' %  (auc_irsom))
+    label_deepribo = ('DeepRibo AUC: %.2f and optTH: %.2f' % (auc_deepribo, opt_th_deepribo))
+    label_reparation = ('Reparation AUC: %.2f and optTH: %.2f' %(auc_reparation, opt_th_reparation))
+    label_ribotish = ('Ribo-TISH AUC: %.2f and optTH: %.2f' %  (auc_ribotish, opt_th_ribotish))
+    label_irsom = ('IRSOM AUC: %.2f and optTH: %.2f' %  (auc_irsom, opt_th_irsom))
 
     #print('++++\nfpr deepribo:')
     #print(fpr_deepribo)
@@ -135,8 +139,8 @@ def main():
     #print(tpr_deepribo)
     #print('+++++++++++++++++++++')
     plt.plot(fpr_deepribo, tpr_deepribo, color='green', label=label_deepribo)
-    plt.plot(fpr_ribotish, tpr_ribotish, color='yellow', label=label_ribotish)
     plt.plot(fpr_reparation, tpr_reparation, color='blue', label=label_reparation)
+    plt.plot(fpr_ribotish, tpr_ribotish, color='yellow', label=label_ribotish)
     plt.plot(fpr_irsom, tpr_irsom, color='red', label=label_irsom)
 
     plt.plot([0, 1], [0, 1], color='darkblue', linestyle='--')
