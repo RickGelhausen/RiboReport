@@ -18,7 +18,7 @@ def compute_roc(labels, scores):
     #print(scores)
     fpr, tpr, thresholds = metrics.roc_curve(labels, scores, pos_label=1)
     auc =metrics.auc(fpr, tpr)
-    return fpr, tpr, auc
+    return fpr, tpr, auc, thresholds
 
 
 def get_list(saved_dir, tool):
@@ -82,14 +82,22 @@ def get_ranks(score_overlap_label_list):
 def comput_roc_for_tool(saved_dir, tool):
 
     score_overlap_label_list = get_list(saved_dir, tool)
+    #print('original scores first entry: %i' %(score_overlap_label_list[0][0]))
+    #print('length original scores: %i' %(len(score_overlap_label_list)))
 
     score_list, label_list = get_ranks(score_overlap_label_list)
+    #print('length scores: %i' %(len(score_list)))
+    #print('length labels: %i' %(len(label_list)))
 
-    fpr, tpr, auc = compute_roc(label_list, score_list)
+
+    fpr, tpr, auc, thresholds = compute_roc(label_list, score_list)
 
     # get optimal treshold:
     optimal_idx = np.argmin(np.abs(tpr - fpr))
+    #print(np.argmin(np.abs(tpr - fpr)))
+    #print('optimal index: %f' %(optimal_idx))
     optimal_threshold = thresholds[optimal_idx]
+    #print('optimal TH: %i' %(optimal_threshold))
 
     return fpr, tpr, auc, optimal_threshold
 
@@ -127,10 +135,15 @@ def main():
     #print('irsom AUC: %f' %  (auc_irsom))
 
 
-    label_deepribo = ('DeepRibo AUC: %.2f and optTH: %.2f' % (auc_deepribo, opt_th_deepribo))
-    label_reparation = ('Reparation AUC: %.2f and optTH: %.2f' %(auc_reparation, opt_th_reparation))
-    label_ribotish = ('Ribo-TISH AUC: %.2f and optTH: %.2f' %  (auc_ribotish, opt_th_ribotish))
-    label_irsom = ('IRSOM AUC: %.2f and optTH: %.2f' %  (auc_irsom, opt_th_irsom))
+    #label_deepribo = ('DeepRibo AUC: %.2f and optTH: %i' % (auc_deepribo, opt_th_deepribo))
+    #label_reparation = ('Reparation AUC: %.2f and optTH: %i' %(auc_reparation, opt_th_reparation))
+    #label_ribotish = ('Ribo-TISH AUC: %.2f and optTH: %i' %  (auc_ribotish, opt_th_ribotish))
+    #label_irsom = ('IRSOM AUC: %.2f and optTH: %i' %  (auc_irsom, opt_th_irsom))
+
+    label_deepribo = ('DeepRibo AUC: %.2f' % (auc_deepribo))
+    label_reparation = ('Reparation AUC: %.2f' %(auc_reparation))
+    label_ribotish = ('Ribo-TISH AUC: %.2f' %  (auc_ribotish))
+    label_irsom = ('IRSOM AUC: %.2f' %  (auc_irsom))
 
     #print('++++\nfpr deepribo:')
     #print(fpr_deepribo)

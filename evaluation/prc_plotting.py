@@ -95,8 +95,15 @@ def get_ranks(score_overlap_label_list, tool):
 def comput_roc_for_tool(saved_dir, tool):
 
     score_overlap_label_list = get_list(saved_dir, tool)
+    #print('score list of %s'%(tool))
+    sort_list = sorted(score_overlap_label_list, key=itemgetter(0), reverse=True)
+    #print(sort_list[0:100])
 
     score_list, label_list, base = get_ranks(score_overlap_label_list, tool)
+    #print('score ranked list of %s'%(tool))
+    #print(score_list[0:100])
+    #print('lable ranked list of %s'%(tool))
+    #print(label_list[0:100])
 
     precision, recall, thresholds, auc_prc = compute_prc(label_list, score_list)
 
@@ -165,6 +172,21 @@ def main():
 #     plt.savefig(save_roc_diag, format='pdf', dpi=300, bbox_inches='tight')
 
     #
+
+    # plot title Escherichia
+    if species == 'EC':
+        title = 'Escherichia  coli'
+    elif species == 'LM':
+        title = 'Listeria  monocytogenes'
+    elif species == 'PA':
+        title = 'Pseudomonas  aeroginosa'
+    elif species == 'ST':
+        title = 'Salmonella typhimurium'
+    else:
+        print('Error: unknown species label')
+        title = 'unknown species label'
+
+
     label_deepribo = 'DeepRibo AUC: %.2f' % (auc_prc_deepribo)
     label_ribotish = ('Ribo-TISH AUC: %.2f' %  (auc_prc_ribotish))
     label_reparation = ('Reparation AUC: %.2f' %(auc_prc_reparation))
@@ -181,7 +203,7 @@ def main():
     plt.xticks(fontsize=12, rotation=30)
     plt.yticks(fontsize=12)
     #plt.title('Precision Recall Characteristic (prc) Curve ' + species)
-    plt.title(species)
+    plt.title(title)
 
     #fontsize=20
     plt.legend(prop={'size': 14})
