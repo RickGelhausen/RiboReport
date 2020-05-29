@@ -175,13 +175,13 @@ def main():
 
     # plot title Escherichia
     if species == 'EC':
-        title = 'Escherichia  coli'
+        title = 'E. coli'
     elif species == 'LM':
-        title = 'Listeria  monocytogenes'
+        title = 'L. monocytogenes'
     elif species == 'PA':
-        title = 'Pseudomonas  aeroginosa'
+        title = 'P. aeruginosa'
     elif species == 'ST':
-        title = 'Salmonella typhimurium'
+        title = 'S. Typhimurium'
     else:
         print('Error: unknown species label')
         title = 'unknown species label'
