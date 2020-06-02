@@ -1,4 +1,10 @@
+Mass spectrometry data was retrieved from the supplemental materials of published data and converted to .gff format to allow comparison with the benchmark set.
+
+Following are the exact conversion steps for each dataset:
+
 # Escherichia coli:
+
+Published proteomics data [Schmidt et al](https://doi.org/10.1038/nbt.3418) was obtained from [Supplementary Table S9](https://static-content.springer.com/esm/art\%3A10.1038\%2Fnbt.3418/MediaObjects/41587_2016_BFnbt3418_MOESM18_ESM.xlsx) by filtering column C with non-zero values of column Q of the cited manuscript.
 
 Dataset2 was selected, because it is based on multiple biological replicates (see Figure S4)
 
@@ -21,12 +27,23 @@ rsync -auv fr_fe1017@login02.binac.uni-tuebingen.de:/beegfs/work/fr_fe1017/rt/SP
 
 # Pseudomonas aeroginosa:
 
+Published proteomics data [Grady et al](https://dx.doi.org/10.1186%2Fs12864-017-3708-4) was obtained from Supplementary table [S21-S24](https://dx.doi.org/10.1186%2Fs12864-017-3708-4) of the cited manuscript.
+
 Table saved as pseudomonas_aeroginosa/pseudomonas_aeroginosa_masspec.tsv
   rsync -auv fr_fe1017@login02.binac.uni-tuebingen.de:/beegfs/work/fr_fe1017/rt/SPP2002/bm06/annotation/annotation.gtf pseudomonas_aeroginosa/annotation.gtf
 
   ./filter.py --filter_tag "locus_tag" --feature_type "CDS" --in_gff_filepath pseudomonas_aeroginosa/annotation.gtf --in_locus_tag_filepath pseudomonas_aeroginosa/pseudomonas_aeroginosa_masspec.tsv > pseudomonas_aeroginosa_masspec.gff
 
 # Listeria monocytogenes:
+
+Published proteomics data [Impens et al](https://doi.org/10.1038/nmicrobiol.2017.5) was obtained from Supplementary Tables
+[S2](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S2.xlsx),
+[S3](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S3.xlsx),
+[S4](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S4.xlsx),
+[S5](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S5.xlsx),
+[S6](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S6.xlsx),
+[S7](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S7.xlsx),
+[S8](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S8.xlsx)
 
   wget https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S2.xlsx
   
@@ -75,6 +92,8 @@ Table saved as:
 
 
 # Salmonella enterica serovar Typhimurium strain 14028s:
+
+Published proteomics data [Yoon et al](https://dx.doi.org/10.1186%2F1752-0509-5-100) was obtained from Supplementary table [S1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3213010/bin/1752-0509-5-100-S1.XLSX) of the cited manuscript.
 
 Extracted first column with present protein ids
 
