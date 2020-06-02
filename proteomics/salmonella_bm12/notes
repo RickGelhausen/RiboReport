@@ -1,0 +1,16 @@
+Wild type Salmonella enterica serovar Typhimurium strain 14028s
+isolated first column with present protein ids
+changed identifiers to be compatible
+sed -i 's/STM/STM14_/g' 1752-0509-5-100-S1.tsv
+removed entries only representing peptides
+PSLT011
+PSLT028
+PSLT031
+PSLT037
+PSLT038
+PSLT039
+PSLT046
+PSLT052
+PSLT053
+PSLT103
+
