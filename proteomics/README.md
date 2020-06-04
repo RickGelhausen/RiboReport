@@ -23,8 +23,6 @@ Remove empty lines and values that have 0 proteins/cell remove second column aft
   
 cut -f1 ecoli_massspec_nonzero.tsv > ecoli_massspec.tsv
 
-rsync -auv fr_fe1017@login02.binac.uni-tuebingen.de:/beegfs/work/fr_fe1017/rt/SPP2002/bm01/annotation/annotation.gtf
-
 ./filter.py --in_gff_filepath escherichia_coli/annotation.gtf --feature_type "CDS" --filter_tag gene --in_locus_tag_filepath escherichia_coli/ecoli_massspec.tsv > ecoli_masspec.gff
 ```
 
@@ -34,7 +32,6 @@ Published proteomics data [Grady et al](https://dx.doi.org/10.1186%2Fs12864-017-
 
 ```
 Table saved as pseudomonas_aeroginosa/pseudomonas_aeroginosa_masspec.tsv
-  rsync -auv fr_fe1017@login02.binac.uni-tuebingen.de:/beegfs/work/fr_fe1017/rt/SPP2002/bm06/annotation/annotation.gtf pseudomonas_aeroginosa/annotation.gtf
 
   ./filter.py --filter_tag "locus_tag" --feature_type "CDS" --in_gff_filepath pseudomonas_aeroginosa/annotation.gtf --in_locus_tag_filepath pseudomonas_aeroginosa/pseudomonas_aeroginosa_masspec.tsv > pseudomonas_aeroginosa_masspec.gff
 ```
@@ -91,8 +88,6 @@ get name colum, drop header
   cat S*.tsv >> listeria_monocytogenes_massspec.tsv
 
 Table saved as: 
-
-  rsync -auv fr_fe1017@login02.binac.uni-tuebingen.de:/beegfs/work/fr_fe1017/rt/SPP2002/bm03/annotation/annotation.gtf listeria_monocytogenes/annotation.gff
 
 ./filter.py --feature_type "gene"  --filter_tag "locus_tag" --in_gff_filepath listeria_monocytogenes/annotation.gff --in_locus_tag_filepath listeria_monocytogenes/listeria_monocytogenes_massspec.tsv > listeria_monocytogenes_masspec.gff
 ```
