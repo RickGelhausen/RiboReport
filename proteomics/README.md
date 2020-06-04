@@ -23,7 +23,7 @@ Remove empty lines and values that have 0 proteins/cell remove second column aft
   
 cut -f1 ecoli_massspec_nonzero.tsv > ecoli_massspec.tsv
 
-./filter.py --in_gff_filepath escherichia_coli/annotation.gtf --feature_type "CDS" --filter_tag gene --in_locus_tag_filepath escherichia_coli/ecoli_massspec.tsv > ecoli_masspec.gff
+./filter.py --in_gff_filepath ../data/escherichia_coli/annotation.gtf --feature_type "CDS" --filter_tag gene --in_locus_tag_filepath escherichia_coli/ecoli_massspec.tsv > ecoli_masspec.gff
 ```
 
 ## Pseudomonas aeroginosa:
@@ -33,7 +33,7 @@ Published proteomics data [Grady et al](https://dx.doi.org/10.1186%2Fs12864-017-
 ```
 Table saved as pseudomonas_aeroginosa/pseudomonas_aeroginosa_masspec.tsv
 
-  ./filter.py --filter_tag "locus_tag" --feature_type "CDS" --in_gff_filepath pseudomonas_aeroginosa/annotation.gtf --in_locus_tag_filepath pseudomonas_aeroginosa/pseudomonas_aeroginosa_masspec.tsv > pseudomonas_aeroginosa_masspec.gff
+  ./filter.py --filter_tag "locus_tag" --feature_type "CDS" --in_gff_filepath ../data/pseudomonas_aeroginosa/annotation.gtf --in_locus_tag_filepath pseudomonas_aeroginosa/pseudomonas_aeroginosa_masspec.tsv > pseudomonas_aeroginosa_masspec.gff
 ```
 
 ## Listeria monocytogenes:
@@ -89,7 +89,7 @@ get name colum, drop header
 
 Table saved as: 
 
-./filter.py --feature_type "gene"  --filter_tag "locus_tag" --in_gff_filepath listeria_monocytogenes/annotation.gff --in_locus_tag_filepath listeria_monocytogenes/listeria_monocytogenes_massspec.tsv > listeria_monocytogenes_masspec.gff
+./filter.py --feature_type "gene"  --filter_tag "locus_tag" --in_gff_filepath ../data/listeria_monocytogenes/annotation.gff --in_locus_tag_filepath listeria_monocytogenes/listeria_monocytogenes_massspec.tsv > listeria_monocytogenes_masspec.gff
 ```
 
 ## Salmonella enterica serovar Typhimurium strain 14028s:
@@ -115,4 +115,6 @@ PSLT046
 PSLT052
 PSLT053
 PSLT103
+
+ 	./masspec_from_locus_tags.py -a ../data/salmonella_enterica/annotation.gtf -m salmonella_enterica/salmonella_1752-0509-5-100-S1.tsv  -o salmonella_enterica/salmonella_masspec.gff
 ```
