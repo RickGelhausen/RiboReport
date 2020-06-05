@@ -21,9 +21,9 @@ Remove empty lines and values that have 0 proteins/cell remove second column aft
 
   cat ecoli_massspec_all.tsv | grep -v -P "\t0" > ecoli_massspec_nonzero.tsv
   
-cut -f1 ecoli_massspec_nonzero.tsv > ecoli_massspec.tsv
+  cut -f1 ecoli_massspec_nonzero.tsv > ecoli_massspec.tsv
 
-./filter.py --in_gff_filepath ../data/escherichia_coli/annotation.gtf --feature_type "CDS" --filter_tag gene --in_locus_tag_filepath escherichia_coli/ecoli_massspec.tsv > ecoli_masspec.gff
+  ./filter.py --in_gff_filepath ../data/escherichia_coli/annotation.gtf --feature_type "CDS" --filter_tag gene --in_locus_tag_filepath escherichia_coli/ecoli_massspec.tsv > ecoli_masspec.gff
 ```
 
 ## Pseudomonas aeroginosa:
@@ -48,6 +48,7 @@ Published proteomics data [Impens et al](https://doi.org/10.1038/nmicrobiol.2017
 [S8](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S8.xlsx)
 
 ```
+# Retrieve massspec tables
   wget https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S2.xlsx
   
   wget https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S3.xlsx
@@ -62,11 +63,11 @@ Published proteomics data [Impens et al](https://doi.org/10.1038/nmicrobiol.2017
   
   wget https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5802382/bin/NIHMS75486-supplement-Supplementary_table_S8.xlsx
   
-convert all to csv
+# Convert all to csv
 
   libreoffice --headless --convert-to csv --outdir somedir *.xls
 
-get name colum, drop header
+# Get name colum, drop header
 
   cut -d ',' -f1 NIHMS75486-supplement-Supplementary_table_S2.csv | tail -n +3 > S2.tsv
   
@@ -82,14 +83,14 @@ get name colum, drop header
   
   cut -d ',' -f1 NIHMS75486-supplement-Supplementary_table_S8.csv | tail -n +3 > S8.tsv
   
-#S4 and S5 needed removal of inline comments, empty lines, S2 needs removal of empty line
+# S4 and S5 needed removal of inline comments, empty lines, S2 needs removal of empty line
 #concat all tsv
 
   cat S*.tsv >> listeria_monocytogenes_massspec.tsv
 
-Table saved as: 
+# Table saved as: 
 
-./filter.py --feature_type "gene"  --filter_tag "locus_tag" --in_gff_filepath ../data/listeria_monocytogenes/annotation.gff --in_locus_tag_filepath listeria_monocytogenes/listeria_monocytogenes_massspec.tsv > listeria_monocytogenes_masspec.gff
+  ./filter.py --feature_type "gene"  --filter_tag "locus_tag" --in_gff_filepath ../data/listeria_monocytogenes/annotation.gff --in_locus_tag_filepath listeria_monocytogenes/listeria_monocytogenes_massspec.tsv > listeria_monocytogenes_masspec.gff
 ```
 
 ## Salmonella enterica serovar Typhimurium strain 14028s:
@@ -97,14 +98,13 @@ Table saved as:
 Published proteomics data [Yoon et al](https://dx.doi.org/10.1186%2F1752-0509-5-100) was obtained from Supplementary table [S1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3213010/bin/1752-0509-5-100-S1.XLSX) of the cited manuscript.
 
 ```
-Extracted first column with protein ids currently used by NCBI
+# Extracted first column with protein ids currently used by NCBI
 
-changed identifiers to be compatible
+# Changed identifiers to be compatible
 
-sed -i 's/STM/STM14_/g' 1752-0509-5-100-S1.tsv
+  sed -i 's/STM/STM14_/g' 1752-0509-5-100-S1.tsv
 
-removed entries only representing peptides
-
+# Removed entries only representing peptides
 PSLT011
 PSLT028
 PSLT031
@@ -116,5 +116,5 @@ PSLT052
 PSLT053
 PSLT103
 
- 	./masspec_from_locus_tags.py -a ../data/salmonella_enterica/annotation.gtf -m salmonella_enterica/salmonella_1752-0509-5-100-S1.tsv  -o salmonella_enterica/salmonella_masspec.gff
+  ./masspec_from_locus_tags.py -a ../data/salmonella_enterica/annotation.gtf -m salmonella_enterica/1752-0509-5-100-S1.tsv -o salmonella_enterica/salmonella_masspec.gff
 ```
