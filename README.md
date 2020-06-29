@@ -22,7 +22,7 @@ For running the workflow, several input files are required:
 - annotation.gtf (in the data folder)
 - samples.tsv (in the data folder)
 - config.yaml (in the data folder)
-- fastq files and bigwig files available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514, token:ofkbusuqzbcvfip)
+- fastq files (and bigwig files) available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514, token:ofkbusuqzbcvfip)
 
 ### Workflow
 ---
@@ -31,7 +31,7 @@ Even though `snakemake` workflows are executable locally, we do not advise this 
 
 ---
 
-To run the provided `snakemake` workflow, follow the example for `salmonella_enterica` below below:
+To run the provided `snakemake` workflow, follow the example for `salmonella_enterica` below:
 
 #### 1. Setup the workflow folder and download the workflow:
 
@@ -78,7 +78,7 @@ We just have to download DeepRibo itself.
 
 ~~~~
 wget https://github.com/Biobix/DeepRibo/archive/v1.1.zip
-unzip v1.1.zip; mv DeepRibo-1.1 DeepRibo; rm v1.1.zip; cd ..
+unzip v1.1.zip; mv DeepRibo-1.1 DeepRibo; rm v1.1.zip; mv DeepRibo tools;
 ~~~~
 
 #### 3. Fetch the annotation and genome files:
