@@ -1,18 +1,5 @@
 from pathlib import Path
 
-rule maplinkMappedReads:
-    input:
-        bam=expand("maplink/{method}-{condition}-{replicate}.bam", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
-        bamindex=expand("maplink/{method}-{condition}-{replicate}.bam.bai", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"])
-    output:
-        mapped="readcounts/bam_mapped_reads.txt",
-        length="readcounts/bam_average_read_lengths.txt"
-    conda:
-        "../envs/pytools.yaml"
-    threads: 1
-    shell:
-        "mkdir -p readcounts; HRIBO/scripts/total_mapped_reads.py -b {input.bam} -m {output.mapped} -l {output.length}"
-        
 rule reversecomplementGenome:
     input:
         rules.retrieveGenome.output
@@ -78,7 +65,7 @@ rule globalwig:
         bam=rules.maplink.output,
         genomeSize=rules.genomeSize.output,
         bamIndex=rules.bamindex.output,
-        stats="readcounts/bam_mapped_reads.txt"
+        stats="auxiliary/total_mapped_reads.txt"
     output:
         fwd="globaltracks/raw/{method}-{condition}-{replicate}.raw.forward.wig",
         rev="globaltracks/raw/{method}-{condition}-{replicate}.raw.reverse.wig",
@@ -87,6 +74,8 @@ rule globalwig:
         fmin="globaltracks/min/{method}-{condition}-{replicate}.min.forward.wig",
         rmin="globaltracks/min/{method}-{condition}-{replicate}.min.reverse.wig"
     threads: 1
+    conda:
+        "../envs/coverage.yaml"
     params:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
@@ -170,7 +159,7 @@ rule centeredwig:
         bam=rules.maplink.output,
         genomeSize=rules.genomeSize.output,
         bamIndex=rules.bamindex.output,
-        stats="readcounts/bam_mapped_reads.txt"
+        stats="auxiliary/total_mapped_reads.txt"
     output:
         fwd="centeredtracks/raw/{method}-{condition}-{replicate}.raw.forward.wig",
         rev="centeredtracks/raw/{method}-{condition}-{replicate}.raw.reverse.wig",
@@ -179,6 +168,8 @@ rule centeredwig:
         fmin="centeredtracks/min/{method}-{condition}-{replicate}.min.forward.wig",
         rmin="centeredtracks/min/{method}-{condition}-{replicate}.min.reverse.wig"
     threads: 1
+    conda:
+        "../envs/coverage.yaml"
     params:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
@@ -262,7 +253,7 @@ rule fiveprimewig:
         bam=rules.maplink.output,
         genomeSize=rules.genomeSize.output,
         bamIndex=rules.bamindex.output,
-        stats="readcounts/bam_mapped_reads.txt"
+        stats="auxiliary/total_mapped_reads.txt"
     output:
         fwd="fiveprimetracks/raw/{method}-{condition}-{replicate}.raw.forward.wig",
         rev="fiveprimetracks/raw/{method}-{condition}-{replicate}.raw.reverse.wig",
@@ -271,6 +262,8 @@ rule fiveprimewig:
         fmin="fiveprimetracks/min/{method}-{condition}-{replicate}.min.forward.wig",
         rmin="fiveprimetracks/min/{method}-{condition}-{replicate}.min.reverse.wig"
     threads: 1
+    conda:
+        "../envs/coverage.yaml"
     params:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
@@ -354,7 +347,7 @@ rule threeprimewig:
         bam=rules.maplink.output,
         genomeSize=rules.genomeSize.output,
         bamIndex=rules.bamindex.output,
-        stats="readcounts/bam_mapped_reads.txt"
+        stats="auxiliary/total_mapped_reads.txt"
     output:
         fwd="threeprimetracks/raw/{method}-{condition}-{replicate}.raw.forward.wig",
         rev="threeprimetracks/raw/{method}-{condition}-{replicate}.raw.reverse.wig",
@@ -363,6 +356,8 @@ rule threeprimewig:
         fmin="threeprimetracks/min/{method}-{condition}-{replicate}.min.forward.wig",
         rmin="threeprimetracks/min/{method}-{condition}-{replicate}.min.reverse.wig"
     threads: 1
+    conda:
+        "../envs/coverage.yaml"
     params:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
