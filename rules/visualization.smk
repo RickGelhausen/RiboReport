@@ -60,36 +60,12 @@ rule rbsTrack:
     shell:
         "mkdir -p tracks; RiboReport/scripts/motif2GFF3.py --input_genome_fasta_filepath {input.fwd} --input_reverse_genome_fasta_filepath {input.rev} --motif_string AAGG --output_gff3_filepath {output}"
 
-
-rule readcountstats:
-    input:
-        bam=rules.maplink.output,
-        genomeSize=rules.genomeSize.output,
-        bamIndex=rules.bamindex.output
-    output:
-        stat="maplink/{method}-{condition}-{replicate}.readstats"
-    threads: 1
-    shell:
-        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p tracks; readstats.py --bam_path {input.bam} > {output.stat}; "
-
-rule minreadcounts:
-    input:
-        stats=expand("maplink/{method}-{condition}-{replicate}.readstats", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"])
-    output:
-        minreads="maplink/minreads.txt"
-    threads: 1
-    params:
-        prefix=lambda wildcards, output: (os.path.splitext(output[0])[0])
-    shell:
-        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p tracks; minreads.py {input.stats} > {output.minreads}; "
-
 rule globalwig:
     input:
         bam=rules.maplink.output,
         genomeSize=rules.genomeSize.output,
         bamIndex=rules.bamindex.output,
-        stats="maplink/{method}-{condition}-{replicate}.readstats",
-        min="maplink/minreads.txt"
+        stats="maplink/{method}-{condition}-{replicate}.readstats"
     output:
         fwd="globaltracks/raw/{method}-{condition}-{replicate}.raw.forward.wig",
         rev="globaltracks/raw/{method}-{condition}-{replicate}.raw.reverse.wig",
@@ -102,7 +78,7 @@ rule globalwig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p globaltracks; mkdir -p globaltracks/raw; mkdir -p globaltracks/mil; mkdir -p globaltracks/min; coverage.py --coverage_style global --bam_path {input.bam} --wiggle_file_path globaltracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
+       "mkdir -p globaltracks; mkdir -p globaltracks/raw; mkdir -p globaltracks/mil; mkdir -p globaltracks/min; RiboReport/scripts/mapping.py --mapping_style global --bam_path {input.bam} --wiggle_file_path globaltracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix};"
 
 rule globalwigtobigwigrawforward:
     input:
@@ -195,7 +171,7 @@ rule centeredwig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p centeredtracks; mkdir -p centeredtracks/raw; mkdir -p centeredtracks/mil; mkdir -p centeredtracks/min; coverage.py --coverage_style centered --bam_path {input.bam} --wiggle_file_path centeredtracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
+         "mkdir -p centeredtracks; mkdir -p centeredtracks/raw; mkdir -p centeredtracks/mil; mkdir -p centeredtracks/min; RiboReport/scripts/mapping.py --mapping_style centered --bam_path {input.bam} --wiggle_file_path centeredtracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix};"
 
 rule centeredwigtobigwigrawforward:
     input:
@@ -288,7 +264,7 @@ rule fiveprimewig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p fiveprimetracks; mkdir -p fiveprimetracks/raw; mkdir -p fiveprimetracks/mil; mkdir -p fiveprimetracks/min; coverage.py --coverage_style first_base_only --bam_path {input.bam} --wiggle_file_path fiveprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
+        "mkdir -p fiveprimetracks; mkdir -p fiveprimetracks/raw; mkdir -p fiveprimetracks/mil; mkdir -p fiveprimetracks/min; RiboReport/scripts/mapping.py --mapping_style first_base_only --bam_path {input.bam} --wiggle_file_path fiveprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix};"
 
 rule fiveprimewigtobigwigrawforward:
     input:
@@ -381,7 +357,7 @@ rule threeprimewig:
         prefix=lambda wildcards, output: (Path(output[0]).stem).strip('.raw.forward.wig'),
         prefixpath=lambda wildcards, output: (os.path.dirname(output.fwd))
     shell:
-        "source activate /beegfs/work/fr_fe1017/miniconda3/envs/coverage; mkdir -p threeprimetracks; mkdir -p threeprimetracks/raw; mkdir -p threeprimetracks/mil; mkdir -p threeprimetracks/min; coverage.py --coverage_style last_base_only --bam_path {input.bam} --wiggle_file_path threeprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix} --min_no_of_aligned_reads_file_path {input.min}; "
+        "mkdir -p threeprimetracks; mkdir -p threeprimetracks/raw; mkdir -p threeprimetracks/mil; mkdir -p threeprimetracks/min; RiboReport/scripts/mapping.py --mapping_style last_base_only --bam_path {input.bam} --wiggle_file_path threeprimetracks/ --no_of_aligned_reads_file_path {input.stats} --library_name {params.prefix};"
 
 rule threeprimewigtobigwigrawforward:
     input:
