@@ -23,7 +23,7 @@ Each of the organims folder contains:
 - labels_[organism].gff: all genes of the annotation but including the labeling information, expr=+ or expr=-,  in coloum 9 
 - samples.tsv: the pipeline sample file containing the samples used for each organism
 - misc_[organism].zip: contaning the preprocessed labeling information of the Ribo-Seq and the MS data. During the processing, different subsets were generated. 
-These different sets are: CDS, ORFs part of operons (operons_intersect), ORFs not part of operons (operons_complement), sORFs (samllORFs)
+These different sets are: CDS, ORFs part of operons (operons_intersect), ORFs not part of operons (operons_complement), sORFs (smallORFs)
 
 ### Details for the content of the misc_[organism].zip
 - [subset]_labels_neg.gff
