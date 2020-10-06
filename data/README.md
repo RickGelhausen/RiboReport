@@ -3,13 +3,13 @@
 ## Sequencing data sources:
 Retived 4 different datasets for the construction of our benchmark dataset.
 1. E. coli
-[Ribo-seq and RNA-seq: GSE131514](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514)
+[Ribo-seq and RNA-seq: GSE131514](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514) (e.coli-WT-1)
 2. Listeria monocytogenes
-[Ribo-seq: SAMEA3864955](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864955) and [RNA-seq: SAMEA3864956](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864956) datasets
+[Ribo-seq: SAMEA3864955](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864955) and [RNA-seq: SAMEA3864956](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864956) datasets (listeria-CTRL-1)
 3. Pseudomonas aeruginosa 
-[Ribo-seq and RNA-seq: SAMN06617371](www.ncbi.nlm.nih.gov/biosample/SAMN06617371)
+[Ribo-seq and RNA-seq: SAMN06617371](www.ncbi.nlm.nih.gov/biosample/SAMN06617371) (pseudomonas-A-1)
 4. Salmonella enterica serovar Typhimurium
-[Ribo-seq](https://www.ncbi.nlm.nih.gov/sra/SRX3456030[accn]) and [RNA-seq](https://www.ncbi.nlm.nih.gov/sra/SRX3456038[accn])
+[Ribo-seq](https://www.ncbi.nlm.nih.gov/sra/SRX3456030[accn]) and [RNA-seq](https://www.ncbi.nlm.nih.gov/sra/SRX3456038[accn]) (salmonella-WT-3)
 
 ## Labeling
 Using the annotation, all annotated ORFs were manually inspected and labeled as translated or not translated for each Ribo-seq dataset. The manual labels provide use with a ground truth dataset which can be used to benchmark Ribo-seq tools.
