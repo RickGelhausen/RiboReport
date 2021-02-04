@@ -1,7 +1,7 @@
 <img src="RiboReport.png" width="661">
 
 # RiboReport21
-This repository contains all code to recreate the contents of "RiboReport '20 - Benchmarking ribosome-profiling based identification of open reading frames in bacteria". Following are descriptions of the required steps.
+This repository contains all code to recreate the contents of "RiboReport '21 - Benchmarking ribosome-profiling based identification of open reading frames in bacteria". Following are descriptions of the required steps.
 
 | WARNING: This documentation will be updated as soon as the sequencing data for the *escherichia_coli* is made public! |
 | --- |
@@ -96,7 +96,7 @@ conda activate operons
 ./RiboReport/scripts/operons.py --in_gff_filepath RiboReport/data/salmonella_enterica/annotation.gtf > RiboReport/data/salmonella_enterica/operons.gtf ;
 ~~~~
 
-#### 6. Retrieve the sequencing data:
+#### 5. Retrieve the sequencing data:
 
 There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/).
 
