@@ -37,8 +37,8 @@ To run the provided `snakemake` workflow, follow the example for `salmonella_ent
 
 ~~~~
 mkdir salmonella_enterica; cd salmonella_enterica;
-wget https://github.com/RickGelhausen/RiboReport/archive/2020.tar.gz;
-tar -xzf 2020.tar.gz; mv RiboReport-2020 RiboReport; rm 2020.tar.gz;
+wget https://github.com/RickGelhausen/RiboReport/archive/2021.tar.gz;
+tar -xzf 2021.tar.gz; mv RiboReport-2021 RiboReport; rm 2021.tar.gz;
 ~~~~
 
 #### 2. Required tools
