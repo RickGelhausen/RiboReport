@@ -96,7 +96,7 @@ conda activate operons
 ./RiboReport/scripts/operons.py --in_gff_filepath RiboReport/data/salmonella_enterica/annotation.gtf > RiboReport/data/salmonella_enterica/operons.gtf ;
 ~~~~
 
-#### 5. Retrieve the sequencing data:
+#### 6. Retrieve the sequencing data:
 
 There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/).
 
@@ -121,7 +121,7 @@ bash download.sh
 
 This will download all required fastq files into a fastq folder.
 
-#### 5. Run the snakemake workflow:
+#### 6. Run the snakemake workflow:
 
 In order to run `snakemake`, the creation of a conda environment is required. First install [miniconda3](https://docs.conda.io/en/latest/miniconda.html).
 
