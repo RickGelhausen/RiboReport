@@ -17,7 +17,7 @@ Using the annotation, all annotated ORFs were manually inspected and labeled as 
 
 ## Data for each organism
 Each of the organims folder contains:
-- annotation.gtf: NCBI annotation used for manual labeling
+- annotation.gff: NCBI annotation used for manual labeling
 - config.yaml: the pipeline config file containing the adapter sequence
 - download.sh: sra-tools download script to download the samples used in the study.
 - [organism]_masspec.gff: gff file created from the proteomics data found in the proteomics folder.
@@ -32,5 +32,5 @@ These different sets are: CDS, ORFs part of operons (operons_intersect), ORFs no
 - [subset]_labels_neg.gff: negatively labeled genes that overlap with a given subset
 - [subset]_masspec_pos.gff: genes detected via massspec, that overlap with a given subset
 - [subset]_masspec_neg.gff: genes not detected via massspec, that overlap with a given subset
-- predicitons.gff: all predictions made by the different tools
-- [organism]_list_of_operons.gtf: a list of operons for a given organism
+- predicitons.gtf: all predictions made by the different tools
+- [organism]_list_of_operons.gff: a list of operons for a given organism
