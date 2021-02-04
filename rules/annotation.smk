@@ -45,7 +45,7 @@ rule featurecountAnnotation:
 
 rule enrichAnnotation:
     input:
-        "annotation/annotation.gtf"
+        "annotation/annotation.gff"
     output:
         "auxiliary/enriched_annotation.gtf"
     conda:

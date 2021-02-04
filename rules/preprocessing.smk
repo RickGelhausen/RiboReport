@@ -9,9 +9,9 @@ rule retrieveGenome:
 
 rule retrieveAnnotation:
     input:
-        "annotation.gtf"
+        "annotation.gff"
     output:
-        "annotation/annotation.gtf"
+        "annotation/annotation.gff"
     threads: 1
     shell:
-        "mkdir -p annotation; mv annotation.gtf annotation/"
+        "mkdir -p annotation; mv annotation.gff annotation/"
