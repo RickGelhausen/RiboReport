@@ -88,7 +88,15 @@ cp RiboReport/data/salmonella_enterica/annotation.gtf . ;
 cp RiboReport/data/salmonella_enterica/genome.fa . ;
 ~~~~
 
-#### 4. Retrieve the sequencing data:
+#### 4. Extract operon regions from the annotation:
+
+~~~~
+conda create -n operons -c conda-forge -c bioconda interlap
+conda activate operons
+./RiboReport/scripts/operons.py --in_gff_filepath RiboReport/data/salmonella_enterica/annotation.gtf > RiboReport/data/salmonella_enterica/operons.gtf ;
+~~~~
+
+#### 5. Retrieve the sequencing data:
 
 There are many ways to download fastq files with SRA. For more information about downloading please have a look at the following guide: [Downloading SRA data using command line utilities](https://www.ncbi.nlm.nih.gov/books/NBK158899/).
 
