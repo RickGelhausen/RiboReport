@@ -90,19 +90,6 @@ rule mergeConditions:
     shell:
         "mkdir -p tracks; cat {input.ribotish} > {output}.unsorted; cat {input.reparation} >> {output}.unsorted; cat {input.deepribo} >> {output}.unsorted; cat {input.irsom} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
 
-rule mergeConditions:
-    input:
-        ribotish="tracks/{condition}.ribotish.gff",
-        reparation="tracks/{condition}.reparation.gff",
-        deepribo="tracks/{condition}.deepribo.gff",
-    output:
-        report("tracks/{condition, [a-zA-Z]+}.merged.gff", caption="../report/novelmerged.rst", category="Novel ORFs")
-    conda:
-        "../envs/bedtools.yaml"
-    threads: 1
-    shell:
-        "mkdir -p tracks; cat {input.ribotish} > {output}.unsorted; cat {input.reparation} >> {output}.unsorted; cat {input.deepribo} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
-
 rule mergeAll:
     input:
         mergedGff=expand("tracks/{condition}.merged.gff", zip, condition=set(samples["condition"]))
