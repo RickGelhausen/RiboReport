@@ -45,20 +45,20 @@ rule featurecountAnnotation:
 
 rule enrichAnnotation:
     input:
-        "annotation/annotation.gff"
+        annotation=rules.checkAnnotation.output
     output:
-        "auxiliary/enriched_annotation.gtf"
+        "auxiliary/enriched_annotation.gff"
     conda:
         "../envs/mergetools.yaml"
     threads: 1
     shell:
-        "mkdir -p auxiliary; RiboReport/scripts/enrich_annotation.py -a {input} -o {output}"
+        "mkdir -p auxiliary; RiboReport/scripts/enrich_annotation.py -a {input.annotation} -o {output}"
 
 rule unambigousAnnotation:
     input:
-        "auxiliary/enriched_annotation.gtf"
+        "auxiliary/enriched_annotation.gff"
     output:
-        "auxiliary/unambigous_annotation.gtf"
+        "auxiliary/unambigous_annotation.gff"
     conda:
         "../envs/mergetools.yaml"
     threads: 1
@@ -67,3 +67,4 @@ rule unambigousAnnotation:
         mkdir -p auxiliary;
         awk -F'\\t' '/^[^#]/ {{printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\t%s\\tID=uid%s;\\n", $1, $2, $3, $4, $5, $6, $7, $8, NR-1}}' {input} > {output}
         """
+

@@ -77,7 +77,7 @@ rule fastqcrrnafilter:
 
 rule featurescounts:
     input:
-        annotation={rules.featurecountAnnotation.output},
+        annotation={rules.unambigousAnnotation.output},
         bam="bam/{method}-{condition}-{replicate}.bam"
     output:
         txt="qc/all/{method}-{condition}-{replicate}.txt",
@@ -85,11 +85,20 @@ rule featurescounts:
         "../envs/subread.yaml"
     threads: 8
     shell:
-        "mkdir -p qc/all; featureCounts -T {threads} -t gene -g gene_id -a {input.annotation} -o {output.txt} {input.bam}"
+        """
+        mkdir -p qc/all;
+        column3=$(cut -f3 auxiliary/unambigous_annotation.gff | sort | uniq)
+        if [[ " ${{column3[@]}} " =~ "gene" ]];
+        then
+            featureCounts -T {threads} -t gene -g ID -a {input.annotation} -o {output.txt} {input.bam};
+        else
+            touch {output.txt};
+        fi
+        """
 
 rule trnafeaturescounts:
     input:
-        annotation={rules.featurecountAnnotation.output},
+        annotation={rules.unambigousAnnotation.output},
         bam="bam/{method}-{condition}-{replicate}.bam"
     output:
         txt="qc/trnainall/{method}-{condition}-{replicate}.txt",
@@ -97,11 +106,20 @@ rule trnafeaturescounts:
         "../envs/subread.yaml"
     threads: 8
     shell:
-        "mkdir -p qc/trnainall; featureCounts -T {threads} -t tRNA -g gene_id -a {input.annotation} -o {output.txt} {input.bam}"
+        """
+        mkdir -p qc/trnainall;
+        column3=$(cut -f3 auxiliary/unambigous_annotation.gff | sort | uniq)
+        if [[ " ${{column3[@]}} " =~ "tRNA" ]];
+        then
+            featureCounts -T {threads} -t tRNA -g ID -a {input.annotation} -o {output.txt} {input.bam};
+        else
+            touch {output.txt};
+        fi
+        """
 
 rule norrnafeaturescounts:
     input:
-        annotation={rules.featurecountAnnotation.output},
+        annotation={rules.unambigousAnnotation.output},
         bam="bam/{method}-{condition}-{replicate}.bam"
     output:
         txt="qc/rrnainall/{method}-{condition}-{replicate}.txt",
@@ -109,11 +127,20 @@ rule norrnafeaturescounts:
         "../envs/subread.yaml"
     threads: 8
     shell:
-        "mkdir -p qc/rrnainall; featureCounts -T {threads} -t rRNA -g gene_id -a {input.annotation} -o {output.txt} {input.bam}"
+        """
+        mkdir -p qc/rrnainall;
+        column3=$(cut -f3 auxiliary/unambigous_annotation.gff | sort | uniq)
+        if [[ " ${{column3[@]}} " =~ "rRNA" ]];
+        then
+            featureCounts -T {threads} -t rRNA -g ID -a {input.annotation} -o {output.txt} {input.bam};
+        else
+            touch {output.txt};
+        fi
+        """
 
 rule rrnatotalfeaturescounts:
     input:
-        annotation={rules.featurecountAnnotation.output},
+        annotation={rules.unambigousAnnotation.output},
         bam="bammulti/{method}-{condition}-{replicate}.bam"
     output:
         txt="qc/rrnainallaligned/{method}-{condition}-{replicate}.txt",
@@ -121,11 +148,20 @@ rule rrnatotalfeaturescounts:
         "../envs/subread.yaml"
     threads: 8
     shell:
-        "mkdir -p qc/rrnainallaligned; featureCounts -T {threads} -t rRNA -g gene_id -a {input.annotation} -o {output.txt} {input.bam}"
-
+        """
+        mkdir -p qc/rrnainallaligned;
+        column3=$(cut -f3 auxiliary/unambigous_annotation.gff | sort | uniq)
+        if [[ " ${{column3[@]}} " =~ "rRNA" ]];
+        then
+            featureCounts -T {threads} -t rRNA -g ID -a {input.annotation} -o {output.txt} {input.bam};
+        else
+            touch {output.txt};
+        fi
+        """
+        
 rule rrnauniquefeaturescounts:
     input:
-        annotation={rules.featurecountAnnotation.output},
+        annotation={rules.unambigousAnnotation.output},
         bam="rRNAbam/{method}-{condition}-{replicate}.bam"
     output:
         txt="qc/rrnainuniquelyaligned/{method}-{condition}-{replicate}.txt",
@@ -133,21 +169,16 @@ rule rrnauniquefeaturescounts:
         "../envs/subread.yaml"
     threads: 8
     shell:
-        "mkdir -p qc/rrnainuniquelyaligned; featureCounts -T {threads} -t rRNA -g gene_id -a {input.annotation} -o {output.txt} {input.bam}"
-
-
-#rule ncrnafeaturescounts:
-#   input:
-#       annotation={rules.featurecountAnnotation.output},
-#       bam="bam/{method}-{condition}-{replicate}.bam"
-#   output:
-#       txt="qc/ncrnafeaturecount/{method}-{condition}-{replicate}.txt",
-#   conda:
-#       "../envs/subread.yaml"
-#   threads: 8
-#   shell:
-#       "mkdir -p qc/ncrnarnafeaturecount; featureCounts -T {threads} -t ncRNA -g gene_id -a {input.annotation} -o {output.txt} {input.bam}"
-
+        """
+        mkdir -p qc/rrnainuniquelyaligned;
+        column3=$(cut -f3 auxiliary/unambigous_annotation.gff | sort | uniq)
+        if [[ " ${{column3[@]}} " =~ "rRNA" ]];
+        then
+            featureCounts -T {threads} -t rRNA -g ID -a {input.annotation} -o {output.txt} {input.bam};
+        else
+            touch {output.txt};
+        fi
+        """
 
 rule coveragedepth:
     input:
@@ -172,7 +203,7 @@ rule multiqc:
         expand("qc/rrnainallaligned/{method}-{condition}-{replicate}.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         expand("qc/rrnainuniquelyaligned/{method}-{condition}-{replicate}.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         expand("qc/rrnainall/{method}-{condition}-{replicate}.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
- #       expand("qc/ncrnafeaturecount/{method}-{condition}-{replicate}.txt", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"])
+        expand("trimmed/{method}-{condition}-{replicate}.fastq", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
     output:
         report("qc/multi/multiqc_report.html", caption="../report/multiqc.rst", category="Quality control")
     params:

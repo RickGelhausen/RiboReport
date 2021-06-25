@@ -19,7 +19,12 @@ def create_parent_dictionary(annotation_df):
             continue
         else:
             attribute_list = [x for x in re.split('[;=]', attributes)]
-            idx = attribute_list[next(i for i,v in enumerate(attribute_list) if v.lower() == "id") + 1]
+            try:
+                idx = attribute_list[next(i for i,v in enumerate(attribute_list) if v.lower() == "id") + 1]
+            except:
+                print("Missing ID in row!")
+                print(row)
+                sys.exit()
 
             parent_dict[idx] = attribute_list
 
@@ -70,6 +75,13 @@ def enrich_children(annotation_df):
                 except StopIteration:
                     locus_tag = ""
 
+            old_locus_tag = ""
+            if "old_locus_tag" not in attributes.lower():
+                try:
+                    old_locus_tag = "old_locus_tag=%s;" % parent_dict[parent][next(i for i,v in enumerate(parent_dict[parent]) if v.lower() == "old_locus_tag")+1]
+                except StopIteration:
+                    old_locus_tag = ""
+
             name = ""
             if "name" not in attributes.lower():
                 try:
@@ -77,7 +89,7 @@ def enrich_children(annotation_df):
                 except:
                     name = ""
 
-            new_rows.append(nTuple(reference_name, source, feature, start, stop, score, strand, phase, attributes + ";" + locus_tag + name))
+            new_rows.append(nTuple(reference_name, source, feature, start, stop, score, strand, phase, attributes + ";" + locus_tag + old_locus_tag + name))
 
         else:
             new_rows.append(row)
@@ -96,14 +108,10 @@ def main():
     with open(args.output, "w") as f:
         f.write("##gff-version 3\n")
 
-    contains_ID = sum(annotation_df[8].str.contains("ID=").tolist())
-    if contains_ID >= len(annotation_df.index) * 0.75:
-        with open(args.output, "a") as f:
-            annotation_df = enrich_children(annotation_df)
-            annotation_df.to_csv(f, sep="\t", header=None, index=False, quoting=csv.QUOTE_NONE)
-    else:
-        with open(args.output, "a") as f:
-            annotation_df.to_csv(f, sep="\t", header=None, index=False, quoting=csv.QUOTE_NONE)
+    with open(args.output, "a") as f:
+        annotation_df = enrich_children(annotation_df)
+        annotation_df.to_csv(f, sep="\t", header=None, index=False, quoting=csv.QUOTE_NONE)
+
 
 if __name__ == '__main__':
     main()

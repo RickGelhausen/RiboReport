@@ -9,6 +9,7 @@ def read_parameters(filename, idx):
         return line[idx]
     except FileNotFoundError:
         return "failed"
+
 rule deepriboGetModel:
     input:
         HTTP.remote("github.com/Biobix/DeepRibo/blob/master/models/DeepRibo_model_v1.pt?raw=true", keep_local=True)
@@ -28,7 +29,7 @@ rule asiteOccupancy:
         "../envs/pytools.yaml"
     threads: 1
     shell:
-        "mkdir -p coverage_deepribo; HRIBO/scripts/coverage_deepribo.py --alignment_file {input.bam} --output_file_prefix coverage_deepribo/{wildcards.condition}-{wildcards.replicate}"
+        "mkdir -p coverage_deepribo; RiboReport/scripts/coverage_deepribo.py --alignment_file {input.bam} --output_file_prefix coverage_deepribo/{wildcards.condition}-{wildcards.replicate}"
 
 rule coverage:
     input:
@@ -54,7 +55,7 @@ rule parseDeepRibo:
         asiteS= "coverage_deepribo/{condition}-{replicate}_asite_fwd.bedgraph",
         asiteAS= "coverage_deepribo/{condition}-{replicate}_asite_rev.bedgraph",
         genome= rules.retrieveGenome.output,
-        annotation= rules.retrieveAnnotation.output
+        annotation= rules.checkAnnotation.output
     output:
         "deepribo/{condition}-{replicate}/data_list.csv"
     singularity:
@@ -76,7 +77,7 @@ rule parameterEstimation:
         "docker://gelhausr/deepribo:minimal"
     threads: 1
     shell:
-        "mkdir -p deepribo; Rscript HRIBO/scripts/parameter_estimation.R -f {input} -o {output}"
+        "mkdir -p deepribo; Rscript RiboReport/scripts/parameter_estimation.R -f {input} -o {output}"
 
 rule predictDeepRibo:
     input:

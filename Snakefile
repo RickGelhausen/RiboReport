@@ -27,7 +27,7 @@ def get_wigfiles(wildcards):
   replicate=samples["replicate"]
   wilds = zip(method, condition, replicate)
 
-  bigwigs = [["totalmapped", "uniquemapped", "global", "centered", "fiveprime", "threeprime"], ["raw", "mil", "min"], ["forward", "reverse"], list(wilds)]
+  bigwigs = [["global", "centered", "fiveprime", "threeprime"], ["raw", "mil", "min"], ["forward", "reverse"], list(wilds)]
   bigwigs = list(iter.product(*bigwigs))
 
   wigfiles = []

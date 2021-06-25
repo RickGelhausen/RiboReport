@@ -2,7 +2,7 @@ rule generateAnnotationReadCounts:
     input:
         bam=expand("maplink/{method}-{condition}-{replicate}.bam", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
         bamindex=expand("maplink/{method}-{condition}-{replicate}.bam.bai", zip, method=samples["method"], condition=samples["condition"], replicate=samples["replicate"]),
-        annotation="auxiliary/unambigous_annotation.gtf"
+        annotation="auxiliary/unambigous_annotation.gff"
     output:
         "auxiliary/annotation_reads.raw"
     conda:
@@ -26,7 +26,7 @@ rule generateAnnotationReadCounts:
 rule mapReads:
     input:
         reads="auxiliary/annotation_reads.raw",
-        annotation="auxiliary/enriched_annotation.gtf"
+        annotation="auxiliary/enriched_annotation.gff"
     output:
         "auxiliary/total_annotation.gtf"
     conda:

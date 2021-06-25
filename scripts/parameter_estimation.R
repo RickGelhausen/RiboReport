@@ -3,7 +3,7 @@
 library("optparse")
 
 # load the functions from the script
-source('tools/DeepRibo/src/s_curve_cutoff_estimation.R')
+source('/usr/local/bin/s_curve_cutoff_estimation.R')
 
 # commandline parser
 option_list = list(

@@ -2,7 +2,7 @@ rule generateTranscripts:
     input:
         bam="maplink/RNA-{condition}-{replicate}.bam",
         bamindex="maplink/RNA-{condition}-{replicate}.bam.bai",
-        annotation="annotation/annotation.gtf"
+        annotation=rules.checkAnnotation.output
     output:
         "transcripts/{condition}-{replicate}/transcripts.gtf"
     conda:
@@ -34,15 +34,50 @@ rule bedtoolsGetfasta:
     shell:
         "mkdir -p transcripts; bedtools getfasta -fi {input.genome} -name -bed {input.transcripts} -fo {output}"
 
+rule irsomGetModel:
+    input:
+        slsomw=HTTP.remote("https://forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SLSOM/W.txt", keep_local=True),
+        slsomb=HTTP.remote("https://forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SLSOM/biases.txt", keep_local=True),
+        slsomp=HTTP.remote("https://forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SLSOM/parameters.txt", keep_local=True),
+        somu=HTTP.remote("https://forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SOM/units.txt", keep_local=True),
+        somp=HTTP.remote("https://forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SOM/parameters.txt", keep_local=True),
+    output:
+        "irsom/model/Escherichia_coli/SLSOM/W.txt",
+        "irsom/model/Escherichia_coli/SLSOM/biases.txt",
+        "irsom/model/Escherichia_coli/SLSOM/parameters.txt",
+        "irsom/model/Escherichia_coli/SOM/units.txt",
+        "irsom/model/Escherichia_coli/SOM/parameters.txt"
+    shell:
+        """
+        mkdir -p irsom/model/Escherichia_coli/
+        mv forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SLSOM irsom/model/Escherichia_coli/ 
+        mv forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SOM irsom/model/Escherichia_coli/
+        """
+
+rule irsomGetFeaturer:
+    input:
+        HTTP.remote("https://forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/bin/Featurer", keep_local=True)
+    output:
+        "irsom/Featurer"
+    shell:
+        "mkdir -p irsom; mv {input} irsom/Featurer; chmod +x irsom/Featurer;"
+
 rule predictIrsom:
    input:
+       featurer="irsom/Featurer",
+       slsomw="irsom/model/Escherichia_coli/SLSOM/W.txt",
+       slsomb="irsom/model/Escherichia_coli/SLSOM/biases.txt",
+       slsomp="irsom/model/Escherichia_coli/SLSOM/parameters.txt",
+       somu="irsom/model/Escherichia_coli/SOM/units.txt",
+       somp="irsom/model/Escherichia_coli/SOM/parameters.txt",
        transcripts="transcripts/{condition}-{replicate}/transcripts.fa",
    output:
        "irsom/{condition}-{replicate}/result.txt"
    threads: 1
+   singularity:
+        "docker://gelhausr/irsom:latest"
    shell:
        """
-       source activate irsom
        mkdir -p irsom;
-       python tools/IRSOM/scripts/predict.py --featurer=tools/IRSOM/bin/Featurer --file={input.transcripts} --model=tools/IRSOM/model/Escherichia_coli/ --output=irsom/{wildcards.condition}-{wildcards.replicate}/
+       predict.py --featurer={input.featurer} --file={input.transcripts} --model=irsom/model/Escherichia_coli/ --output=irsom/{wildcards.condition}-{wildcards.replicate}/
        """
