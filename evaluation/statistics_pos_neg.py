@@ -472,13 +472,16 @@ def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_fi
         sys.exit('empty file: %s' % (reference_path))
     #print(which_set + '\n')
     cmd = ('bedtools intersect -a ' + reference_path + ' -b ' + tools_path + ' -wo -f ' + str(overlap_cutoff) + ' -r -s > ' + overlap_file)
+    print('##########')
+    print(cmd)
+    print('##########')
 
     os.system(cmd)
 
 # read gtf overlap file
 
     if os.stat(overlap_file).st_size == 0:
-        sys.exit('no overlap was found for %s' % (overlap_file))
+        sys.exit('no overlap (th %f) was found for %s \n and tool %s' % (overlap_cutoff, overlap_file, tools_path))
 
     df_temp = pd.read_csv(overlap_file, header=None, sep="\t", comment="#")
     df_overlap = pd.DataFrame(df_temp.values, columns=['chr', 'id_ref',
@@ -498,7 +501,7 @@ def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_fi
                                 df_overlap['start_pred'] + 1))
     #df_overlap['overlap_percent'] = min((df_overlap['overlap'] /df_overlap['ref_length']),(df_overlap['overlap'] /df_overlap['ref_length']))
     df_overlap['overlap_percent'] = df_overlap[['ref_overlap_percent','pred_overlap_percent']].min(axis =1)
-
+    print(df_overlap['score_pred'])
     df_overlap = df_overlap.astype({"start_ref": int, "stop_ref": int,
                                     "start_pred": int, "stop_pred": int,
                                     "score_pred": float,  "overlap": int})
@@ -631,6 +634,10 @@ def main():
 
 
 
+
+
+
+
     # bed tools intersect parameter:
     # -wo Write the original A and B entries plus the number of base pairs of overlap between the two features.
     # Only A features with overlap are reported. Restricted by -f (min overlap) and -r (min overlap couts for A and B).
@@ -654,29 +661,43 @@ def main():
     stat_list_reparation, gene_reparation_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'reparation', save_dir)
     stat_list_deepribo, gene_deepribo_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'deepribo', save_dir)
     stat_list_irsom, gene_irsom_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'irsom', save_dir)
+    stat_list_spectre, gene_spectre_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'spectre', save_dir)
+
+
 
 
     tims_deepribo_gen = (max([len(gene_deepribo_list),
                              len(gene_ribotish_list),
                              len(gene_reparation_list),
-                             len(gene_irsom_list)]) - len(gene_deepribo_list))
+                             len(gene_irsom_list),
+                             len(gene_spectre_list)]) - len(gene_deepribo_list))
     tims_ribotish_gen = max([len(gene_deepribo_list),
                               len(gene_ribotish_list),
                               len(gene_reparation_list),
-                              len(gene_irsom_list)]) - len(gene_ribotish_list)
+                              len(gene_irsom_list),
+                              len(gene_spectre_list)]) - len(gene_ribotish_list)
     tims_reparation_gen = max([len(gene_deepribo_list),
                                len(gene_ribotish_list),
                                len(gene_reparation_list),
-                               len(gene_irsom_list)]) - len(gene_reparation_list)
+                               len(gene_irsom_list),
+                               len(gene_spectre_list)]) - len(gene_reparation_list)
     tims_irsom_gen = max([len(gene_deepribo_list),
                           len(gene_ribotish_list),
                           len(gene_reparation_list),
-                          len(gene_irsom_list)]) - len(gene_irsom_list)
+                          len(gene_irsom_list),
+                          len(gene_spectre_list)]) - len(gene_irsom_list)
+    tims_spectre_gen = max([len(gene_deepribo_list),
+                          len(gene_ribotish_list),
+                          len(gene_reparation_list),
+                          len(gene_irsom_list),
+                          len(gene_spectre_list)]) - len(gene_spectre_list)
 
 
 
     venn_genes_dict = {'deepribo': list(gene_deepribo_list) + ['NA'] *
                        tims_deepribo_gen,
+                       'spectre': list(gene_spectre_list) + ['NA'] *
+                       tims_spectre_gen,
                        'ribotish': list(gene_ribotish_list) + ['NA'] *
                        tims_ribotish_gen,
                        'reparation': list(gene_reparation_list) + ['NA'] *
@@ -697,9 +718,17 @@ def main():
                         'FDR', 'F1', 'accuracy', 'subopt_tp', 'subopt_fp', 'no_genes', 'tool']
 
     df_stat = pd.DataFrame([stat_list_reparation, stat_list_ribotish,
-                            stat_list_deepribo, stat_list_irsom],
+                            stat_list_deepribo, stat_list_irsom, stat_list_spectre],
                             columns=stat_list_header)
     df_stat.to_csv(path_or_buf=save_dir + stat_file, index=False, sep='\t')
+
+
+    with open(save_dir + "/table_latex.txt", "a") as myfile:
+        ref_pos_list = ref_pos_file.split('/')
+        myfile.write('Results of species %s, subset %s and overlap %f\n'%(ref_pos_list[8],ref_pos_list[9], overlap_cutoff))
+        df_stat_round = df_stat.round(2)
+        myfile.write(df_stat_round.to_latex(index=False))
+
 
 
 if __name__ == '__main__':
