@@ -1,15 +1,3 @@
-rule generateTranscripts:
-    input:
-        bam="maplink/RNA-{condition}-{replicate}.bam",
-        bamindex="maplink/RNA-{condition}-{replicate}.bam.bai",
-        annotation=rules.checkAnnotation.output
-    output:
-        "transcripts/{condition}-{replicate}/transcripts.gtf"
-    conda:
-        "../envs/cufflinks.yaml"
-    threads: 20
-    shell:
-        "mkdir -p transcripts; cufflinks {input.bam} -p {threads} -o ./transcripts/{wildcards.condition}-{wildcards.replicate}/ -g {input.annotation} --library-type fr-firststrand"
 
 rule transcriptsBED:
     input:
@@ -50,7 +38,7 @@ rule irsomGetModel:
     shell:
         """
         mkdir -p irsom/model/Escherichia_coli/
-        mv forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SLSOM irsom/model/Escherichia_coli/ 
+        mv forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SLSOM irsom/model/Escherichia_coli/
         mv forge.ibisc.univ-evry.fr/lplaton/IRSOM/raw/master/model/Escherichia_coli/SOM irsom/model/Escherichia_coli/
         """
 

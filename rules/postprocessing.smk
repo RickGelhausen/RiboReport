@@ -1,3 +1,4 @@
+
 rule reparationGFF:
     input:
         "reparation/{condition}-{replicate}/Predicted_ORFs.txt"
@@ -42,6 +43,50 @@ rule concatDeepRibo:
     shell:
         "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
 
+rule irsomGFF:
+    input:
+        "irsom/{condition}-{replicate}/result.txt"
+    output:
+        "irsom/{condition, [a-zA-Z]+}-{replicate,\d+}.irsom.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/irsomGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatIrsom:
+    input:
+        lambda wildcards: expand("irsom/{{condition}}-{replicate}.irsom.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.irsom.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
+
+rule spectreGFF:
+    input:
+        "spectre/{condition}-{replicate}/result.txt"
+    output:
+        "spectre/{condition, [a-zA-Z]+}-{replicate,\d+}.spectre.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/spectreGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatSpectre:
+    input:
+        lambda wildcards: expand("spectre/{{condition}}-{replicate}.spectre.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.spectre.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
+
 rule ribotishGFF:
     input:
         "ribotish/{condition}-newORFs.tsv_all.txt"
@@ -58,19 +103,21 @@ rule mergeConditions:
         ribotish="tracks/{condition}.ribotish.gff",
         reparation="tracks/{condition}.reparation.gff",
         deepribo="tracks/{condition}.deepribo.gff",
+        irsom="tracks/{condition}.irsom.gff",
+        spectre="tracks/{condition}.spectre.gff"
     output:
-        report("tracks/{condition, [a-zA-Z]+}.merged.gff", caption="../report/novelmerged.rst", category="Novel ORFs")
+        "tracks/{condition, [a-zA-Z]+}.merged.gff"
     conda:
         "../envs/bedtools.yaml"
     threads: 1
     shell:
-        "mkdir -p tracks; cat {input.ribotish} > {output}.unsorted; cat {input.reparation} >> {output}.unsorted; cat {input.deepribo} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
+        "mkdir -p tracks; cat {input.spectre} > {output}.unsorted;  cat {input.ribotish} >> {output}.unsorted; cat {input.reparation} >> {output}.unsorted; cat {input.deepribo} >> {output}.unsorted; cat {input.irsom} >> {output}.unsorted; bedtools sort -i {output}.unsorted > {output};"
 
 rule mergeAll:
     input:
         mergedGff=expand("tracks/{condition}.merged.gff", zip, condition=set(samples["condition"]))
     output:
-        report("tracks/all.gff", caption="../report/novelall.rst", category="Novel ORFs")
+        "tracks/all.gff"
     conda:
         "../envs/mergetools.yaml"
     threads: 1
@@ -81,7 +128,7 @@ rule filterAll:
     input:
         "tracks/all.gff"
     output:
-        report("tracks/combined.gtf", caption="../report/combined.rst", category="Novel ORFs")
+        "tracks/predictions.gtf"
     conda:
         "../envs/mergetools.yaml"
     threads: 1

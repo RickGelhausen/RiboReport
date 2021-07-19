@@ -43,7 +43,6 @@ if hasRIBO:
         expand("reparation/{condition}-{replicate}/Predicted_ORFs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
         expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"]),
         expand("deepribo/{condition}-{replicate}/predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
-        "tracks/combined.gtf",
         "qc/multi/multiqc_report.html",
         get_wigfiles,
         "tracks/potentialStopCodons.gff",
@@ -52,7 +51,8 @@ if hasRIBO:
         "tracks/potentialRibosomeBindingSite.gff",
         "auxiliary/final_annotation.xlsx",
         "auxiliary/final_annotation.gff",
-        "auxiliary/final_annotation_complete.gff"
+        "auxiliary/final_annotation_complete.gff",
+        "tracks/predictions.gtf"
 
 else:
     print("No Ribo libraries given")
@@ -89,8 +89,8 @@ include: "rules/deepribo.smk"
 #include: "rules/rnacode.smk"
 
 include: "rules/irsom.smk"
-include: "rules/postprocessing_irsom.smk"
-
+include: "rules/postprocessing.smk"
+include: "rules/spectre.smk"
 include: "rules/qc.smk"
 include: "rules/visualization.smk"
 include: "rules/readcounting.smk"

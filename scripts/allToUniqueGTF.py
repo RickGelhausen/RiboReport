@@ -35,6 +35,8 @@ def create_dictionary(inputDF):
             score = int(attributes[attributes.index("SS_pred_rank")+1]) * -1
         elif getattr(row, "_1") == "irsom":
             score = float(attributes[attributes.index("Prob")+1])
+        elif getattr(row, "_1") == "spectre":
+            score = float(getattr(row, "_5"))
 
         idx = (getattr(row, "_0"), method, condition, start, stop, strand)
         if idx in geneDict:
