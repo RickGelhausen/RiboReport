@@ -27,6 +27,7 @@ The fastq files for our newly published dataset are available via NCBI GEO (http
 ### Workflow
 ---
 **Note**
+
 Even though `snakemake` workflows are executable locally, we do not advise this due to high memory usage and runtime of some of the processing steps. 
 We ran the workflow on a TORQUE cluster system (powered by bwHPC) and later on a de.NBI cloud instance. 
 
