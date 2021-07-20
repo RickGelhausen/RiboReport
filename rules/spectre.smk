@@ -2,7 +2,7 @@ rule generateTranscriptsSpectre:
     input:
         bam="maplink/RNA-{condition}-{replicate}.bam",
         bamindex="maplink/RNA-{condition}-{replicate}.bam.bai",
-        annotation="annotation/ensembl.gtf"
+        annotation=rules.createEnsemblAnnotation.output
     output:
         transcripts="spectre/transcripts/{condition}-{replicate}/transcripts.gtf",
         isoforms="spectre/transcripts/{condition}-{replicate}/isoforms.fpkm_tracking",
@@ -17,7 +17,7 @@ rule predictSpectre:
    input:
        bam="bam/RIBO-{condition}-{replicate}.bam",
        bamindex="maplink/RIBO-{condition}-{replicate}.bam.bai",
-       gtf="annotation/ensembl.gtf",
+       gtf=rules.createEnsemblAnnotation.output,
        fpkm="spectre/transcripts/{condition}-{replicate}/isoforms.fpkm_tracking",
    output:
        results="spectre/{condition}-{replicate}/result.txt",

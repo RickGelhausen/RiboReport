@@ -24,3 +24,12 @@ rule checkAnnotation:
     threads: 1
     shell:
         "mkdir -p annotation; RiboReport/scripts/gtf2gff3.py -a {input} -o {output}"
+
+rule createEnsemblAnnotation:
+    input:
+        rules.retrieveAnnotation.output
+    output:
+        "annotation/annotation_ensembl.gtf"
+    threads: 1
+    shell:
+        "mkdir -p annotation; RiboReport/scripts/gff2gtf.py -i {input} -o {output}"
