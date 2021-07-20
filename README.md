@@ -46,35 +46,7 @@ tar -xzf 2021.tar.gz; mv RiboReport-2021 RiboReport; rm 2021.tar.gz;
 
 #### 2. Required tools
 
-In order to run the workflow, the tools analyzed in the publication have to be installed.
-DeepRibo, Reparation and RiboTISH are automatically downloaded from bioconda and docker and do not need any prior installation.
-IRSOM and spectre are not on conda and have to be installed manually.
-
-First of all, create a `tools` folder in the `pseudomonas_aeroginosa` repository.
-
-~~~~
-mkdir tools; cd tools;
-~~~~
-
-Next, we install `IRSOM`. To make it compatible with our workflow, we first create a conda environment for the dependencies:
-
-~~~~
-conda create -n irsom -c bioconda -c conda-forge plotnine pandas numpy tensorflow matplotlib docopt python=3.6.8
-conda activate irsom
-~~~~
-(use source activate, if conda is not set-up for your bash)
-
-Then, we download and install `IRSOM`:
-
-~~~~
-git clone https://forge.ibisc.univ-evry.fr/lplaton/IRSOM.git
-~~~~
-
-This should only install `IRSOM`, as the other dependencies are already installed in the conda environment.
-
-~~~~
-conda activate irsom
-~~~~
+All required tools are downloaded automatically via conda and docker.
 
 #### 3. Fetch the annotation and genome files:
 
