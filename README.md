@@ -17,12 +17,13 @@ The generation and usage of the final tables and figures is described below.
 ### Input data
 For running the workflow, several input files are required:
 - genome.fa
-- annotation.gtf
+- annotation.gff
 - samples.tsv
 - config.yaml
 - fastq files 
 
 The fastq files for our newly published dataset are available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514, token:ofkbusuqzbcvfip)
+The rest of the required files can be found in the data folder.
 
 ### Workflow
 ---
