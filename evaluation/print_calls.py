@@ -151,7 +151,7 @@ def main():
             elif dataset == 'bm_12':
                 lable = 'ST'
             elif dataset == 'bm_14':
-                lable = 'HF'
+                lable = 'HV'
             for overlap in overlap_list:
                 #print(lable)
                 stat_path = result_dir + '/' + dataset + '/' + experiment + '/' + overlap+ '/df_stat.csv'

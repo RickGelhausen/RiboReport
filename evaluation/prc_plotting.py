@@ -54,9 +54,9 @@ def get_ranks(score_overlap_label_list, tool):
         if trippel[2] == '1':
             count_pos += 1
             #if tool == 'deepribo' and trippel[0]<0:
-
         elif trippel[2] == '0':
             count_neg += 1
+
         # check if the current score the same as the last score
         if trippel[0] == last_score:
             #check if overlaps are the same
@@ -85,14 +85,15 @@ def comput_roc_for_tool(saved_dir, tool):
 
     score_overlap_label_list = get_list(saved_dir, tool)
     #print('score list of %s'%(tool))
+    #print(score_overlap_label_list)
     sort_list = sorted(score_overlap_label_list, key=itemgetter(0), reverse=True)
-    #print(sort_list[0:100])
+    #print(sort_list)
 
     score_list, label_list, base = get_ranks(score_overlap_label_list, tool)
     #print('score ranked list of %s'%(tool))
-    #print(score_list[0:100])
+    #print(score_list)
     #print('lable ranked list of %s'%(tool))
-    #print(label_list[0:100])
+    #print(label_list)
 
     precision, recall, thresholds, auc_prc = compute_prc(label_list, score_list)
 
@@ -130,10 +131,11 @@ def main():
     precision_irsom, recall_irsom, base, auc_prc_irsom = comput_roc_for_tool(experiment_dict_path, 'irsom')
     precision_spectre, recall_spectre, base, auc_prc_spectre = comput_roc_for_tool(experiment_dict_path, 'spectre')
 
-    #print('deepribo AUC: %f' % (auc_deepribo))
-    #print('ribotish AUC: %f' %  (auc_ribotish))
-    #print('reparation AUC: %f' %(auc_reparation))
-    #print('irsom AUC: %f' %  (auc_irsom))
+    #print('deepribo AUC: %f' % (auc_prc_deepribo))
+    #print('ribotish AUC: %f' %  (auc_prc_ribotish))
+    #print('reparation AUC: %f' %(auc_prc_reparation))
+    #print('irsom AUC: %f' %  (auc_prc_irsom))
+    #print('spectre AUC: %f' %  (auc_prc_spectre))
 
 
     if species == 'EC':
@@ -144,27 +146,31 @@ def main():
         title = 'P. aeruginosa'
     elif species == 'ST':
         title = 'S. Typhimurium'
+    elif species == 'HV':
+        title = 'Haloferax volcanii'
     else:
         print('Error: unknown species label')
         title = 'unknown species label'
 
 
-    # generat the legend information	
+    # generat the legend information
     label_deepribo = 'DeepRibo AUC: %.2f' % (auc_prc_deepribo)
     label_ribotish = ('Ribo-TISH AUC: %.2f' %  (auc_prc_ribotish))
     label_reparation = ('Reparation AUC: %.2f' %(auc_prc_reparation))
     label_irsom = ('IRSOM AUC: %.2f' %  (auc_prc_irsom))
     label_spectre = ('SPECtre AUC: %.2f' %  (auc_prc_spectre))
 
+    # choosing colure
+
     # plot the PRC into one plot
-    plt.plot(recall_deepribo, precision_deepribo, color='green', label=label_deepribo)
-    plt.plot(recall_reparation, precision_reparation, color='blue', label=label_reparation)
-    plt.plot(recall_ribotish, precision_ribotish, color='yellow', label=label_ribotish)
-    plt.plot(recall_irsom, precision_irsom, color='red', label=label_irsom)
-    plt.plot(recall_spectre, precision_spectre, color='saddlebrown', label=label_spectre)
+    plt.plot(recall_deepribo, precision_deepribo, color='#228833', label=label_deepribo) # green
+    plt.plot(recall_reparation, precision_reparation, color='#4477AA', label=label_reparation) #blue 
+    plt.plot(recall_ribotish, precision_ribotish, color='#CCBB44', label=label_ribotish) #yellow 
+    plt.plot(recall_irsom, precision_irsom, color='#EE6677', label=label_irsom) #red 
+    plt.plot(recall_spectre, precision_spectre, color='#800000', label=label_spectre) #saddlebrown 
 
     # plot the baseline
-    plt.plot([0, 1], [base, base], color='grey', linestyle='--')
+    plt.plot([0, 1], [base, base], color='#BBBBBB', linestyle='--') #grey #808080
     # set axix labels and title
     plt.xlabel('Recall', fontsize=14)
     plt.ylabel('Precision', fontsize=14)
@@ -177,7 +183,7 @@ def main():
     plt.legend(prop={'size': 14})
     plt.ylim(-0.02, 1.02)
     #plt.show()
-    
+
     # save plot
     save_prc_diag = plot_dir + species + '_prc_' + overlap + '_' + experiment + '_.pdf'
     plt.savefig(save_prc_diag, format='pdf', dpi=300, bbox_inches='tight')
