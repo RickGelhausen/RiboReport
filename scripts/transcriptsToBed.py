@@ -2,14 +2,13 @@
 '''This script takes input gtf files and handles
 and converts it to a bed12 file
 '''
-from operator import itemgetter
+
 import pandas as pd
 import re
 import argparse
-import numpy as np
+
 import os
-import csv
-import collections
+
 
 def create_bed(args):
     inputDF = pd.read_csv(args.inputGTF, sep='\t', header=None)

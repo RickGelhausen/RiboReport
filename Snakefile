@@ -54,10 +54,7 @@ if hasRIBO:
         "auxiliary/final_annotation.gff",
         "auxiliary/final_annotation_complete.gff",
         "tracks/predictions.gtf",
-        "price/annotation_ensembl.oml",
-        "tracks/WT.price.gff",
-        "tracks/WT.ribotricer.gff",
-        "tracks/WT.smorfer.gff"
+        "price/annotation_ensembl.oml"
 else:
     print("No Ribo libraries given")
 
@@ -77,8 +74,6 @@ include: "rules/mapping.smk"
 #maplink
 include: "rules/maplink.smk"
 include: "rules/maplinktis.smk"
-#auxillary
-include: "rules/auxiliary.smk"
 #indexing
 include: "rules/indexing.smk"
 
