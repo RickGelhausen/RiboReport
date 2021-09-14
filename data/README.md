@@ -3,7 +3,7 @@
 ## Sequencing data sources:
 We retrieved 4 different datasets for the construction of our benchmark dataset.
 1. E. coli
-[Ribo-seq and RNA-seq: GSE131514](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514) (e.coli-WT-1)
+[Ribo-seq and RNA-seq: GSE131514](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514) (e.coli-WT-1) (Access token:ofkbusuqzbcvfip)
 2. Listeria monocytogenes
 [Ribo-seq: SAMEA3864955](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864955) and [RNA-seq: SAMEA3864956](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864956) datasets (ERR1248497, ERR1248499)
 3. Pseudomonas aeruginosa 

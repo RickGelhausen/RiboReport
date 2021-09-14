@@ -16,7 +16,7 @@ rule reparation:
         genome=rules.retrieveGenome.output,
         gtf=rules.checkAnnotation.output,
         db="uniprotDB/uniprot_sprot.fasta",
-        bam="bam/RIBO-{condition}-{replicate}.bam",
+        bam="maplink/RIBO-{condition}-{replicate}.bam",
         bamindex="maplink/RIBO-{condition}-{replicate}.bam.bai"
     output:
         orfs="reparation/{condition}-{replicate}/Predicted_ORFs.txt",

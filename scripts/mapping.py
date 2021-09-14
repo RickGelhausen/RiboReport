@@ -9,7 +9,6 @@ import pysam
 import argparse
 from collections import defaultdict
 from pprint import pprint
-import os
 import csv
 
 def init_write_wig(file_handle,library_name, strand):

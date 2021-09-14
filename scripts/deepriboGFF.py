@@ -5,10 +5,7 @@ information and writes it as gff3 format files.
 '''
 
 import pandas as pd
-import re
 import argparse
-import numpy as np
-import os
 import csv
 import collections
 
@@ -71,7 +68,7 @@ def to_gff3(args):
 
 def main():
     # store commandline args
-    parser = argparse.ArgumentParser(description='Converts reperation output to new data frame\
+    parser = argparse.ArgumentParser(description='Converts deepribo output to new data frame\
                                      containing specified information and saves it in gff3 format.')
     parser.add_argument("-i", "--inputCSV", action="store", dest="predictedORFs", required=True
                                           , help= "the input file. (created by reparation)")

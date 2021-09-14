@@ -43,6 +43,7 @@ if hasRIBO:
         expand("reparation/{condition}-{replicate}/Predicted_ORFs.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
         expand("ribotish/{condition}-newORFs.tsv_all.txt", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"]),
         expand("deepribo/{condition}-{replicate}/predictions.csv", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
+        expand("price/{condition}-{replicate}/results.orfs.filtered.bed", zip, condition=samples.loc[samples["method"] == "RIBO", "condition"], replicate=samples.loc[samples["method"] == "RIBO", "replicate"]),
         "qc/multi/multiqc_report.html",
         get_wigfiles,
         "tracks/potentialStopCodons.gff",
@@ -52,8 +53,11 @@ if hasRIBO:
         "auxiliary/final_annotation.xlsx",
         "auxiliary/final_annotation.gff",
         "auxiliary/final_annotation_complete.gff",
-        "tracks/predictions.gtf"
-
+        "tracks/predictions.gtf",
+        "price/annotation_ensembl.oml",
+        "tracks/WT.price.gff",
+        "tracks/WT.ribotricer.gff",
+        "tracks/WT.smorfer.gff"
 else:
     print("No Ribo libraries given")
 
@@ -77,20 +81,28 @@ include: "rules/maplinktis.smk"
 include: "rules/auxiliary.smk"
 #indexing
 include: "rules/indexing.smk"
+
 #ribotish
 include: "rules/annotation.smk"
 include: "rules/ribotish.smk"
-
 #reparation
 include: "rules/reparation.smk"
 #deepribo
 include: "rules/deepribo.smk"
-#rnacode
-#include: "rules/rnacode.smk"
-
+#price
+include: "rules/price.smk"
+#smorfer
+include: "rules/smorfer.smk"
+#ribotricer
+include: "rules/ribotricer.smk"
+#irsom
 include: "rules/irsom.smk"
-include: "rules/postprocessing.smk"
+#spectre
 include: "rules/spectre.smk"
+#smorfer
+include: "rules/smorfer.smk"
+
+include: "rules/postprocessing.smk"
 include: "rules/qc.smk"
 include: "rules/visualization.smk"
 include: "rules/readcounting.smk"

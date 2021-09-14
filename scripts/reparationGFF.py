@@ -5,10 +5,7 @@ information and writes it as gff3 format files.
 '''
 
 import pandas as pd
-import re
 import argparse
-import numpy as np
-import os
 import csv
 import collections
 

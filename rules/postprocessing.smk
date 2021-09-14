@@ -87,6 +87,80 @@ rule concatSpectre:
     shell:
         "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
 
+rule ribotricerGFF:
+    input:
+        "ribotricer/{condition}-{replicate}/ribotricer_translating_ORFs.tsv"
+    output:
+        "ribotricer/{condition, [a-zA-Z]+}-{replicate,\d+}.ribotricer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/ribotricerGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatRibotricer:
+    input:
+        lambda wildcards: expand("ribotricer/{{condition}}-{replicate}.ribotricer.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.ribotricer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
+
+rule smorferGFF:
+    input:
+        "smorfer/{condition}-{replicate}/RPF_translated.txt"
+    output:
+        "smorfer/{condition, [a-zA-Z]+}-{replicate,\d+}.smorfer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/smorferGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatSmorfer:
+    input:
+        lambda wildcards: expand("smorfer/{{condition}}-{replicate}.smorfer.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.smorfer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"
+
+rule priceGFF:
+    input:
+        filtered="price/{condition}-{replicate}/results.orfs.filtered.bed",
+        unfiltered="price/{condition}-{replicate}/results.orfs.tsv"
+    output:
+        filtered="price/{condition, [a-zA-Z]+}-{replicate,\d+}.price.filtered.gff",
+        unfiltered="price/{condition, [a-zA-Z]+}-{replicate,\d+}.price.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/priceGFF.py -c {wildcards.condition}  -i {input.filtered} -u {input.unfiltered} -o {output.unfiltered} -f {output.filtered}"
+
+rule concatPrice:
+    input:
+        unfiltered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"]),
+        filtered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.filtered.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        unfiltered="tracks/{condition, [a-zA-Z]+}.price.gff",
+        filtered="tracks/{condition, [a-zA-Z]+}.price.filtered.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        """
+        mkdir -p tracks;
+        RiboReport/scripts/concatGFF.py {input.unfiltered} -o {output.unfiltered}
+        RiboReport/scripts/concatGFF.py {input.filtered} -o {output.filtered}
+        """
+
 rule ribotishGFF:
     input:
         "ribotish/{condition}-newORFs.tsv_all.txt"
