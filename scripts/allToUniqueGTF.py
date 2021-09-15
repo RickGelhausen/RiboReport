@@ -40,7 +40,7 @@ def create_dictionary(inputDF):
             score = float(getattr(row, "_5"))
         elif getattr(row, "_1") == "smorfer":
             score = float(getattr(row, "_5"))
-        elif getattr(row, "_1") == "ribotracer":
+        elif getattr(row, "_1") == "ribotricer":
             score = float(getattr(row, "_5"))
 
         idx = (getattr(row, "_0"), method, condition, start, stop, strand)
