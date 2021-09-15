@@ -7,7 +7,6 @@ from operator import itemgetter
 import pandas as pd
 import re
 import argparse
-import numpy as np
 import os
 import csv
 import collections
@@ -36,6 +35,12 @@ def create_dictionary(inputDF):
         elif getattr(row, "_1") == "irsom":
             score = float(attributes[attributes.index("Prob")+1])
         elif getattr(row, "_1") == "spectre":
+            score = float(getattr(row, "_5"))
+        elif getattr(row, "_1") == "price":
+            score = float(getattr(row, "_5"))
+        elif getattr(row, "_1") == "smorfer":
+            score = float(getattr(row, "_5"))
+        elif getattr(row, "_1") == "ribotracer":
             score = float(getattr(row, "_5"))
 
         idx = (getattr(row, "_0"), method, condition, start, stop, strand)
