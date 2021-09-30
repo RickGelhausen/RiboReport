@@ -7,6 +7,7 @@ import pandas as pd
 import argparse
 import csv
 import collections
+import re
 
 def spectre_to_gtf(spectre_input, condition):
     """
@@ -28,12 +29,13 @@ def spectre_to_gtf(spectre_input, condition):
         if gene_type != "protein_coding":
             continue
 
-        start, stop = int(coordinates_cds.split("-")[0]), int(coordinates_cds.split("-")[-1])
+        coordinates = sorted([int(x) for x in filter(None, re.split('[-,]', coordinates_cds))])
+        start, stop = coordinates[0], coordinates[-1]
 
         identifier = "%s:%s-%s:%s" % (chromosome, start, stop, strand)
 
         #result = [chromosome, "spectre", "CDS", start+1, stop, ribo_fpkm, strand, ".", "gene_id \"%s\"; method \"%s\"; condition \"%s\"" % (identifier, "spectre", condition)]
-        result = [chromosome, "spectre", "CDS", start+1, stop, ribo_fpkm, strand, ".", "ID=%s;Method=%s;Condition=%s" % (identifier, "spectre", condition)]    
+        result = [chromosome, "spectre", "CDS", start+1, stop, ribo_fpkm, strand, ".", "ID=%s;Method=%s;Condition=%s" % (identifier, "spectre", condition)]
         rows.append(n_tuple(*result))
 
     return pd.DataFrame.from_records(rows, columns=["chrom", "source", "type", "start", "stop", "score", "strand", "phase", "attribute"])

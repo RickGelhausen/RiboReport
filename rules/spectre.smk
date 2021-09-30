@@ -2,7 +2,7 @@ rule generateTranscriptsSpectre:
     input:
         bam="maplink/RNA-{condition}-{replicate}.bam",
         bamindex="maplink/RNA-{condition}-{replicate}.bam.bai",
-        annotation=rules.createEnsemblAnnotation.output
+        annotation="annotation/annotation_ensembl.gtf"
     output:
         transcripts="spectre/transcripts/{condition}-{replicate}/transcripts.gtf",
         isoforms="spectre/transcripts/{condition}-{replicate}/isoforms.fpkm_tracking",
@@ -11,18 +11,18 @@ rule generateTranscriptsSpectre:
         "../envs/cufflinks.yaml"
     threads: 20
     shell:
-        "mkdir -p spectre/transcripts; cufflinks {input.bam} -p {threads} -o ./spectre/transcripts/{wildcards.condition}-{wildcards.replicate}/ -g {input.annotation} --library-type fr-firststrand"
+        "mkdir -p spectre/transcripts; cufflinks {input.bam} -p {threads} -o ./spectre/transcripts/{wildcards.condition}-{wildcards.replicate}/ -g {input.annotation}"
 
 rule predictSpectre:
    input:
        bam="bam/RIBO-{condition}-{replicate}.bam",
        bamindex="maplink/RIBO-{condition}-{replicate}.bam.bai",
-       gtf=rules.createEnsemblAnnotation.output,
+       gtf="annotation/annotation_ensembl.gtf",
        fpkm="spectre/transcripts/{condition}-{replicate}/isoforms.fpkm_tracking",
    output:
        results="spectre/{condition}-{replicate}/result.txt",
        log="spectre/{condition}-{replicate}/spectre_log.txt"
-   threads: 5
+   threads: 10
    singularity:
         "docker://gelhausr/spectre:latest"
    shell:
