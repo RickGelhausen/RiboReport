@@ -20,7 +20,7 @@ rule createSmorferPutativeORFs:
     shell:
         """
         mkdir -p smorfer;
-        smorfer.sh -s putative_orfs.sh -g {input.genome} -c {params.genome_name} -n smorfer_pORFs -i 9-150 -o smorfer/
+        smorfer.sh -s putative_orfs.sh -g {input.genome} -c {params.genome_name} -n smorfer_pORFs -i 9-3000 -o smorfer/
         """
 
 rule createSmorferFourierTransform:
@@ -53,6 +53,20 @@ rule createSmorferRPFcount:
         smorfer.sh -s count_RPF.sh -b {input.bed} -a {input.bam} -o smorfer/{wildcards.condition}-{wildcards.replicate}/
         """
 
+rule createSmorferFilterWithCalibrated:
+    input:
+        bam="calibrated_bam/RIBO-{condition}-{replicate}_calibrated.bam",
+        bed="smorfer/{condition}-{replicate}/RPF_translated.txt"
+    output:
+        "smorfer/{condition}-{replicate}/best_start_results.txt"
+    singularity:
+        "docker://gelhausr/smorfer:latest"
+    threads: 1
+    shell:
+        """
+        mkdir -p smorfer/{wildcards.condition}-{wildcards.replicate};
+        smorfer.sh -s find_best_start.sh -b {input.bed} -a {input.bam} -o smorfer/{wildcards.condition}-{wildcards.replicate}/
+        """
 
 rule createSmorferRPFcountNOFT:
     input:

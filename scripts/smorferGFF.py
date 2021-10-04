@@ -8,42 +8,87 @@ import pandas as pd
 import argparse
 import csv
 import collections
+import operator
+
+# def create_nTuple(args, row):
+#     nTuple = collections.namedtuple('Pandas', ["seqName","source","type","start","stop","score","strand","phase","attribute"])
 
 
-def create_nTuple(args, row):
-    nTuple = collections.namedtuple('Pandas', ["seqName","source","type","start","stop","score","strand","phase","attribute"])
+#     chromosome = getattr(row, "_0")
+#     start = str(getattr(row, "_1"))
+#     stop = str(getattr(row, "_2"))
+#     strand = getattr(row, "_5")
+
+#     rpf = getattr(row, "_6")
+#     no_clue = getattr(row, "_9")
+
+#     source = "smorfer"
+#     feature = "CDS"
+#     score = rpf
+#     phase = "."
+#     attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
+#               + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
+#               + ";RPF=%s" % rpf + ";Condition=" + args.condition + ";Method=" + source
+
+#     return nTuple(chromosome, source, feature, start, stop, score, strand, phase, attribute)
 
 
-    chromosome = getattr(row, "_0")
-    start = str(getattr(row, "_1"))
-    stop = str(getattr(row, "_2"))
-    strand = getattr(row, "_5")
+def create_stop_dict(args):
+    in_df = pd.read_csv(args.in_file, sep='\t')
+    in_df.columns = range(in_df.shape[1])
 
-    rpf = getattr(row, "_6")
-    no_clue = getattr(row, "_9")
+    stop_dict = {}
+    for row in in_df.itertuples(index=False, name='Pandas'):
+        chromosome = getattr(row, "_0")
+        start = int(getattr(row, "_1"))
+        stop = int(getattr(row, "_2"))
+        strand = getattr(row, "_5")
+        variance = getattr(row, "_6")
+        rpf = getattr(row, "_8")
+        if rpf == 0:
+            continue
+        if strand == "+":
+            if (chromosome, stop, strand) in stop_dict:
+                stop_dict[(chromosome, stop, strand)].append((variance, start, rpf))
+            else:
+                stop_dict[(chromosome, stop, strand)] = [(variance, start, rpf)]
+        else:
+            if (chromosome, start, strand) in stop_dict:
+                stop_dict[(chromosome, start, strand)].append((variance, stop, rpf))
+            else:
+                stop_dict[(chromosome, start, strand)] = [(variance, stop, rpf)]
 
-    source = "smorfer"
-    feature = "CDS"
-    score = rpf
-    phase = "."
-    attribute = "ID=" + chromosome + ":" + start + "-" + stop + ":" + strand \
-              + ";Name=" + chromosome + ":" + start + "-" + stop + ":" + strand \
-              + ";RPF=%s" % rpf + ";Condition=" + args.condition + ";Method=" + source
-
-    return nTuple(chromosome, source, feature, start, stop, score, strand, phase, attribute)
-
+    return stop_dict
 
 def to_gff3(args):
-    in_df = pd.read_csv(args.in_file, sep='\t', header=None)
+    stop_dict = create_stop_dict(args)
+    nTuple = collections.namedtuple('Pandas', ["seqName","source","type","start","stop","score","strand","phase","attribute"])
 
     rows = []
-    for row in in_df.itertuples(index=False, name='Pandas'):
-        rows.append(create_nTuple(args,row))
-    rows = [row for row in rows if row is not None]
+    for key, value in stop_dict.items():
+        chromosome, stop, strand = key
+        variance, start, rpf = max(value, key=operator.itemgetter(0))
+
+        source = "smorfer"
+        feature = "CDS"
+        score = rpf
+        phase = "."
+
+        if strand == "-":
+            start, stop = stop, start
+
+        start += 1
+
+        attribute = "ID=" + chromosome + ":" + str(start) + "-" + str(stop) + ":" + strand \
+                  + ";Name=" + chromosome + ":" + str(start) + "-" + str(stop) + ":" + strand \
+                  + ";RPF=%s" % rpf + ";Condition=" + args.condition + ";Method=" + source
+
+        rows.append(nTuple(chromosome, source, feature, start, stop, score, strand, phase, attribute))
 
     res_df = pd.DataFrame.from_records(rows, columns=["seqName","source","type","start","stop","score","strand","phase","attribute"])
 
     return res_df
+
 
 
 def main():

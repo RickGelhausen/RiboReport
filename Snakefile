@@ -86,8 +86,6 @@ include: "rules/reparation.smk"
 include: "rules/deepribo.smk"
 #price
 include: "rules/price.smk"
-#smorfer
-include: "rules/smorfer.smk"
 #ribotricer
 include: "rules/ribotricer.smk"
 #irsom
