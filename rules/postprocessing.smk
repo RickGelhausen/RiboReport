@@ -78,7 +78,7 @@ rule spectreGFF:
 
 rule concatSpectre:
     input:
-        lambda wildcards: expand("spectre/{{condition}}-{replicate}.spectre.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+        lambda wildcards: expand("spectre/{{condition}}-{replicate}.spectre.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
     output:
         "tracks/{condition, [a-zA-Z]+}.spectre.gff"
     conda:
@@ -100,7 +100,7 @@ rule ribotricerGFF:
 
 rule concatRibotricer:
     input:
-        lambda wildcards: expand("ribotricer/{{condition}}-{replicate}.ribotricer.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+        lambda wildcards: expand("ribotricer/{{condition}}-{replicate}.ribotricer.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
     output:
         "tracks/{condition, [a-zA-Z]+}.ribotricer.gff"
     conda:
@@ -122,7 +122,7 @@ rule smorferGFF:
 
 rule concatSmorfer:
     input:
-        lambda wildcards: expand("smorfer/{{condition}}-{replicate}.smorfer.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+        lambda wildcards: expand("smorfer/{{condition}}-{replicate}.smorfer.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
     output:
         "tracks/{condition, [a-zA-Z]+}.smorfer.gff"
     conda:
