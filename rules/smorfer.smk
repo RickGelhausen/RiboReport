@@ -20,7 +20,7 @@ rule createSmorferPutativeORFs:
     shell:
         """
         mkdir -p smorfer;
-        smorfer.sh -s putative_orfs.sh -g {input.genome} -c {params.genome_name} -n smorfer_pORFs -i 9-3000 -o smorfer/
+        smorfer.sh -s putative_orfs.sh -g {input.genome} -c {params.genome_name} -n smorfer_pORFs -i 9-150 -o smorfer/
         """
 
 rule createSmorferFourierTransform:
