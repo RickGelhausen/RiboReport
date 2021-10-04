@@ -16,7 +16,7 @@ rule createRibotricerIndex:
     shell:
         """
         mkdir -p ribotricer;
-        ribotricer prepare-orfs --gtf {input.annotation} --fasta {input.genome} --prefix ribotricer/ribotricer
+        ribotricer prepare-orfs --gtf {input.annotation} --fasta {input.genome} --prefix ribotricer/ribotricer --min_orf_length 6 --start_codons ATG,GTG,TTG
         """
 
 rule createRibotricerCutoff:
