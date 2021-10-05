@@ -146,8 +146,8 @@ rule priceGFF:
 
 rule concatPrice:
     input:
-        unfiltered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"]),
-        filtered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.filtered.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+        unfiltered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"]),
+        filtered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.filtered.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
     output:
         unfiltered="tracks/{condition, [a-zA-Z]+}.price.gff",
         filtered="tracks/{condition, [a-zA-Z]+}.price.filtered.gff"
