@@ -81,6 +81,6 @@ rule generateTranscripts:
         "../envs/cufflinks.yaml"
     threads: 20
     shell:
-        "mkdir -p transcripts; cufflinks {input.bam} -p {threads} -o ./transcripts/{wildcards.condition}-{wildcards.replicate}/ -g {input.annotation} --library-type fr-firststrand"
+        "mkdir -p transcripts; cufflinks {input.bam} -p {threads} -o ./transcripts/{wildcards.condition}-{wildcards.replicate}/ -g {input.annotation}"
 
 
