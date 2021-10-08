@@ -7,7 +7,7 @@ We retrieved 4 different datasets for the construction of our benchmark dataset.
 2. Listeria monocytogenes
 [Ribo-seq: SAMEA3864955](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864955) and [RNA-seq: SAMEA3864956](https://www.ncbi.nlm.nih.gov/biosample/SAMEA3864956) datasets (ERR1248497, ERR1248499)
 3. Pseudomonas aeruginosa 
-[Ribo-seq and RNA-seq: SAMN06617371](www.ncbi.nlm.nih.gov/biosample/SAMN06617371) (SRR5356901, SRR5356902)
+[Ribo-seq and RNA-seq: SAMN06617371](https://www.ncbi.nlm.nih.gov/biosample/SAMN06617371) (SRR5356901, SRR5356902)
 4. Salmonella enterica serovar Typhimurium
 [Ribo-seq](https://www.ncbi.nlm.nih.gov/sra/SRX3456030[accn]) and [RNA-seq](https://www.ncbi.nlm.nih.gov/sra/SRX3456038[accn]) (SRR6359968, SRR6359976)
 
