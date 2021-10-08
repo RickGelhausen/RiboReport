@@ -22,7 +22,8 @@ For running the workflow, several input files are required:
 - config.yaml
 - fastq files 
 
-The fastq files for our newly published dataset are available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514, token:ofkbusuqzbcvfip)
+The fastq files for our newly published dataset are available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514).
+The data will be published together with the publication. Please contact us if you require the access token.
 The rest of the required files can be found in the data folder.
 
 ### Workflow
