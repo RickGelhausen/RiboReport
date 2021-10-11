@@ -111,7 +111,8 @@ rule concatRibotricer:
 
 rule smorferGFF:
     input:
-        "smorfer/{condition}-{replicate}/best_start_results.txt"
+        #"smorfer/{condition}-{replicate}/best_start_results.txt"
+        "smorfer/{condition}-{replicate}/RPF_translated.txt"
     output:
         "smorfer/{condition, [a-zA-Z]+}-{replicate,\d+}.smorfer.gff"
     conda:
