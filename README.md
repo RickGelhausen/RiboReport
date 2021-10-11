@@ -147,15 +147,16 @@ All **file path** statements have to be replaced by the path to your benchmark f
 ####  Excluding a prediction tool:
 
 Currently, to remove a tool from the analysis simply remove the line from the input and shell part of the mergeConditions rule.
-You can find it in under `rules/postprocessing.smk`:
+You can find it in under `rules/postprocessing.smk`.
 
+To remove IRSOM change:
 ~~~~
 rule mergeConditions:
     input:
         ribotish="tracks/{condition}.ribotish.gff",
         reparation="tracks/{condition}.reparation.gff",
         deepribo="tracks/{condition}.deepribo.gff",
-        ~~irsom="tracks/{condition}.irsom.gff",~~
+        irsom="tracks/{condition}.irsom.gff",
         spectre="tracks/{condition}.spectre.gff",
         smorfer="tracks/{condition}.smorfer.gff",
         ribotricer="tracks/{condition}.ribotricer.gff",
@@ -172,7 +173,38 @@ rule mergeConditions:
         cat {input.ribotish} >> {output}.unsorted;
         cat {input.reparation} >> {output}.unsorted;
         cat {input.deepribo} >> {output}.unsorted;
-        ~~cat {input.irsom} >> {output}.unsorted;~~
+        cat {input.irsom} >> {output}.unsorted;
+        cat {input.smorfer} >> {output}.unsorted;
+        cat {input.ribotricer} >> {output}.unsorted;
+        cat {input.price} >> {output}.unsorted;
+        bedtools sort -i {output}.unsorted > {output};
+        """
+~~~~
+
+to
+
+~~~~
+rule mergeConditions:
+    input:
+        ribotish="tracks/{condition}.ribotish.gff",
+        reparation="tracks/{condition}.reparation.gff",
+        deepribo="tracks/{condition}.deepribo.gff",
+        spectre="tracks/{condition}.spectre.gff",
+        smorfer="tracks/{condition}.smorfer.gff",
+        ribotricer="tracks/{condition}.ribotricer.gff",
+        price="tracks/{condition}.price.gff"
+    output:
+        "tracks/{condition, [a-zA-Z]+}.merged.gff"
+    conda:
+        "../envs/bedtools.yaml"
+    threads: 1
+    shell:
+        """
+        mkdir -p tracks;
+        cat {input.spectre} > {output}.unsorted;
+        cat {input.ribotish} >> {output}.unsorted;
+        cat {input.reparation} >> {output}.unsorted;
+        cat {input.deepribo} >> {output}.unsorted;
         cat {input.smorfer} >> {output}.unsorted;
         cat {input.ribotricer} >> {output}.unsorted;
         cat {input.price} >> {output}.unsorted;
