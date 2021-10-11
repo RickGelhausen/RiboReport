@@ -13,6 +13,7 @@ The generation and usage of the final tables and figures is described below.
 ### Dependencies
 - [miniconda3](https://docs.conda.io/en/latest/miniconda.html).
 - snakemake >=6.4.1
+- singularity
 
 ### Input data
 For running the workflow, several input files are required:
@@ -20,10 +21,11 @@ For running the workflow, several input files are required:
 - annotation.gff
 - samples.tsv
 - config.yaml
-- fastq files 
+- fastq files
 
 The fastq files for our newly published dataset are available via NCBI GEO (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131514).
 The data will be published together with the publication. Please contact us if you require the access token.
+
 The rest of the required files can be found in the data folder.
 
 ### Workflow
@@ -94,7 +96,7 @@ In order to run `snakemake`, the creation of a conda environment is required.
 
 Once miniconda3 is installed. Create a snakemake environment:
 ~~~~
-conda create -n snakemake -c conda-forge -c bioconda snakemake
+conda create -n snakemake -c conda-forge -c bioconda snakemake singularity
 conda activate snakemake
 ~~~~
 
