@@ -97,3 +97,25 @@ rule predictDeepRibo:
         mkdir -p deepribo;
         DeepRibo.py predict deepribo/ --pred_data {wildcards.condition}-{wildcards.replicate}/ -r {params.rpkm} -c {params.cov} --model {input.model} --dest {output} --num_workers {threads}
         """
+
+rule deepriboGFF:
+    input:
+        "deepribo/{condition}-{replicate}/predictions.csv"
+    output:
+        "deepribo/{condition, [a-zA-Z]+}-{replicate,\d+}.deepribo.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/deepriboGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatDeepRibo:
+    input:
+        lambda wildcards: expand("deepribo/{{condition}}-{replicate}.deepribo.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.deepribo.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"

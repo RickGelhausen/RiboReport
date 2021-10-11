@@ -42,3 +42,14 @@ rule ribotish:
         "logs/{condition, [a-zA-Z]+}_ribotish.log"
     shell:
         "mkdir -p ribotish; ribotish predict -v {params.codons} -p {threads} -b {params.fplist} -g {input.annotation} -f {input.genome} -o {output.filtered} 2> {log}"
+
+rule ribotishGFF:
+    input:
+        "ribotish/{condition}-newORFs.tsv_all.txt"
+    output:
+        "tracks/{condition, [a-zA-Z]+}.ribotish.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/ribotishGFF.py -c {wildcards.condition} -i {input} -o {output}"

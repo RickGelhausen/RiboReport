@@ -53,7 +53,22 @@ rule createSmorferRPFcount:
         smorfer.sh -s count_RPF.sh -b {input.bed} -a {input.bam} -o smorfer/{wildcards.condition}-{wildcards.replicate}/
         """
 
-rule createSmorferFilterWithCalibrated:
+rule smorferFourierTransformWithCalibratedBam:
+    input:
+        bam="calibrated_bam/RIBO-{condition}-{replicate}_calibrated.bam",
+        bed="smorfer/{condition}-{replicate}/RPF_high.bed"
+    output:
+        "smorfer/{condition}-{replicate}/RPF_3nt_translated.txt"
+    singularity:
+        "docker://gelhausr/smorfer:latest"
+    threads: 1
+    shell:
+        """
+        mkdir -p smorfer/{wildcards.condition}-{wildcards.replicate};
+        smorfer.sh -s FT_RPF.sh high_expressed_ORFs.bed calibrated_RiboSeq.bam -b {input.bed} -a {input.bam} -o smorfer/{wildcards.condition}-{wildcards.replicate}/
+        """
+
+rule smorferFilterStartWithCalibratedBam:
     input:
         bam="calibrated_bam/RIBO-{condition}-{replicate}_calibrated.bam",
         bed="smorfer/{condition}-{replicate}/RPF_translated.txt"
@@ -67,6 +82,7 @@ rule createSmorferFilterWithCalibrated:
         mkdir -p smorfer/{wildcards.condition}-{wildcards.replicate};
         smorfer.sh -s find_best_start.sh -b {input.bed} -a {input.bam} -o smorfer/{wildcards.condition}-{wildcards.replicate}/
         """
+
 
 rule createSmorferRPFcountNOFT:
     input:
@@ -82,3 +98,26 @@ rule createSmorferRPFcountNOFT:
         mkdir -p smorfer/{wildcards.condition}-{wildcards.replicate}_noFT;
         smorfer.sh -s count_RPF.sh -b {input.bed} -a {input.bam} -o smorfer/{wildcards.condition}-{wildcards.replicate}_noFT/
         """
+
+rule smorferGFF:
+    input:
+        #"smorfer/{condition}-{replicate}/best_start_results.txt"
+        "smorfer/{condition}-{replicate}/RPF_translated.txt"
+    output:
+        "smorfer/{condition, [a-zA-Z]+}-{replicate,\d+}.smorfer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/smorferGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatSmorfer:
+    input:
+        lambda wildcards: expand("smorfer/{{condition}}-{replicate}.smorfer.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.smorfer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"

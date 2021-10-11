@@ -53,3 +53,24 @@ rule predictRibotricer:
         ribotricer detect-orfs --bam {input.bam_ribo} --ribotricer_index {input.index} --prefix ribotricer/{wildcards.condition}-{wildcards.replicate}/ribotricer --phase_score_cutoff {params.cutoff}
         """
 
+rule ribotricerGFF:
+    input:
+        "ribotricer/{condition}-{replicate}/ribotricer_translating_ORFs.tsv"
+    output:
+        "ribotricer/{condition, [a-zA-Z]+}-{replicate,\d+}.ribotricer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/ribotricerGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatRibotricer:
+    input:
+        lambda wildcards: expand("ribotricer/{{condition}}-{replicate}.ribotricer.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.ribotricer.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"

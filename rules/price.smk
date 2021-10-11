@@ -43,3 +43,34 @@ rule decodeResultsPrice:
         mkdir -p price;
         gedi -e ViewCIT -m bed -name 'd.getType()' {input.cit} > {output.bed}
         """
+
+rule priceGFF:
+    input:
+        filtered="price/{condition}-{replicate}/results.orfs.filtered.bed",
+        unfiltered="price/{condition}-{replicate}/results.orfs.tsv"
+    output:
+        filtered="price/{condition, [a-zA-Z]+}-{replicate,\d+}.price.filtered.gff",
+        unfiltered="price/{condition, [a-zA-Z]+}-{replicate,\d+}.price.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/priceGFF.py -c {wildcards.condition}  -i {input.filtered} -u {input.unfiltered} -o {output.unfiltered} -f {output.filtered}"
+
+rule concatPrice:
+    input:
+        unfiltered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"]),
+        filtered=lambda wildcards: expand("price/{{condition}}-{replicate}.price.filtered.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        unfiltered="tracks/{condition, [a-zA-Z]+}.price.gff",
+        filtered="tracks/{condition, [a-zA-Z]+}.price.filtered.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        """
+        mkdir -p tracks;
+        RiboReport/scripts/concatGFF.py {input.unfiltered} -o {output.unfiltered}
+        RiboReport/scripts/concatGFF.py {input.filtered} -o {output.filtered}
+        """
+

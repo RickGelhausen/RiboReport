@@ -69,3 +69,25 @@ rule predictIrsom:
        mkdir -p irsom;
        predict.py --featurer={input.featurer} --file={input.transcripts} --model=irsom/model/Escherichia_coli/ --output=irsom/{wildcards.condition}-{wildcards.replicate}/
        """
+
+rule irsomGFF:
+    input:
+        "irsom/{condition}-{replicate}/result.txt"
+    output:
+        "irsom/{condition, [a-zA-Z]+}-{replicate,\d+}.irsom.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/irsomGFF.py -c {wildcards.condition}  -i {input} -o {output}"
+
+rule concatIrsom:
+    input:
+        lambda wildcards: expand("irsom/{{condition}}-{replicate}.irsom.gff", zip, replicate=samples.loc[(samples["method"] == "RNA") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.irsom.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"

@@ -34,3 +34,24 @@ rule reparation:
     shell:
         "mkdir -p reparation; if [ uniprotDB/uniprot_sprot.fasta.bak does not exist ]; then cp -p uniprotDB/uniprot_sprot.fasta uniprotDB/uniprot_sprot.fasta.bak; fi; mkdir -p {params.prefix}/tmp; reparation.pl -bam {input.bam} -g {input.genome} -gtf {input.gtf} -db {input.db} -out {params.prefix} -threads {threads}; if [ uniprotDB/uniprot_sprot.fasta does not exist ]; then cp -p uniprotDB/uniprot_sprot.fasta.bak uniprotDB/uniprot_sprot.fasta; fi;"
 
+rule reparationGFF:
+    input:
+        "reparation/{condition}-{replicate}/Predicted_ORFs.txt"
+    output:
+        "reparation/{condition, [a-zA-Z]+}-{replicate,\d+}.reparation.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/reparationGFF.py -c {wildcards.condition}  -r {wildcards.replicate} -i {input} -o {output}"
+
+rule concatReparation:
+    input:
+        lambda wildcards: expand("reparation/{{condition}}-{replicate}.reparation.gff", zip, replicate=samples.loc[(samples["method"] == "RIBO") & (samples["condition"] == wildcards.condition), "replicate"])
+    output:
+        "tracks/{condition, [a-zA-Z]+}.reparation.gff"
+    conda:
+        "../envs/mergetools.yaml"
+    threads: 1
+    shell:
+        "mkdir -p tracks; RiboReport/scripts/concatGFF.py {input} -o {output}"

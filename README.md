@@ -1,7 +1,7 @@
 <img src="RiboReport.png" width="661">
 
 # RiboReport21
-This repository contains all code to recreate the contents of "RiboReport - Benchmarking tools for ribosome profiling-based identification of open reading frames in bacteria". 
+This repository contains all code to recreate the contents of "RiboReport - Benchmarking tools for ribosome profiling-based identification of open reading frames in bacteria".
 Following are descriptions of the required steps to reproduce our analysis.
 
 ## Processing of High Throughput Sequencing Data
@@ -32,8 +32,8 @@ The rest of the required files can be found in the data folder.
 ---
 **Note**
 
-Even though `snakemake` workflows are executable locally, we do not advise this due to high memory usage and runtime of some of the processing steps. 
-We ran the workflow on a TORQUE cluster system (powered by bwHPC) and later on a de.NBI cloud instance. 
+Even though `snakemake` workflows are executable locally, we do not advise this due to high memory usage and runtime of some of the processing steps.
+We ran the workflow on a TORQUE cluster system (powered by bwHPC) and later on a de.NBI cloud instance.
 
 For more information how to run the workflow using your prefered cluster setup, please refer to the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/executing/cluster.html).
 
@@ -92,7 +92,7 @@ This will download all required fastq files into a fastq folder.
 
 #### 6. Run the snakemake workflow:
 
-In order to run `snakemake`, the creation of a conda environment is required. 
+In order to run `snakemake`, the creation of a conda environment is required.
 
 Once miniconda3 is installed. Create a snakemake environment:
 ~~~~
@@ -117,7 +117,6 @@ nohup snakemake -p -k --use-conda --use-singularity --singularity-args " -c " --
 ~~~~
 
 Depending on your available resources you can also remove --greediness 0 and increase -j, to your preferences in order to boost performance.
-
 ##### On the cluster
 Then you can copy and complete one of the provided submission scripts, or create your own.
 ~~~~
@@ -145,6 +144,52 @@ All **file path** statements have to be replaced by the path to your benchmark f
 
 **Please note** that these scripts might need some extra changes depending on your cluster system. If your cluster system does not run SGE or TORQUE, these files will most likely not work at all. In the case they run SGE or TORQUE, there might be slightly different definitions for the resource statements (here `#PBS -l nodes=1:ppn=1`). This is then also the case for the configuration files `sge.yaml` and `torque.yaml`. Please check the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/executing/cluster.html).
 
+####  Excluding a prediction tool:
+
+Currently, to remove a tool from the analysis simply remove the line from the input and shell part of the mergeConditions rule.
+You can find it in under `rules/postprocessing.smk`:
+
+~~~~
+rule mergeConditions:
+    input:
+        ribotish="tracks/{condition}.ribotish.gff",
+        reparation="tracks/{condition}.reparation.gff",
+        deepribo="tracks/{condition}.deepribo.gff",
+        irsom="tracks/{condition}.irsom.gff",
+        spectre="tracks/{condition}.spectre.gff",
+        smorfer="tracks/{condition}.smorfer.gff",
+        ribotricer="tracks/{condition}.ribotricer.gff",
+        price="tracks/{condition}.price.gff"
+    output:
+        "tracks/{condition, [a-zA-Z]+}.merged.gff"
+    conda:
+        "../envs/bedtools.yaml"
+    threads: 1
+    shell:
+        """
+        mkdir -p tracks;
+        cat {input.spectre} > {output}.unsorted;
+        cat {input.ribotish} >> {output}.unsorted;
+        cat {input.reparation} >> {output}.unsorted;
+        cat {input.deepribo} >> {output}.unsorted;
+        cat {input.irsom} >> {output}.unsorted;
+        cat {input.smorfer} >> {output}.unsorted;
+        cat {input.ribotricer} >> {output}.unsorted;
+        cat {input.price} >> {output}.unsorted;
+        bedtools sort -i {output}.unsorted > {output};
+        """
+~~~~
+
+####  smORFer output
+
+As smORFer is modular and has different optional steps it is hard to add all combinations to the snakemake pipeline.
+
+Some of these steps even require the creation of a calibrated bam file, which involves manual checking of offsets.
+
+Rules for all the steps involving Ribo-seq libraries are included in `rules/smorfer.smk`.
+To use the steps involving manual work, simply add the calibrated bam file to a directory called `calibrated_bam/method-condition-replicate_calibrated.bam`.
+
+By default, the filtering steps involving manual work are skipped. To add them the input/output of the rules in `rules/smorfer.smk` have to be updated accordingly.
 
 ####  Extract operon regions from the annotation:
 
