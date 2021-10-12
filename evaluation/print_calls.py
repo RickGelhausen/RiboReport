@@ -26,8 +26,8 @@ def main():
                         help="path to the negative reference data.")
     parser.add_argument("-s", "--python_script_dir", action="store",
                         dest="python_script_dir", required=True,
-                        default="/home/muellert/Dokumente/benchmark_ribo_seq/ribo_benchmark/evaluation/",
-                        help="path to your '/ribo_benchmark/evaluation/'' forder where all evaluation scripts are stored.")
+                        default="/home/teresa/Dokumente/benchmark_ribo_seq/RiboReport/evaluation/",
+                        help="path to your '/RiboReport/evaluation/' forder where all evaluation scripts are stored.")
 
 
 
@@ -52,21 +52,28 @@ def main():
 
     shell_script =  result_dir + '/evaluation_calls.sh'
 
-    python_script_dir = '/home/muellert/Dokumente/benchmark_ribo_seq/ribo_benchmark/evaluation/'
+    python_script_dir = '/home/teresa/Dokumente/benchmark_ribo_seq/RiboReport/evaluation/'
 
 
     f= open(shell_script,"w+")
     f.write("#!/usr/bin/env bash\n\ntrap ctrl_c INT\n\nfunction ctrl_c() {\necho \"** Trapped CTRL-C\"\nexit\n}\n\n")
     #f.write('test')
     # what to investigat test:
-    #dataset_list = ['bm01', 'bm06']
-    #experiment_list = ['CDS_labels']
+    #dataset_list = ['bm_01', 'bm_03', 'bm_06', 'bm_12']
+    #dataset_list = ['bm_14']
+    #experiment_list = ['smallORFs_labels']
+
+    #experiment_list = ['CDS_labels', 'smallORFs_labels', 'operons_intersect_labels', 'operons_complement_labels']
     #overlap_list = ['0.01', '0.5']
 
     #bar_plot_call_dict = {}
     # full data:
-    dataset_list = ['bm_01', 'bm_03', 'bm_06', 'bm_12']
-    experiment_list = ['CDS_labels', 'smallORFs_labels', 'operons_intersect_labels', 'operons_complement_labels', 'ncRNAs_labels', 'pseudogenes_labels']
+    #dataset_list = ['bm_01', 'bm_03', 'bm_06', 'bm_12']
+    dataset_list = ['bm_01']
+    #dataset_list = ['bm_06', 'bm_12']
+    #dataset_list = ['bm_03']
+
+    experiment_list = ['CDS_labels', 'smallORFs_labels', 'operons_intersect_labels', 'operons_complement_labels']
     overlap_list =  ['0.01', '0.9',  '0.7']
     for dataset in dataset_list:
         bar_plot_call_dict = {}
@@ -139,7 +146,6 @@ def main():
         #print(experiment)
         experiment_dict[experiment]=[]
         for dataset in dataset_list:
-            #print(dataset)
             if dataset == 'bm_01':
                 lable = 'EC'
             elif dataset == 'bm_03':
@@ -148,8 +154,10 @@ def main():
                 lable = 'PA'
             elif dataset == 'bm_12':
                 lable = 'ST'
+            elif dataset == 'bm_14':
+                lable = 'HV'
             for overlap in overlap_list:
-                #print(overlap)
+                #print(lable)
                 stat_path = result_dir + '/' + dataset + '/' + experiment + '/' + overlap+ '/df_stat.csv'
                 hue_symbel = lable + '_' + overlap
                 experiment_dict[experiment].append((stat_path,hue_symbel, dataset, overlap))
@@ -188,7 +196,7 @@ def main():
     call_script = ('python3  %s/experiment_barplots.py '%(python_script_dir))
     call_exp_barplots = ('%s -e %s -o %s '%(call_script, save_experiment_dict, plot_dir))
     #print(call_exp_barplots)
-    f.write('\n#######################\n%s\n'%(call_exp_barplots))
+    # f.write('\n#######################\n%s\n'%(call_exp_barplots))
 
 
 
