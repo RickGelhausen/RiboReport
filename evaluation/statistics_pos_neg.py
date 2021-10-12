@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import pandas as pd
-#import mathe
 import matplotlib as mpl
 import seaborn
 import os
@@ -25,17 +24,13 @@ def get_dict_with_empty_val(file, tool='RefSeq'):
     Parameters
     ----------
     tool : string
-        annotaion or either of the tool names
-
-    Raises
-    ------
-    not jet ...
+        annotation or either of the tool names
 
     Returns
     -------
     tool_dict
-        dictionay with ID as key and value is the string parameter tool
-        id of the start:stop:strand:asseionnumber
+        dictionary with ID as key and value is the string parameter tool
+        id of the start:stop:strand:assertionnumber
     """
     tool_dict = {}
     f = open(file, 'r')
@@ -56,7 +51,7 @@ def get_dict_with_empty_val(file, tool='RefSeq'):
 
 
 def get_associated_genes(gene_dict, pred_prediction_dict, label):
-    """function assosiates just one prediction to a gene.
+    """function associates just one prediction to a gene.
 
         Parameters
         ----------
@@ -65,18 +60,14 @@ def get_associated_genes(gene_dict, pred_prediction_dict, label):
         pred_prediction_dict : dictionary
             predictionIds with lists of genes
 
-        Raises
-        ------
-        not jet ...
-
         Returns
         -------
         associated_genes_dict
-            assositation of geneId -> predictionId (one to one relation)
+            associations of geneId -> predictionId (one to one relation)
         pred_prediction_sub_dict
             containing predictionsIds that are not associated to a gene
         associated_predictions_dict
-            assositation of predictionId -> geneId (one to one relation)
+            associations of predictionId -> geneId (one to one relation)
     """
     associated_genes_dict = {}
     associated_predictions_dict = {}
@@ -105,7 +96,7 @@ def get_associated_genes(gene_dict, pred_prediction_dict, label):
                     pass
                 associated_genes_dict[k] = id_pred
                 associated_predictions_dict[id_pred]= k
-                score_list.append((float(score), overlap, label))
+                score_list.append((float(score), float(overlap), label))
 
                 sorted_list = []
             elif sorted_list == []:
@@ -120,21 +111,17 @@ def get_associated_genes(gene_dict, pred_prediction_dict, label):
 
 
 def get_genes(gene_dict, df_overlap_score, tool):
-    """funciton selects for a saves tool all predicted genes (key) and there
-    associated predictions (value) in a dictionay
+    """function selects for a saves tool all predicted genes (key) and there
+    associated predictions (value) in a dictionary
 
         Parameters
         ----------
         gene_dict : dictionary
             containing all gene IDs (not needed at the moment)
         df_overlap_score : datafame
-            conaining overlaps between the reference and prediction
+            containing overlaps between the reference and prediction
         tool : string
             tells for what tool the overlap should be found
-
-        Raises
-        ------
-        not jet ...
 
         Returns
         -------
@@ -144,10 +131,10 @@ def get_genes(gene_dict, df_overlap_score, tool):
             [['predictionId3', 'score', 'overlap'],...]...}
             Id: start:stop:strand
     """
-    # get all assosiation of genes with a specific tool
+    # get all association of genes with a specific tool
     df_overlap = df_overlap_score[df_overlap_score['id_pred'] == tool]
 
-    #prepare the value of the dict in an extra colum of the dataframe
+    #prepare the value of the dict in an extra column of the dataframe
     df_overlap_test = df_overlap.astype({"start_pred": str, "stop_pred": str,
                                         "score_pred": str,
                                         "overlap_percent": str,
@@ -160,7 +147,7 @@ def get_genes(gene_dict, df_overlap_score, tool):
                                 df_overlap_test['overlap_percent'])
     #print(df_overlap_test)
 
-    # dict key: gene_id; value: list of overlaping prediction (predID$score$overlap)
+    # dict key: gene_id; value: list of overlapping prediction (predID$score$overlap)
     gene_prediction_temp_dict = {k: list(v)
                                 for k, v in df_overlap_test.groupby(
                                 by=['start_ref', 'stop_ref', 'strand_ref', 'chr'])
@@ -185,20 +172,17 @@ def get_genes(gene_dict, df_overlap_score, tool):
 
 def get_prediction(tool_dict, df_overlap_score, tool):
     """This fuction selects for a given tool all predictions (key) and there
-    associated genes (value) and stores them in a dictionay
+    associated genes (value) and stores them in a dictionary
 
         Parameters
         ----------
         tool_dict : dictionary (not needed at the moment)
             keys containing all predictions ids but jet no values
         df_overlap_score : datafame
-            conaining overlaps between the reference and prediction
+            containing overlaps between the reference and prediction
         tool : string
             tells for what tool the overlap should be found
 
-        Raises
-        ------
-        not jet ...
 
         Returns
         -------
@@ -208,10 +192,10 @@ def get_prediction(tool_dict, df_overlap_score, tool):
             [['geneId3', 'overlap'],...]...}
             Id: start:stop:strand
     """
-    # get all assosiation of genes with a specific tool
+    # get all association of genes with a specific tool
     df_overlap_tools = df_overlap_score[df_overlap_score['id_pred'] == tool]
 
-    # prepare the value of the dict in an extra colum of the dataframe
+    # prepare the value of the dict in an extra column of the dataframe
     df_overlap_test = df_overlap_tools.astype({
                                              "start_ref": str, "stop_ref": str,
                                              "overlap_percent": str})
@@ -226,14 +210,14 @@ def get_prediction(tool_dict, df_overlap_score, tool):
                                 df_overlap_test.groupby(by=['start_pred',
                                 'stop_pred', 'strand_pred', 'chr'])
                                 ['tuple']}
-    # convertd pred_id tuple into one string
+    # convert pred_id tuple into one string
     pred_prediction_dict = {str(k[0]) + ':' + str(k[1]) + ':' +
                            k[2] + ':' + k[3]: pred_prediction_temp_dict[k]
                            for k in pred_prediction_temp_dict}
 
 
     for k in pred_prediction_dict:
-        # sprlit gene informatio stroed in values into gene_id and overlap_percent
+        # split gene information stored in values into gene_id and overlap_percent
         pred_prediction_dict[k] = [val.split('-')
                                   for val in pred_prediction_dict[k]]
 
@@ -244,12 +228,12 @@ def get_prediction(tool_dict, df_overlap_score, tool):
 
 
 def assort_genes_with_predictions(ref_file, tools_file, df_overlap_score, tool, label):
-    """This fuction computes TP, FN and FP for a given tool.
+    """This function computes TP, FN and FP for a given tool.
 
         Parameters
         ----------
         ref_file : string
-            file name of the referece file (.gtf)
+            file name of the reference file (.gtf)
         tools_file : string
             file name of the tools prediction (.gtf)
         df_overlap_score : dataframe
@@ -257,27 +241,24 @@ def assort_genes_with_predictions(ref_file, tools_file, df_overlap_score, tool, 
         tool : string
             tool name
         label: string
-            specifies if positive or negative data is analysed
+            specifies if positive or negative data is analyzed
 
-        Raises
-        ------
-        nothing
 
         Returns
         -------
         assorted_genes
-            number of genes assoiated with one prediction
+            number of genes associated with one prediction
         not_assorted_genes
-            number of genes without predictiontools_file
+            number of genes without prediction tools_file
         suboptimals
             number of suboptimal predictions
         associated_gene_list
             list of all genes found by the currently investigated tool
         score_list
-            list contining for the current tool (score, overlap, label) for each associated gene
+            list containing for the current tool (score, overlap, label) for each associated gene
 
     """
-    # put all genes of the refernece inside a dictionary
+    # put all genes of the reference inside a dictionary
     gene_dict = get_dict_with_empty_val(ref_file)
     print('number of genes for %s: %i' % (label, len(gene_dict)))
 
@@ -287,10 +268,10 @@ def assort_genes_with_predictions(ref_file, tools_file, df_overlap_score, tool, 
     # get all genes which are found by the tools prediction and the genes that are not found!
     gene_predicted_dict = get_genes(gene_dict, df_overlap_score, tool)
 
-    # get all predicitons of the tools that have a overlap with a gene of the reference
+    # get all predictions of the tools that have a overlap with a gene of the reference
     prediction_overlap_dict = get_prediction(tool_dict, df_overlap_score, tool)
 
-    # assosiat each gene with just one prediciton. All othere genes
+    # associate each gene with just one prediction. All other genes
     associated_genes_dict, pred_prediction_sub_list, associated_predictions_dict, no_genes_lost_prediction, score_list = get_associated_genes(gene_predicted_dict, prediction_overlap_dict,label)
 
 
@@ -320,7 +301,7 @@ def get_stat_for_tool(ref_file, tools_file, df_overlap_score, ref_neg_file, df_n
         Parameters
         ----------
         ref_file : string
-            file name of the referece file (.gtf)
+            file name of the reference file (.gtf)
         tools_file : string
             file name of the tools prediction (.gtf)
         df_overlap_score : dataframe
@@ -330,23 +311,14 @@ def get_stat_for_tool(ref_file, tools_file, df_overlap_score, ref_neg_file, df_n
         save_dir:
             directory where the list of scores overlaps and labels can be stores at
 
-        Raises
-        ------
-        nothing
 
         Returns
         -------
-        gene_list
+        associated_TP_list
             list of genes that are found (TP)
-        prediction_list
-            list of predictions that are assoiated with a gene
         stat_list
-            contains all statistical measuments:
+            contains all statistical measurements:
             TP, FP, FN, recall, FNR, precision, FDR, F1, #subopt, tool]
-        FP_prediction_list
-            list of all predictions not overlaping with any gene
-        FN_prediction_list
-            list of all not predicted genes
     """
     TP, FN, suboptimals_TP, associated_TP_list, score_list_pos = assort_genes_with_predictions(ref_file, tools_file, df_overlap_score, tool, '1')
     FP, TN, suboptimals_FP, associated_FP_list, score_list_neg = assort_genes_with_predictions(ref_neg_file, tools_file, df_neg_overlap, tool, '0')
@@ -360,6 +332,9 @@ def get_stat_for_tool(ref_file, tools_file, df_overlap_score, ref_neg_file, df_n
     if tool == 'deepribo':
         FN_pred_ROC = [(-999999,0,'1')]*FN
         TN_pred_ROC = [(-999999,0,'0')]*TN
+    elif tool == 'price':
+        FN_pred_ROC = [(1,0,'1')]*FN
+        TN_pred_ROC = [(1,0,'0')]*TN
     else:
         FN_pred_ROC = [(0,0,'1')]*FN
         TN_pred_ROC = [(0,0,'0')]*TN
@@ -379,7 +354,6 @@ def get_stat_for_tool(ref_file, tools_file, df_overlap_score, ref_neg_file, df_n
     no_prediction_without_genes = len(df_fp_overlap_tool.index)
 
     if(flag_subopt == 1 and flag_no_gene == 1):
-        #print('\nhallo\n')
         FP = FP + int(suboptimals_TP) + int(no_prediction_without_genes)
     elif (flag_subopt == 0 and flag_no_gene == 1):
         FP = FP + int(no_prediction_without_genes)
@@ -441,16 +415,14 @@ def get_stat_for_tool(ref_file, tools_file, df_overlap_score, ref_neg_file, df_n
     stat_list = [TP, TN, FP, FN, recall, specificity, FNR, precision, FDR, F1, accuracy,
                  suboptimals_TP, suboptimals_FP, no_prediction_without_genes, tool]
     return stat_list, associated_TP_list
-    # return (gene_list, prediction_list, stat_list,
-    #         FP_prediction_list, FN_prediction_list)
 
 def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_file, score_cutoff):
-    """This fuction computes TP, FN and FP for a given tool.
+    """This function computes TP, FN and FP for a given tool.
 
         Parameters
         ----------
         reference_path : string
-            file name of the referece file (.gtf)
+            file name of the reference file (.gtf)
         tools_path : string
             file name of the tools prediction (.gtf)
         overlap_file : string
@@ -458,23 +430,20 @@ def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_fi
         score_cutoff : float
             gives
 
-        Raises
-        ------
-        nothing
 
         Returns
         -------
         df_overlap_score
-            dataframe containing overlapping regoins
+            dataframe containing overlapping regions
     """
 
     if os.stat(reference_path).st_size == 0:
         sys.exit('empty file: %s' % (reference_path))
     #print(which_set + '\n')
     cmd = ('bedtools intersect -a ' + reference_path + ' -b ' + tools_path + ' -wo -f ' + str(overlap_cutoff) + ' -r -s > ' + overlap_file)
-    print('##########')
-    print(cmd)
-    print('##########')
+    #print('##########')
+    #print(cmd)
+    #print('##########')
 
     os.system(cmd)
 
@@ -501,7 +470,7 @@ def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_fi
                                 df_overlap['start_pred'] + 1))
     #df_overlap['overlap_percent'] = min((df_overlap['overlap'] /df_overlap['ref_length']),(df_overlap['overlap'] /df_overlap['ref_length']))
     df_overlap['overlap_percent'] = df_overlap[['ref_overlap_percent','pred_overlap_percent']].min(axis =1)
-    print(df_overlap['score_pred'])
+    #print(df_overlap['score_pred'])
     df_overlap = df_overlap.astype({"start_ref": int, "stop_ref": int,
                                     "start_pred": int, "stop_pred": int,
                                     "score_pred": float,  "overlap": int})
@@ -520,13 +489,13 @@ def call_bedtools_overlap(reference_path, tools_path, overlap_cutoff, overlap_fi
 
 
 def call_bedtools_not_overlap(reference_path, tools_path, overlap_cutoff, overlap_file, score_cutoff):
-    """This fuction computes all genes or predictions (A) which are not overlapping with predictions or genes (B). Given a minmal overlap percentage.
+    """This function computes all genes or predictions (A) which are not overlapping with predictions or genes (B). Given a minimal overlap percentage.
     The result is computed using bedtools and the result is saved in a gtf format and a dictionary
 
         Parameters
         ----------
         reference_path : string
-            file name of the referece file (.gtf)
+            file name of the reference file (.gtf)
         tools_path : string
             file name of the tools prediction (.gtf)
         overlap_file : string
@@ -534,14 +503,11 @@ def call_bedtools_not_overlap(reference_path, tools_path, overlap_cutoff, overla
         score_cutoff : float
             gives
 
-        Raises
-        ------
-        nothing
 
         Returns
         -------
         df_overlap_score
-            dataframe containing not overlapping regoins
+            dataframe containing not overlapping regions
     """
 
     #bedtools parameter
@@ -557,7 +523,7 @@ def call_bedtools_not_overlap(reference_path, tools_path, overlap_cutoff, overla
 
     # test if gtf file is emty:
     if os.stat(overlap_file).st_size == 0:
-        print('**********************\nno prediction exitst that could not be associated with any gene\n**********************\n')
+        print('**********************\nno prediction exits that could not be associated with any gene\n**********************\n')
         df_overlap_score = score_cutoff
     else:
         df_temp = pd.read_csv(overlap_file, header=None, sep="\t", comment="#")
@@ -574,26 +540,138 @@ def call_bedtools_not_overlap(reference_path, tools_path, overlap_cutoff, overla
     return df_overlap_score
 
 
+
+def get_times_gene_value(no_pred_tool_val):
+    times_gene = (max([len(gene_deepribo_list),
+                        len(gene_ribotish_list),
+                        len(gene_reparation_list),
+                        len(gene_irsom_list),
+                        len(gene_spectre_list),
+                        len(gene_price_list),
+                        len(gene_ribotricer_list),
+                        len(gene_smorfer_list)]) - no_pred_tool_val)
+    return times_gene
+
+
+def venn_prepataions(gene_deepribo_list, gene_ribotish_list, gene_reparation_list, gene_irsom_list, gene_spectre_list, gene_price_list, gene_ribotricer_list, gene_smorfer_list, save_dir):
+    max_no_of_genes = max([len(gene_deepribo_list),
+                        len(gene_ribotish_list),
+                        len(gene_reparation_list),
+                        len(gene_irsom_list),
+                        len(gene_spectre_list),
+                        len(gene_price_list),
+                        len(gene_ribotricer_list),
+                        len(gene_smorfer_list)])
+    tims_deepribo_gen = max_no_of_genes - len(gene_deepribo_list)
+    tims_ribotish_gen = max_no_of_genes - len(gene_ribotish_list)
+    tims_reparation_gen = max_no_of_genes - len(gene_reparation_list)
+    tims_irsom_gen =  max_no_of_genes - len(gene_irsom_list)
+    tims_spectre_gen = max_no_of_genes - len(gene_spectre_list)
+    tims_price_gen = max_no_of_genes - len(gene_price_list)
+    tims_ribotricer_gen =max_no_of_genes - len(gene_ribotricer_list)
+    tims_smorfer_gen = max_no_of_genes - len(gene_smorfer_list)
+
+    venn_genes_dict = {'deepribo': list(gene_deepribo_list) + ['NA'] *
+                       tims_deepribo_gen,
+                       'spectre': list(gene_spectre_list) + ['NA'] *
+                       tims_spectre_gen,
+                       'ribotish': list(gene_ribotish_list) + ['NA'] *
+                       tims_ribotish_gen,
+                       'reparation': list(gene_reparation_list) + ['NA'] *
+                       tims_reparation_gen,
+                       'irsom': list(gene_irsom_list) + ['NA']*tims_irsom_gen,
+                       'spectre': list(gene_spectre_list) + ['NA']*
+                       tims_spectre_gen,
+                       'price': list(gene_price_list) + ['NA']*
+                       tims_price_gen,
+                       'ribotricer': list(gene_ribotricer_list) + ['NA']*
+                       tims_ribotricer_gen,
+                       'smorfer': list(gene_smorfer_list) + ['NA']*
+                       tims_smorfer_gen}
+    df_venn_genes = pd.DataFrame(venn_genes_dict)
+    df_venn_genes.to_csv(path_or_buf=save_dir+'df_venn_genes.csv',
+                         index=False, sep='\t')
+
+
+
+#def venn_prepataions_bm03(gene_deepribo_list, gene_ribotish_list,
+#                     gene_reparation_list, gene_irsom_list, save_dir):
+#    max_no_of_genes = max([len(gene_deepribo_list),
+#                        len(gene_ribotish_list),
+#                        len(gene_reparation_list),
+#                        len(gene_irsom_list)])
+#    tims_deepribo_gen = max_no_of_genes - len(gene_deepribo_list)
+#    tims_ribotish_gen = max_no_of_genes - len(gene_ribotish_list)
+#    tims_reparation_gen = max_no_of_genes - len(gene_reparation_list)
+#    tims_irsom_gen =  max_no_of_genes - len(gene_irsom_list)
+#
+#    venn_genes_dict = {'deepribo': list(gene_deepribo_list) + ['NA'] *
+#                       tims_deepribo_gen,
+#                       'ribotish': list(gene_ribotish_list) + ['NA'] *
+#                       tims_ribotish_gen,
+#                       'reparation': list(gene_reparation_list) + ['NA'] *
+#                       tims_reparation_gen,
+#                       'irsom': list(gene_irsom_list) + ['NA'] * tims_irsom_gen}
+#    df_venn_genes = pd.DataFrame(venn_genes_dict)
+#    df_venn_genes.to_csv(path_or_buf=save_dir+'df_venn_genes.csv',
+#                         index=False, sep='\t')
+
+
+def venn_prepataions_bm03(gene_deepribo_list, gene_ribotish_list,
+                     gene_reparation_list, gene_irsom_list,
+                     gene_price_list, gene_ribotricer_list, save_dir):
+    max_no_of_genes = max([len(gene_deepribo_list),
+                        len(gene_ribotish_list),
+                        len(gene_reparation_list),
+                        len(gene_irsom_list),
+                        len(gene_price_list),
+                        len(gene_ribotricer_list)])
+    tims_deepribo_gen = max_no_of_genes - len(gene_deepribo_list)
+    tims_ribotish_gen = max_no_of_genes - len(gene_ribotish_list)
+    tims_reparation_gen = max_no_of_genes - len(gene_reparation_list)
+    tims_irsom_gen =  max_no_of_genes - len(gene_irsom_list)
+    tims_price_gen = max_no_of_genes - len(gene_price_list)
+    tims_ribotricer_gen =max_no_of_genes - len(gene_ribotricer_list)
+
+    venn_genes_dict = {'deepribo': list(gene_deepribo_list) + ['NA'] *
+                       tims_deepribo_gen,
+                       'ribotish': list(gene_ribotish_list) + ['NA'] *
+                       tims_ribotish_gen,
+                       'reparation': list(gene_reparation_list) + ['NA'] *
+                       tims_reparation_gen,
+                       'irsom': list(gene_irsom_list) + ['NA'] * tims_irsom_gen,
+                       'price': list(gene_price_list) + ['NA']*
+                       tims_price_gen,
+                       'ribotricer': list(gene_ribotricer_list) + ['NA']*
+                       tims_ribotricer_gen}
+    df_venn_genes = pd.DataFrame(venn_genes_dict)
+    df_venn_genes.to_csv(path_or_buf=save_dir+'df_venn_genes.csv',
+                         index=False, sep='\t')
+
+
+
+
+
 def main():
     # store commandline args
     parser = argparse.ArgumentParser(description='')
     parser.add_argument("-p", "--reference_pos_data", action="store",
                         dest="reference_pos_path", required=True,
-                        default="./data/all_filtered_massspec.gtf",
+                        default="./data/smallORFs_labels_pos.gff",
                         help="path to the positive reference data.")
     parser.add_argument("-n", "--reference_neg_data", action="store",
                         dest="reference_neg_path", required=True,
-                        default="./data/all_filtered_massspec.gtf",
+                        default="../data/smallORFs_labels_neg.gff",
                         help="path to the negative reference data.")
     parser.add_argument("-t", "--tool_data", action="store", dest="tools_path",
-                        required=True, default="./data/combined.gtf",
+                        required=True, default="./data/predictions.gff",
                         help="path to the tools data.")
     parser.add_argument("-o", "--save_path", action="store", dest="save_path",
                         required=True, default="./result_dfs/",
                         help="path to save data to.")
     parser.add_argument("-c", "--overlap_cutoff", action="store",
                         dest="overlap_cutoff", required=True,
-                        default="0", type=float, help="path to save data to.")
+                        default="0", type=float, help="overlap used to accept if prediction is covering labeled ORF")
     parser.add_argument("-s", "--flag_subopt", action="store",
                         dest="flag_subopt", required=True,
                         default="0", type=int, help="set to 1 to enable flag. If not 0.")
@@ -633,11 +711,6 @@ def main():
                "_overlap_fp.gtf")
 
 
-
-
-
-
-
     # bed tools intersect parameter:
     # -wo Write the original A and B entries plus the number of base pairs of overlap between the two features.
     # Only A features with overlap are reported. Restricted by -f (min overlap) and -r (min overlap couts for A and B).
@@ -650,11 +723,16 @@ def main():
     temp_overlap_gtf = (save_dir + temp_overlap_gtf)
     fp_overlap_gtf = (save_dir + fp_overlap_gtf)
 
-    # get fp that are not overlaping with any gene
+    # get fp that are not overlapping with any gene
     df_temp_overlap = call_bedtools_not_overlap(tools_file, ref_pos_file, overlap_cutoff, temp_overlap_gtf, score_cutoff)
     # all predictions which are not overlapping with any gene for the given cutoff
     df_fp_overlap = call_bedtools_not_overlap(temp_overlap_gtf, ref_neg_file, overlap_cutoff, fp_overlap_gtf, score_cutoff)
     #print(df_fp_overlap.info)
+
+    df_filterd = df_fp_overlap[df_fp_overlap.start_pred > df_fp_overlap.stop_pred].copy()
+    print('#########filterd df')
+    print(len(df_filterd))
+    assert len(df_filterd) == 0, "error: some prediction have a greater start than end postion"
     #
     # find statistics values
     stat_list_ribotish, gene_ribotish_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'ribotish', save_dir)
@@ -662,52 +740,16 @@ def main():
     stat_list_deepribo, gene_deepribo_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'deepribo', save_dir)
     stat_list_irsom, gene_irsom_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'irsom', save_dir)
     stat_list_spectre, gene_spectre_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'spectre', save_dir)
+    stat_list_price, gene_price_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'price', save_dir)
+    stat_list_ribotricer, gene_ribotricer_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'ribotricer', save_dir)
+    stat_list_smorfer, gene_smorfer_list = get_stat_for_tool(ref_pos_file, tools_file, df_pos_overlap, ref_neg_file, df_neg_overlap, df_fp_overlap, flag_subopt, flag_no_gene, 'smorfer', save_dir)
 
+    # print('\n!!!!!!!!!\ngene list deepribo:\n', gene_deepribo_list)
 
+    venn_prepataions(gene_deepribo_list, gene_ribotish_list, gene_reparation_list, gene_irsom_list, gene_spectre_list, gene_price_list, gene_ribotricer_list, gene_smorfer_list, save_dir)
 
-
-    tims_deepribo_gen = (max([len(gene_deepribo_list),
-                             len(gene_ribotish_list),
-                             len(gene_reparation_list),
-                             len(gene_irsom_list),
-                             len(gene_spectre_list)]) - len(gene_deepribo_list))
-    tims_ribotish_gen = max([len(gene_deepribo_list),
-                              len(gene_ribotish_list),
-                              len(gene_reparation_list),
-                              len(gene_irsom_list),
-                              len(gene_spectre_list)]) - len(gene_ribotish_list)
-    tims_reparation_gen = max([len(gene_deepribo_list),
-                               len(gene_ribotish_list),
-                               len(gene_reparation_list),
-                               len(gene_irsom_list),
-                               len(gene_spectre_list)]) - len(gene_reparation_list)
-    tims_irsom_gen = max([len(gene_deepribo_list),
-                          len(gene_ribotish_list),
-                          len(gene_reparation_list),
-                          len(gene_irsom_list),
-                          len(gene_spectre_list)]) - len(gene_irsom_list)
-    tims_spectre_gen = max([len(gene_deepribo_list),
-                          len(gene_ribotish_list),
-                          len(gene_reparation_list),
-                          len(gene_irsom_list),
-                          len(gene_spectre_list)]) - len(gene_spectre_list)
-
-
-
-    venn_genes_dict = {'deepribo': list(gene_deepribo_list) + ['NA'] *
-                       tims_deepribo_gen,
-                       'spectre': list(gene_spectre_list) + ['NA'] *
-                       tims_spectre_gen,
-                       'ribotish': list(gene_ribotish_list) + ['NA'] *
-                       tims_ribotish_gen,
-                       'reparation': list(gene_reparation_list) + ['NA'] *
-                       tims_reparation_gen,
-                       'irsom': list(gene_irsom_list) + ['NA']*tims_irsom_gen}
-    df_venn_genes = pd.DataFrame(venn_genes_dict)
-    df_venn_genes.to_csv(path_or_buf=save_dir+'df_venn_genes.csv',
-                         index=False, sep='\t')
-    #print(save_dir)
-
+    #venn_prepataions_bm03(gene_deepribo_list, gene_ribotish_list, gene_reparation_list, gene_irsom_list, gene_price_list, gene_ribotricer_list, save_dir)
+    #venn_prepataions_bm03(gene_deepribo_list, gene_ribotish_list, gene_reparation_list, gene_irsom_list, save_dir)
 
     if(flag_subopt == 1):
         stat_file = 'df_stat_suboptimals.csv'
@@ -718,8 +760,13 @@ def main():
                         'FDR', 'F1', 'accuracy', 'subopt_tp', 'subopt_fp', 'no_genes', 'tool']
 
     df_stat = pd.DataFrame([stat_list_reparation, stat_list_ribotish,
-                            stat_list_deepribo, stat_list_irsom, stat_list_spectre],
+                            stat_list_deepribo, stat_list_irsom, stat_list_spectre,
+                            stat_list_price, stat_list_ribotricer, stat_list_smorfer],
                             columns=stat_list_header)
+    #df_stat = pd.DataFrame([stat_list_reparation, stat_list_ribotish,
+    #                        stat_list_deepribo, stat_list_irsom,
+    #                        stat_list_price, stat_list_ribotricer],
+    #                        columns=stat_list_header)
     df_stat.to_csv(path_or_buf=save_dir + stat_file, index=False, sep='\t')
 
 

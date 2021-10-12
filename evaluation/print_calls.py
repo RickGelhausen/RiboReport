@@ -59,9 +59,9 @@ def main():
     f.write("#!/usr/bin/env bash\n\ntrap ctrl_c INT\n\nfunction ctrl_c() {\necho \"** Trapped CTRL-C\"\nexit\n}\n\n")
     #f.write('test')
     # what to investigat test:
-    #dataset_list = ['bm_01', 'bm_06', 'bm_12']
-    dataset_list = ['bm_14']
-    experiment_list = ['smallORFs_labels']
+    #dataset_list = ['bm_01', 'bm_03', 'bm_06', 'bm_12']
+    #dataset_list = ['bm_14']
+    #experiment_list = ['smallORFs_labels']
 
     #experiment_list = ['CDS_labels', 'smallORFs_labels', 'operons_intersect_labels', 'operons_complement_labels']
     #overlap_list = ['0.01', '0.5']
@@ -69,7 +69,11 @@ def main():
     #bar_plot_call_dict = {}
     # full data:
     #dataset_list = ['bm_01', 'bm_03', 'bm_06', 'bm_12']
-    #experiment_list = ['CDS_labels', 'smallORFs_labels', 'operons_intersect_labels', 'operons_complement_labels', 'ncRNAs_labels', 'pseudogenes_labels']
+    dataset_list = ['bm_01']
+    #dataset_list = ['bm_06', 'bm_12']
+    #dataset_list = ['bm_03']
+
+    experiment_list = ['CDS_labels', 'smallORFs_labels', 'operons_intersect_labels', 'operons_complement_labels']
     overlap_list =  ['0.01', '0.9',  '0.7']
     for dataset in dataset_list:
         bar_plot_call_dict = {}
@@ -192,7 +196,7 @@ def main():
     call_script = ('python3  %s/experiment_barplots.py '%(python_script_dir))
     call_exp_barplots = ('%s -e %s -o %s '%(call_script, save_experiment_dict, plot_dir))
     #print(call_exp_barplots)
-    f.write('\n#######################\n%s\n'%(call_exp_barplots))
+    # f.write('\n#######################\n%s\n'%(call_exp_barplots))
 
 
 

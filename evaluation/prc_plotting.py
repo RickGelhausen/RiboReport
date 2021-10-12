@@ -33,10 +33,11 @@ def get_list(saved_dir, tool):
 def get_ranks(score_overlap_label_list, tool):
     #first_indexes = len(score_list)
     rank_list = list(range(len(score_overlap_label_list)))
+    #print('score list:\n',len(score_overlap_label_list))
+    #print('rank list:\n',rank_list)
     list.reverse(rank_list)
 
     #diff = len(score_overlap_label_list)-(len(set(score_overlap_label_list)))
-
     sorted_list = sorted(score_overlap_label_list, key=itemgetter(0,1), reverse=True)
 
 
@@ -124,13 +125,22 @@ def main():
     overlap = coverage_percent.replace(".", "")
     # 'deepribo', 'ribotish', 'reparation', 'irsom', 'spectre'
 
-
+    #print('tool: deepribo\n')
     precision_deepribo, recall_deepribo, base, auc_prc_deepribo = comput_roc_for_tool(experiment_dict_path, 'deepribo')
+    #print('tool: ribotish\n' )
     precision_ribotish, recall_ribotish, base, auc_prc_ribotish = comput_roc_for_tool(experiment_dict_path, 'ribotish',)
+    #print('tool: reparation\n' )
     precision_reparation, recall_reparation, base, auc_prc_reparation = comput_roc_for_tool(experiment_dict_path, 'reparation')
+    #print('tool: irsom\n' )
     precision_irsom, recall_irsom, base, auc_prc_irsom = comput_roc_for_tool(experiment_dict_path, 'irsom')
+    #print('tool: spectre\n' )
     precision_spectre, recall_spectre, base, auc_prc_spectre = comput_roc_for_tool(experiment_dict_path, 'spectre')
-
+    #print('tool: price\n' )
+    precision_price, recall_price, base, auc_prc_price = comput_roc_for_tool(experiment_dict_path, 'price')
+    #print('tool: ribotricer\n' )
+    precision_ribotricer, recall_ribotricer, base, auc_prc_ribotricer = comput_roc_for_tool(experiment_dict_path, 'ribotricer')
+    #print('tool: smorfer\n' )
+    precision_smorfer, recall_smorfer, base, auc_prc_smorfer = comput_roc_for_tool(experiment_dict_path, 'smorfer')
     #print('deepribo AUC: %f' % (auc_prc_deepribo))
     #print('ribotish AUC: %f' %  (auc_prc_ribotish))
     #print('reparation AUC: %f' %(auc_prc_reparation))
@@ -159,15 +169,21 @@ def main():
     label_reparation = ('Reparation AUC: %.2f' %(auc_prc_reparation))
     label_irsom = ('IRSOM AUC: %.2f' %  (auc_prc_irsom))
     label_spectre = ('SPECtre AUC: %.2f' %  (auc_prc_spectre))
+    label_price = ('price AUC: %.2f' %  (auc_prc_price))
+    label_ribotricer = ('ribotricer AUC: %.2f' %  (auc_prc_ribotricer))
+    label_smorfer = ('smorfer AUC: %.2f' %  (auc_prc_smorfer))
 
     # choosing colure
 
     # plot the PRC into one plot
-    plt.plot(recall_deepribo, precision_deepribo, color='#228833', label=label_deepribo) # green
-    plt.plot(recall_reparation, precision_reparation, color='#4477AA', label=label_reparation) #blue 
-    plt.plot(recall_ribotish, precision_ribotish, color='#CCBB44', label=label_ribotish) #yellow 
-    plt.plot(recall_irsom, precision_irsom, color='#EE6677', label=label_irsom) #red 
-    plt.plot(recall_spectre, precision_spectre, color='#800000', label=label_spectre) #saddlebrown 
+    plt.plot(recall_deepribo, precision_deepribo, color='#009E73', label=label_deepribo) # green
+    plt.plot(recall_reparation, precision_reparation, color='#0072B2', label=label_reparation) #blue
+    plt.plot(recall_ribotish, precision_ribotish, color='#F0E442', label=label_ribotish) #yellow
+    plt.plot(recall_irsom, precision_irsom, color='#D55E00', label=label_irsom) #red
+    plt.plot(recall_spectre, precision_spectre, color='#E69F00', label=label_spectre) #orange
+    plt.plot(recall_price, precision_price, color='#000000', label=label_price) #black
+    plt.plot(recall_ribotricer, precision_ribotricer, color='#56B4E9', label=label_ribotricer) #sky blue
+    plt.plot(recall_smorfer, precision_smorfer, color='#CC79A7', label=label_smorfer) #reddish purple
 
     # plot the baseline
     plt.plot([0, 1], [base, base], color='#BBBBBB', linestyle='--') #grey #808080
@@ -180,7 +196,7 @@ def main():
     plt.title(title)
 
     #fontsize=20
-    plt.legend(prop={'size': 14})
+    plt.legend(prop={'size': 12})
     plt.ylim(-0.02, 1.02)
     #plt.show()
 
