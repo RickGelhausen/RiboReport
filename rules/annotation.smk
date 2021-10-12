@@ -72,7 +72,7 @@ rule generateTranscripts:
     input:
         bam="maplink/RNA-{condition}-{replicate}.bam",
         bamindex="maplink/RNA-{condition}-{replicate}.bam.bai",
-        annotation=rules.checkAnnotation.output
+        annotation=rules.createEnsemblAnnotation.output
     output:
         transcripts="transcripts/{condition}-{replicate}/transcripts.gtf",
         isoforms="transcripts/{condition}-{replicate}/isoforms.fpkm_tracking",
