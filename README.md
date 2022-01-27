@@ -1,7 +1,7 @@
 <img src="RiboReport.png" width="661">
 
 # RiboReport21
-This repository contains all code to recreate the contents of "RiboReport - Benchmarking tools for ribosome profiling-based identification of open reading frames in bacteria".
+This repository contains all code to recreate the contents of [RiboReport - Benchmarking tools for ribosome profiling-based identification of open reading frames in bacteria](https://academic.oup.com/bib/advance-article/doi/10.1093/bib/bbab549/6509045).
 Following are descriptions of the required steps to reproduce our analysis.
 
 ## Processing of High Throughput Sequencing Data
